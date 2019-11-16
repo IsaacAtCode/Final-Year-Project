@@ -33,7 +33,9 @@ namespace IsaacFagg
 		private void Update()
 		{
 			WheelTurn();
-			Debug.Log(rb.velocity);
+
+			Debug.Log(rb.velocity.x * rb.velocity.y);
+
 		}
 
 
@@ -54,7 +56,7 @@ namespace IsaacFagg
 			if (Input.GetButton("Accelerate"))
 			{
 				rb.AddForce(transform.up * cStats.acceleration);
-				Debug.Log("Accelerating");
+
 			}
 		}
 
@@ -63,7 +65,7 @@ namespace IsaacFagg
 			if (Input.GetButton("Brake"))
 			{
 				rb.AddForce(transform.up * -cStats.acceleration);
-				Debug.Log("Braking");
+
 			}
 		}
 
@@ -72,12 +74,22 @@ namespace IsaacFagg
 			rb.angularVelocity = (Input.GetAxis("Horizontal") * -cStats.torque);
 		}
 
-		/*CarState GearShift (CarState carState)
+		/*CarState GearShift (CarState state)
 		{
-			if (rb.velocity)
+			if (Input.GetButtonDown("Accelerate"))
 			{
-
+				state = CarState.Accelerating;
 			}
+			else if (Input.GetButton("Brake"))
+			{
+				state = CarState.Braking;
+			}
+			else if (Input.GetButton("Brake"))
+			{
+				state = CarState.Reversing;
+			}
+
+				return state;
 		}*/
 
 
