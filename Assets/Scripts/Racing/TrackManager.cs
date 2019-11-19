@@ -4,46 +4,36 @@ using UnityEngine;
 
 public class TrackManager : MonoBehaviour
 {
-    //Laps
-    public int lapCount;
+    [Header("Laps")]
     public int maxLaps = 3;
     public int currentLap = 0;
     public Lap[] allLaps;
-    //Checkpoints
+    [Header("Checkpoint")]
     public Checkpoint[] checkpoints;
     public int maxCheck;
     public int currentCheck;
 
-    //Car
+    [Header("Car")]
     public GameObject CarGo;
+
+
+    public HUDManager hm;
 
     public void Start()
     {
+        hm = GameObject.Find("HUD").GetComponent<HUDManager>();
         CarGo = GameObject.Find("CarGO");
 
         FindAllCheckpoints();
     }
 
 
-    public void StartNewLap()
-    {
-
-    }
-
-
-    public void FinishLap()
-    {
-        //When Lap is finished, store lap statistics
-        //Then start a new Lap
-        
-        //newLap = new Lap(0.00f, 1);
-    }
-
     public void FindAllCheckpoints()
     {
         GameObject[] checkpointsGO = GameObject.FindGameObjectsWithTag("Checkpoint");
 
-        //checkpoints.Length == checkpointsGO.Length;
+        checkpoints = new Checkpoint[(checkpointsGO.Length)];
+        maxCheck = checkpoints.Length-1;
         for (int i = 0; i < checkpointsGO.Length; i++)
         {
             checkpoints[i] = checkpointsGO[i].GetComponent<Checkpoint>();
@@ -57,10 +47,27 @@ public class TrackManager : MonoBehaviour
         if (checkPos == currentCheck +1)
         {
             currentCheck = checkPos;
-            Debug.Log(currentCheck);
+            hm.UpdateCheckpoint();
+            Debug.Log("Checkpoint: " + currentCheck);
             return;
         }
 
+    }
+
+
+    public void StartNewLap()
+    {
+        //Successful Lap
+        //Checks you go through ALL checkpoints in order
+        if (currentCheck != 0)
+        {
+            currentLap++;
+            currentCheck = 0;
+            hm.UpdateCheckpoint();
+            hm.UpdateLapCount();
+            Debug.Log("Lap: " + (currentLap - 1) + "/" + maxLaps);
+        }
+        
     }
 
 

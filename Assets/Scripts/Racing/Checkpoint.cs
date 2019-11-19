@@ -5,7 +5,7 @@ using UnityEngine;
 public class Checkpoint : MonoBehaviour
 {
     public int position;
-
+    public bool finishLine;
     public TrackManager tm;
 
     private void Start()
@@ -17,8 +17,16 @@ public class Checkpoint : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player")
         {
+            if (finishLine ==true)
+            {
+                tm.StartNewLap();
+                tm.UpdateCheckpoint(0);
+            }
             tm.UpdateCheckpoint(position);
         }
+
     }
+
+
 
 }
