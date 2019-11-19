@@ -131,6 +131,7 @@ GameObject:
   - component: {fileID: 31592800}
   - component: {fileID: 31592802}
   - component: {fileID: 31592801}
+  - component: {fileID: 31592803}
   m_Layer: 0
   m_Name: Checkpoint (4)
   m_TagString: Checkpoint
@@ -227,6 +228,20 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &31592803
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 31592799}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 077888c2cc5acae469df017350854230, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  position: 5
+  tm: {fileID: 0}
 --- !u!1 &393120881
 GameObject:
   m_ObjectHideFlags: 0
@@ -238,6 +253,7 @@ GameObject:
   - component: {fileID: 393120882}
   - component: {fileID: 393120884}
   - component: {fileID: 393120883}
+  - component: {fileID: 393120885}
   m_Layer: 0
   m_Name: Checkpoint (1)
   m_TagString: Checkpoint
@@ -334,6 +350,20 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &393120885
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 393120881}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 077888c2cc5acae469df017350854230, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  position: 2
+  tm: {fileID: 0}
 --- !u!1 &431657595
 GameObject:
   m_ObjectHideFlags: 0
@@ -345,6 +375,7 @@ GameObject:
   - component: {fileID: 431657596}
   - component: {fileID: 431657598}
   - component: {fileID: 431657597}
+  - component: {fileID: 431657599}
   m_Layer: 0
   m_Name: Checkpoint (3)
   m_TagString: Checkpoint
@@ -441,6 +472,20 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &431657599
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 431657595}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 077888c2cc5acae469df017350854230, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  position: 4
+  tm: {fileID: 0}
 --- !u!1 &477814562
 GameObject:
   m_ObjectHideFlags: 0
@@ -452,6 +497,7 @@ GameObject:
   - component: {fileID: 477814563}
   - component: {fileID: 477814565}
   - component: {fileID: 477814564}
+  - component: {fileID: 477814566}
   m_Layer: 0
   m_Name: Checkpoint (2)
   m_TagString: Checkpoint
@@ -548,6 +594,20 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &477814566
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 477814562}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 077888c2cc5acae469df017350854230, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  position: 3
+  tm: {fileID: 0}
 --- !u!1 &510515148
 GameObject:
   m_ObjectHideFlags: 0
@@ -741,6 +801,7 @@ GameObject:
   - component: {fileID: 612567321}
   - component: {fileID: 612567320}
   - component: {fileID: 612567319}
+  - component: {fileID: 612567322}
   m_Layer: 0
   m_Name: Finish Line
   m_TagString: Checkpoint
@@ -837,6 +898,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &612567322
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 612567318}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 077888c2cc5acae469df017350854230, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  position: 0
+  tm: {fileID: 0}
 --- !u!1 &751822761
 GameObject:
   m_ObjectHideFlags: 0
@@ -1008,6 +1083,8 @@ GameObject:
   - component: {fileID: 1254803243}
   - component: {fileID: 1254803245}
   - component: {fileID: 1254803244}
+  - component: {fileID: 1254803247}
+  - component: {fileID: 1254803246}
   m_Layer: 0
   m_Name: Checkpoint (0)
   m_TagString: Checkpoint
@@ -1104,6 +1181,34 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1254803246
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1254803242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 077888c2cc5acae469df017350854230, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  position: 0
+  tm: {fileID: 0}
+--- !u!114 &1254803247
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1254803242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 077888c2cc5acae469df017350854230, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  position: 1
+  tm: {fileID: 0}
 --- !u!1 &1445301721
 GameObject:
   m_ObjectHideFlags: 0
@@ -1195,6 +1300,7 @@ GameObject:
   - component: {fileID: 1513902697}
   - component: {fileID: 1513902699}
   - component: {fileID: 1513902698}
+  - component: {fileID: 1513902700}
   m_Layer: 0
   m_Name: Checkpoint (6)
   m_TagString: Checkpoint
@@ -1291,6 +1397,20 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1513902700
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1513902696}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 077888c2cc5acae469df017350854230, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  position: 7
+  tm: {fileID: 0}
 --- !u!1 &1632411852
 GameObject:
   m_ObjectHideFlags: 0
@@ -1323,7 +1443,9 @@ MonoBehaviour:
   lapCount: 0
   maxLaps: 3
   currentLap: 0
-  checkpointNum: 0
+  checkpoints: []
+  maxCheck: 0
+  currentCheck: 0
   CarGo: {fileID: 0}
 --- !u!4 &1632411854
 Transform:
@@ -1510,6 +1632,7 @@ GameObject:
   - component: {fileID: 1909643529}
   - component: {fileID: 1909643531}
   - component: {fileID: 1909643530}
+  - component: {fileID: 1909643532}
   m_Layer: 0
   m_Name: Checkpoint (5)
   m_TagString: Checkpoint
@@ -1606,6 +1729,20 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1909643532
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1909643528}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 077888c2cc5acae469df017350854230, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  position: 6
+  tm: {fileID: 0}
 --- !u!1 &1994226718
 GameObject:
   m_ObjectHideFlags: 0
@@ -1658,7 +1795,7 @@ GameObject:
   - component: {fileID: 2000496950}
   m_Layer: 0
   m_Name: CarGO
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

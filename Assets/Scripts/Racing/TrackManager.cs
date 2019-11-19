@@ -9,7 +9,10 @@ public class TrackManager : MonoBehaviour
     public int maxLaps = 3;
     public int currentLap = 0;
     public Lap[] allLaps;
-    public int checkpointNum;
+    //Checkpoints
+    public Checkpoint[] checkpoints;
+    public int maxCheck;
+    public int currentCheck;
 
     //Car
     public GameObject CarGo;
@@ -17,6 +20,8 @@ public class TrackManager : MonoBehaviour
     public void Start()
     {
         CarGo = GameObject.Find("CarGO");
+
+        FindAllCheckpoints();
     }
 
 
@@ -34,6 +39,30 @@ public class TrackManager : MonoBehaviour
         //newLap = new Lap(0.00f, 1);
     }
 
+    public void FindAllCheckpoints()
+    {
+        GameObject[] checkpointsGO = GameObject.FindGameObjectsWithTag("Checkpoint");
+
+        //checkpoints.Length == checkpointsGO.Length;
+        for (int i = 0; i < checkpointsGO.Length; i++)
+        {
+            checkpoints[i] = checkpointsGO[i].GetComponent<Checkpoint>();
+        }
+    }
+
+
+
+    public void UpdateCheckpoint(int checkPos)
+    {
+        if (checkPos == currentCheck +1)
+        {
+            currentCheck = checkPos;
+            Debug.Log(currentCheck);
+            return;
+        }
+
+    }
+
 
 
 
@@ -46,7 +75,3 @@ public class Lap
     public int lapNumber;
 }
 
-public class Checkpoint
-{
-    public int position;
-}
