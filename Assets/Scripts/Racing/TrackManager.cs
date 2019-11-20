@@ -7,7 +7,7 @@ public class TrackManager : MonoBehaviour
     [Header("Laps")]
     public int maxLaps = 3;
     public int currentLap = 0;
-    public Lap[] allLaps;
+    //public Lap[] allLaps;
     [Header("Checkpoint")]
     public Checkpoint[] checkpoints;
     public int maxCheck;
@@ -17,11 +17,8 @@ public class TrackManager : MonoBehaviour
     public GameObject CarGo;
 
 
-    public HUDManager hm;
-
     public void Start()
     {
-        hm = GameObject.Find("HUD").GetComponent<HUDManager>();
         CarGo = GameObject.Find("CarGO");
 
         FindAllCheckpoints();
@@ -47,7 +44,7 @@ public class TrackManager : MonoBehaviour
         if (checkPos == currentCheck +1)
         {
             currentCheck = checkPos;
-            hm.UpdateCheckpoint();
+
             Debug.Log("Checkpoint: " + currentCheck);
             return;
         }
@@ -63,8 +60,6 @@ public class TrackManager : MonoBehaviour
         {
             currentLap++;
             currentCheck = 0;
-            hm.UpdateCheckpoint();
-            hm.UpdateLapCount();
             Debug.Log("Lap: " + (currentLap - 1) + "/" + maxLaps);
         }
         
@@ -74,11 +69,5 @@ public class TrackManager : MonoBehaviour
 
 
 
-}
-
-public class Lap
-{
-    public float lapTime;
-    public int lapNumber;
 }
 

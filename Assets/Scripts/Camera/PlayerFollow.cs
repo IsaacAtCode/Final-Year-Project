@@ -2,13 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerFollow : MonoBehaviour
+namespace IsaacFagg
 {
-	public Transform player;
-	public float playerOffsetY;
-
-	private void Update()
+	public class PlayerFollow : MonoBehaviour
 	{
-		transform.position = new Vector3(player.position.x, player.position.y -playerOffsetY, -10);
+		public Transform player;
+		public float playerOffsetY;
+
+		//Slight Drag to player
+
+		private void Update()
+		{
+			transform.position = new Vector3(player.position.x, player.position.y - playerOffsetY, -10);
+		}
 	}
 }

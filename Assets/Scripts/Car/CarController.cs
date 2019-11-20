@@ -5,14 +5,14 @@ using UnityEngine;
 
 namespace IsaacFagg
 {
-	[RequireComponent(typeof(CarStats))]
+	[RequireComponent(typeof(Car))]
 	public class CarController : MonoBehaviour
 	{
 
-		private CarStats cStats;
+		private Car car;
 		private Rigidbody2D rb;
 
-		//Wheels
+		[Header("Wheels")]
 		public GameObject wheel_fl;
 		public GameObject wheel_fr;
 		public GameObject wheel_bl;
@@ -20,13 +20,13 @@ namespace IsaacFagg
 		public float wheelMinMax = 10f;
 		public float backWheelTurn = 0.5f;
 
-		public enum CarState { Accelerating, Braking, Reversing}
+		public enum CarState { NoMove, Accelerating, Braking, Reversing}
 		public CarState carState; 
 
 
 		public void Start()
 		{
-			cStats = GetComponent<CarStats>();
+			car = GetComponent<Car>();
 			rb = GetComponent<Rigidbody2D>();
 		}
 
@@ -55,7 +55,7 @@ namespace IsaacFagg
 		{
 			if (Input.GetButton("Accelerate"))
 			{
-				rb.AddForce(transform.up * cStats.acceleration);
+				rb.AddForce(transform.up * car.acceleration);
 
 			}
 		}
@@ -64,14 +64,14 @@ namespace IsaacFagg
 		{
 			if (Input.GetButton("Brake"))
 			{
-				rb.AddForce(transform.up * -cStats.acceleration);
+				rb.AddForce(transform.up * -car.acceleration);
 
 			}
 		}
 
 		private void Turn()
 		{
-			rb.angularVelocity = (Input.GetAxis("Horizontal") * -cStats.torque);
+			rb.angularVelocity = (Input.GetAxis("Horizontal") * -car.torque);
 		}
 
 		/*CarState GearShift (CarState state)
@@ -96,7 +96,7 @@ namespace IsaacFagg
 
 		private void CalculateVelocity()
 		{
-			rb.velocity = ForwardVelocity() + (RightVelocity()*cStats.drift);
+			rb.velocity = ForwardVelocity() + (RightVelocity()*car.drift);
 
 		}
 
