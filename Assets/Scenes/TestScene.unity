@@ -240,9 +240,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 077888c2cc5acae469df017350854230, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  location: 4
+  position: 5
   finishLine: 0
-  position: {fileID: 0}
 --- !u!1 &317106509
 GameObject:
   m_ObjectHideFlags: 0
@@ -429,9 +428,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 077888c2cc5acae469df017350854230, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  location: 1
+  position: 2
   finishLine: 0
-  position: {fileID: 0}
 --- !u!1 &431657595
 GameObject:
   m_ObjectHideFlags: 0
@@ -552,9 +550,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 077888c2cc5acae469df017350854230, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  location: 3
+  position: 4
   finishLine: 0
-  position: {fileID: 0}
 --- !u!1 &477814562
 GameObject:
   m_ObjectHideFlags: 0
@@ -675,9 +672,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 077888c2cc5acae469df017350854230, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  location: 2
+  position: 3
   finishLine: 0
-  position: {fileID: 0}
 --- !u!1 &510515148
 GameObject:
   m_ObjectHideFlags: 0
@@ -1018,9 +1014,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 077888c2cc5acae469df017350854230, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  location: 7
+  position: 0
   finishLine: 1
-  position: {fileID: 0}
 --- !u!1 &628933467
 GameObject:
   m_ObjectHideFlags: 0
@@ -1228,6 +1223,7 @@ RectTransform:
   - {fileID: 521530898}
   - {fileID: 1943357192}
   - {fileID: 1468569392}
+  - {fileID: 1052989403}
   m_Father: {fileID: 709759688}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1252,11 +1248,13 @@ MonoBehaviour:
   pCar: {fileID: 0}
   pController: {fileID: 0}
   pLap: {fileID: 0}
+  track: {fileID: 1560770703}
   lapCount: {fileID: 628933469}
   lapTime: {fileID: 2106828447}
   bestLap: {fileID: 1700401002}
   checkCount: {fileID: 1943357193}
   speedo: {fileID: 1468569393}
+  finishText: {fileID: 1052989404}
 --- !u!1 &751822761
 GameObject:
   m_ObjectHideFlags: 0
@@ -1368,6 +1366,83 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1052989402
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1052989403}
+  - component: {fileID: 1052989405}
+  - component: {fileID: 1052989404}
+  m_Layer: 0
+  m_Name: Finished
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1052989403
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1052989402}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 716103308}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 500, y: 250}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1052989404
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1052989402}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FontData:
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_FontSize: 14
+    m_FontStyle: 1
+    m_BestFit: 1
+    m_MinSize: 10
+    m_MaxSize: 100
+    m_Alignment: 4
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: Finished Race
+--- !u!222 &1052989405
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1052989402}
+  m_CullTransparentMesh: 0
 --- !u!1 &1217067251
 GameObject:
   m_ObjectHideFlags: 0
@@ -1568,9 +1643,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 077888c2cc5acae469df017350854230, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  location: 0
+  position: 1
   finishLine: 0
-  position: {fileID: 0}
 --- !u!1 &1445301721
 GameObject:
   m_ObjectHideFlags: 0
@@ -1848,9 +1922,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 077888c2cc5acae469df017350854230, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  location: 6
+  position: 7
   finishLine: 0
-  position: {fileID: 0}
 --- !u!1 &1560770702
 GameObject:
   m_ObjectHideFlags: 0
@@ -1881,7 +1954,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackName: TestTrack
-  maxLaps: 3
+  maxLaps: 2
   maxCheckpoints: 3
   checkpoints: []
 --- !u!4 &1560770704
@@ -2068,7 +2141,7 @@ GameObject:
   - component: {fileID: 1882391873}
   m_Layer: 0
   m_Name: TrackSprite
-  m_TagString: Track
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2256,9 +2329,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 077888c2cc5acae469df017350854230, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  location: 5
+  position: 6
   finishLine: 0
-  position: {fileID: 0}
 --- !u!1 &1943357191
 GameObject:
   m_ObjectHideFlags: 0
@@ -2407,6 +2479,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e303414694e4ba2489968a2ea97f5fa7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rb: {fileID: 0}
   wheel_fl: {fileID: 1445301721}
   wheel_fr: {fileID: 751822761}
   wheel_bl: {fileID: 1788637708}
@@ -2414,6 +2487,7 @@ MonoBehaviour:
   wheelMinMax: 10
   backWheelTurn: 0.25
   carState: 0
+  currentSpeed: 0
 --- !u!114 &2000496948
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2426,7 +2500,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 370bdf4f195dae444b8673375d2f1430, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  acceleration: 10
+  acceleration: 20
   torque: 150
   drift: 0.97
 --- !u!4 &2000496949
@@ -2503,8 +2577,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd08d55af37ca8f4f830b7a0778f44bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  car: {fileID: 0}
+  rb: {fileID: 0}
+  track: {fileID: 0}
+  lapCount: 0
   lapTotal: 0
   currentLap: 0
+  lastCheck: 0
+  passedCheck: []
+  finishedRace: 0
 --- !u!1 &2106828445
 GameObject:
   m_ObjectHideFlags: 0

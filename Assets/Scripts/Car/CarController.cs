@@ -10,7 +10,10 @@ namespace IsaacFagg
 	{
 
 		private Car car;
-		private Rigidbody2D rb;
+		public Rigidbody2D rb;
+
+
+
 
 		[Header("Wheels")]
 		public GameObject wheel_fl;
@@ -21,7 +24,10 @@ namespace IsaacFagg
 		public float backWheelTurn = 0.5f;
 
 		public enum CarState { NoMove, Accelerating, Braking, Reversing}
-		public CarState carState; 
+		public CarState carState;
+
+
+		public float currentSpeed;
 
 
 		public void Start()
@@ -33,8 +39,6 @@ namespace IsaacFagg
 		private void Update()
 		{
 			WheelTurn();
-
-			//Debug.Log(rb.velocity.x * rb.velocity.y);
 
 		}
 
@@ -49,7 +53,6 @@ namespace IsaacFagg
 			CalculateVelocity();
 
 		}
-
 
 		private void Accelerate()
 		{
@@ -73,26 +76,6 @@ namespace IsaacFagg
 		{
 			rb.angularVelocity = (Input.GetAxis("Horizontal") * -car.torque);
 		}
-
-		/*CarState GearShift (CarState state)
-		{
-			if (Input.GetButtonDown("Accelerate"))
-			{
-				state = CarState.Accelerating;
-			}
-			else if (Input.GetButton("Brake"))
-			{
-				state = CarState.Braking;
-			}
-			else if (Input.GetButton("Brake"))
-			{
-				state = CarState.Reversing;
-			}
-
-				return state;
-		}*/
-
-
 
 		private void CalculateVelocity()
 		{
@@ -128,9 +111,6 @@ namespace IsaacFagg
 
 
 		}
-
-
-
 
 		Vector2 ForwardVelocity()
 		{

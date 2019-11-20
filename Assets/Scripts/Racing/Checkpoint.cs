@@ -4,15 +4,9 @@ using UnityEngine;
 
 public class Checkpoint : MonoBehaviour
 {
-	public int location;
+	public int position;
 	public bool finishLine;
-	public Transform position;
 
-
-	private void Start()
-	{
-		position = this.transform;
-	}
 
 
 }
