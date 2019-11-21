@@ -19,6 +19,7 @@ namespace IsaacFagg.UI
 		public Text lapCount;
 		public Text lapTime;
 		public Text bestLap;
+		public Text lastLap;
 
 		[Header("Checkpoints")]
 		public Text checkCount;
@@ -28,6 +29,9 @@ namespace IsaacFagg.UI
 
 		[Header("Finish")]
 		public Text finishText;
+
+		[Header("Countdown")]
+		public Text countdown;
 
 		private void Start()
 		{
@@ -39,18 +43,35 @@ namespace IsaacFagg.UI
 		private void Update()
 		{
 			//CurrentLapTime
-			UpdateCounter(FormatLapTime(pLap.currentLap), lapTime);
+			if (pLap.currentLap != null && pLap.finishedRace == false)
+			{
+				UpdateCounter(FormatLapTime(pLap.currentLap.time), lapTime);
+			}
 
 			//Speedo
 			UpdateCounter((pController.rb.velocity.magnitude * 10).ToString("0") + " mph", speedo);
 
-			//Checkpoint Counter
-			UpdateCounter(pLap.lastCheck.ToString() + "/" + track.maxCheckpoints, checkCount);
+			//Best Lap
+			if (pLap.bestLap != null)
+			{
+				UpdateCounter(FormatLapTime(pLap.bestLap.time), bestLap);
+			}
+			else
+			{
+				UpdateCounter("", bestLap);
+			}
 
+			//Countdown
+			if (pLap.startedRace == false)
+			{
+				UpdateCounter((Mathf.Ceil(pLap.countdownTimer)).ToString(), countdown);
+			}
+			else
+			{
+				UpdateCounter("", countdown);
+			}
 
-			//Lap Counter
-			UpdateCounter((pLap.lapCount + 1).ToString() + "/" + track.maxLaps + " Laps", lapCount);
-
+			//Finish
 			ShowFinish();
 
 		}
@@ -83,6 +104,8 @@ namespace IsaacFagg.UI
 				finishText.text = "";
 			}
 		}
+
+
 
 
 
