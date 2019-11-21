@@ -11,8 +11,19 @@ namespace IsaacFagg
 	{
 		private Rigidbody2D rb;
 		private Track track;
+		private CarController cc;
 
 		public PlayerHUD hud;
+
+		public enum RaceState
+		{
+			Starting,
+			Ongoing,
+			Paused,
+			Finished,
+		}
+		public RaceState raceState;
+
 
 		[Header("Lap")]
 		public List<Lap> laps = new List<Lap>();
@@ -21,7 +32,6 @@ namespace IsaacFagg
 		public Lap bestLap;
 		public int lapCount = 0;
 		public float lapTotal;
-		public float raceTotal;
 
 
 		[Header("Checkpoints")]
@@ -32,30 +42,40 @@ namespace IsaacFagg
 		//Race Settings
 		public int countdown = 3;
 		public float countdownTimer;
-		public bool startedRace = false;
-		public bool finishedRace = false;
 
 		private void Start()
 		{
 			rb = GetComponent<Rigidbody2D>();
 			track = GameObject.FindGameObjectWithTag("Track").GetComponent<Track>();
+			cc = GetComponent<CarController>();
 
 			StartCoroutine(StartRace());
+			raceState = RaceState.Starting;
+
 
 			hud.UpdateCounter(lastCheck.ToString() + "/" + track.maxCheckpoints, hud.checkCount);
 			hud.UpdateCounter((lapCount + 1).ToString() + "/" + track.maxLaps + " Laps", hud.lapCount);
+
 		}
 
 		private void Update()
 		{
-			if (startedRace == false)
+			//Check if its player or ai
+			if (raceState == RaceState.Starting)
 			{
+				cc.carState = CarController.CarState.NoMove;
 				StartCountdown();
 			}
-			else if (startedRace == true && finishedRace == false)
+			else if (raceState == RaceState.Ongoing)
 			{
+				cc.carState = CarController.CarState.Moving;
 				lapTotal += Time.deltaTime;
 				currentLap.time += Time.deltaTime;
+			}
+			else if (raceState == RaceState.Finished)
+			{
+				cc.carState = CarController.CarState.Auto;
+				//Finish
 			}
 
 		}
@@ -71,9 +91,8 @@ namespace IsaacFagg
 				{
 					if (lapCount == track.maxLaps - 1)
 					{
-						finishedRace = true;
+						raceState = RaceState.Finished;
 					}
-						//Finish Lap
 						FinishLap();
 				}
 				else
@@ -88,14 +107,15 @@ namespace IsaacFagg
 
 		IEnumerator StartRace()
 		{
+			
 			countdownTimer = countdown;
 
 			yield return new WaitForSecondsRealtime(countdown);
 
-			if (startedRace == false)
+			if (raceState == RaceState.Starting)
 			{
+				raceState = RaceState.Ongoing;
 				CreateCurrentLap();
-				startedRace = true;
 			}
 		}
 
@@ -171,7 +191,7 @@ namespace IsaacFagg
 			AddLap(lastLap);
 			//AddToLapsList
 
-			if (finishedRace == false)
+			if (raceState == RaceState.Ongoing)
 			{
 				CreateCurrentLap();
 			}
@@ -181,32 +201,16 @@ namespace IsaacFagg
 		{
 			laps.Add(lastLap);
 			SortLaps();
+			hud.UpdateCounter(hud.FormatLapTime(bestLap.time), hud.bestLap);
+
 		}
 
 		private void SortLaps()
 		{
 			List<Lap> fastLaps = laps.OrderBy(Lap => Lap.time).ToList();
 
-			foreach (Lap item in fastLaps)
-			{
-				Debug.Log(item.time);
-			}
-
 			bestLap = fastLaps[0].DeepCopy();
 		}
-
 	}
-
-
-
-
-
-
-		//Store Lap then create a new one
-
-		//Set Last Lap
-
-		//FindBestLap
-
 }
 

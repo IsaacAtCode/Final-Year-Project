@@ -38,12 +38,16 @@ namespace IsaacFagg.UI
 			pCar = player.GetComponent<Car>();
 			pController = player.GetComponent<CarController>();
 			pLap = player.GetComponent<CarLap>();
+
+			lastLap.text = "";
+			bestLap.text = "";
+
 		}
 
 		private void Update()
 		{
 			//CurrentLapTime
-			if (pLap.currentLap != null && pLap.finishedRace == false)
+			if (pLap.currentLap != null && pLap.raceState == CarLap.RaceState.Ongoing)
 			{
 				UpdateCounter(FormatLapTime(pLap.currentLap.time), lapTime);
 			}
@@ -51,18 +55,8 @@ namespace IsaacFagg.UI
 			//Speedo
 			UpdateCounter((pController.rb.velocity.magnitude * 10).ToString("0") + " mph", speedo);
 
-			//Best Lap
-			if (pLap.bestLap != null)
-			{
-				UpdateCounter(FormatLapTime(pLap.bestLap.time), bestLap);
-			}
-			else
-			{
-				UpdateCounter("", bestLap);
-			}
-
 			//Countdown
-			if (pLap.startedRace == false)
+			if (pLap.raceState == CarLap.RaceState.Starting)
 			{
 				UpdateCounter((Mathf.Ceil(pLap.countdownTimer)).ToString(), countdown);
 			}
@@ -95,9 +89,10 @@ namespace IsaacFagg.UI
 
 		public void ShowFinish()
 		{
-			if (pLap.finishedRace == true)
+			if (pLap.raceState == CarLap.RaceState.Finished)
 			{
 				UpdateCounter("Finished Race", finishText);
+				UpdateCounter(track.maxLaps + "/" + track.maxLaps, lapCount);
 			}
 			else
 			{

@@ -11,9 +11,7 @@ namespace IsaacFagg
 
 		private Car car;
 		public Rigidbody2D rb;
-
-
-
+		private CarLap cl;
 
 		[Header("Wheels")]
 		public GameObject wheel_fl;
@@ -23,35 +21,37 @@ namespace IsaacFagg
 		public float wheelMinMax = 10f;
 		public float backWheelTurn = 0.5f;
 
-		public enum CarState { NoMove, Accelerating, Braking, Reversing}
+		public enum CarState
+		{
+			NoMove,
+			Moving,
+			Auto,
+		}
 		public CarState carState;
-
-
-		public float currentSpeed;
-
 
 		public void Start()
 		{
 			car = GetComponent<Car>();
 			rb = GetComponent<Rigidbody2D>();
+			cl = GetComponent<CarLap>();
 		}
 
 		private void Update()
 		{
 			WheelTurn();
-
 		}
-
-
 
 		private void FixedUpdate()
 		{
-			Accelerate();
-			Brake();
-			Turn();
+			if (carState == CarState.Moving)
+			{
+				Accelerate();
+				Brake();
+				Turn();
+			}
+			
 
 			CalculateVelocity();
-
 		}
 
 		private void Accelerate()
@@ -120,8 +120,6 @@ namespace IsaacFagg
 		{
 			return transform.right * Vector2.Dot(rb.velocity, transform.right);
 		}
-
-
 
 	}
 }
