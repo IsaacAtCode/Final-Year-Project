@@ -21,6 +21,8 @@ namespace IsaacFagg
 		public float wheelMinMax = 10f;
 		public float backWheelTurn = 0.5f;
 
+		public Track currentTrack;
+
 		public enum CarState
 		{
 			NoMove,
@@ -34,6 +36,9 @@ namespace IsaacFagg
 			car = GetComponent<Car>();
 			rb = GetComponent<Rigidbody2D>();
 			cl = GetComponent<CarLap>();
+
+			currentTrack = GameObject.Find("Track").GetComponent<Track>();
+
 		}
 
 		private void Update()

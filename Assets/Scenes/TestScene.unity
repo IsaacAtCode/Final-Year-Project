@@ -2116,6 +2116,9 @@ MonoBehaviour:
   maxLaps: 2
   maxCheckpoints: 3
   checkpoints: []
+  trackFriction: 0
+  kerbFricition: 0
+  gravelFriction: 0
 --- !u!4 &1560770704
 Transform:
   m_ObjectHideFlags: 0
@@ -2299,6 +2302,7 @@ GameObject:
   - component: {fileID: 1882391874}
   - component: {fileID: 1882391873}
   - component: {fileID: 1882391875}
+  - component: {fileID: 1882391876}
   m_Layer: 0
   m_Name: TrackSprite
   m_TagString: Untagged
@@ -2895,6 +2899,27 @@ PolygonCollider2D:
       - {x: -4.6552734, y: -4.937256}
       - {x: -4.8398438, y: -4.94751}
       - {x: -5.0961914, y: -4.94751}
+--- !u!50 &1882391876
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1882391872}
+  m_BodyType: 2
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 6200000, guid: 2bffe93fcdc9f51488c7a76d85f0b355, type: 2}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &1909643528
 GameObject:
   m_ObjectHideFlags: 0
@@ -3172,6 +3197,7 @@ MonoBehaviour:
   wheel_br: {fileID: 1217067251}
   wheelMinMax: 10
   backWheelTurn: 0.25
+  currentTrack: {fileID: 0}
   carState: 0
 --- !u!114 &2000496948
 MonoBehaviour:
@@ -3212,7 +3238,7 @@ BoxCollider2D:
   m_GameObject: {fileID: 2000496946}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 6200000, guid: 1565ccf71dea1f44f843a73a249bc67b, type: 2}
+  m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -3227,7 +3253,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.4, y: 0.75}
+  m_Size: {x: 0.8, y: 1.9}
   m_EdgeRadius: 0
 --- !u!50 &2000496951
 Rigidbody2D:
@@ -3245,7 +3271,7 @@ Rigidbody2D:
   m_LinearDrag: 1
   m_AngularDrag: 5
   m_GravityScale: 1
-  m_Material: {fileID: 6200000, guid: 1565ccf71dea1f44f843a73a249bc67b, type: 2}
+  m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0

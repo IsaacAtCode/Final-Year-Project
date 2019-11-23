@@ -14,6 +14,9 @@ namespace IsaacFagg
 
 		//track statistics & influences
 
+		public float trackFriction;
+		public float kerbFricition;
+		public float gravelFriction;
 
 		public void Start()
 		{
