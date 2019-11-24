@@ -17,11 +17,14 @@ namespace IsaacFagg
 		{
 			Main,
 			TrackSelect, 
-			Settings, 
-			Quiting
+			Settings,
+			Loading,
 		}
 		MenuState menuState = MenuState.Main;
 		public int menuNum;
+
+		public Animator anim;
+
 
 		private void Start()
 		{
@@ -29,55 +32,30 @@ namespace IsaacFagg
 			mainPanel = GameObject.Find("Main");
 			trackPanel = GameObject.Find("Track");
 			settingsPanel = GameObject.Find("Settings");
-
-			OpenMenu(mainPanel);
 		}
 
 		public void ChangeMenu(int newMenu)
 		{
 			menuNum = newMenu;
+			anim.SetInteger("MenuState", menuNum);
 
 			switch (menuNum)
 			{
 				case 0:
 					menuState = MenuState.Main;
-					OpenMenu(mainPanel);
-					Debug.Log(menuState);
 					break;
 				case 1:
 					menuState = MenuState.TrackSelect;
-					OpenMenu(trackPanel);
-
-					Debug.Log(menuState);
 					break;
 				case 2:
 					menuState = MenuState.Settings;
-					OpenMenu(settingsPanel);
-
-					Debug.Log(menuState);
-					break;
-				case 3:
-					menuState = MenuState.Quiting;
-					Debug.Log(menuState);
-					QuitGame();
 					break;
 			}
+
+			Debug.Log(menuState);
 		}
 
-		private void HideAllMenus()
-		{
-			mainPanel.SetActive(false);
-			trackPanel.SetActive(false);
-			settingsPanel.SetActive(false);
-		}
-
-		private void OpenMenu(GameObject newMenu)
-		{
-			HideAllMenus();
-			newMenu.SetActive(true);
-		}
-
-		private void QuitGame()
+		public void QuitGame()
 		{
 			#if UNITY_EDITOR
 				UnityEditor.EditorApplication.isPlaying = false;
