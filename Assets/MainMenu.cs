@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace IsaacFagg
+namespace IsaacFagg.UI
 {
 	public class MainMenu : MonoBehaviour
 	{
-		private Canvas menuCanvas;
 
 		private GameObject mainPanel;
 		private GameObject trackPanel;
@@ -28,7 +27,6 @@ namespace IsaacFagg
 
 		private void Start()
 		{
-			menuCanvas = GetComponentInChildren<Canvas>();
 			mainPanel = GameObject.Find("Main");
 			trackPanel = GameObject.Find("Track");
 			settingsPanel = GameObject.Find("Settings");
@@ -51,8 +49,6 @@ namespace IsaacFagg
 					menuState = MenuState.Settings;
 					break;
 			}
-
-			Debug.Log(menuState);
 		}
 
 		public void QuitGame()
