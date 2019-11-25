@@ -13,7 +13,6 @@ public class Scene : MonoBehaviour
 		{
 			DontDestroyOnLoad(this.gameObject);
 			created = true;
-
 		}
 	}
 

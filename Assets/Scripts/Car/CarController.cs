@@ -23,9 +23,6 @@ namespace IsaacFagg
 
 		public Track currentTrack;
 
-		private float turnRate = 0f; 
-
-
 		public enum CarState
 		{
 			NoMove,
@@ -137,14 +134,12 @@ namespace IsaacFagg
 		public void TouchTurnLeft()
 		{
 			carDirection = CarDirection.Left;
-			Debug.Log("Turning Left");
 		}
 
 		public void TouchTurnRight()
 		{
 			carDirection = CarDirection.Right;
 
-			Debug.Log("Turning Left");
 		}
 
 		public void StopTurning()

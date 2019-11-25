@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace IsaacFagg.UI
+namespace IsaacFagg.Settings
 {
 	public class SettingsMenu : MonoBehaviour
 	{
