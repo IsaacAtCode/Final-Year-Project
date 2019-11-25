@@ -23,6 +23,9 @@ namespace IsaacFagg
 
 		public Track currentTrack;
 
+		private float turnRate = 0f; 
+
+
 		public enum CarState
 		{
 			NoMove,
@@ -31,6 +34,25 @@ namespace IsaacFagg
 		}
 		public CarState carState;
 
+		public enum CarGear
+		{
+			Accelerating,
+			Braking,
+			Reversing,
+			Stopped,
+		}
+		public CarGear carGear;
+
+		public enum CarDirection
+		{
+			Left,
+			Forward,
+			Right,
+			//Backwards,
+		}
+		public CarDirection carDirection = CarDirection.Forward;
+
+
 		public void Start()
 		{
 			car = GetComponent<Car>();
@@ -38,6 +60,10 @@ namespace IsaacFagg
 			cl = GetComponent<CarLap>();
 
 			currentTrack = GameObject.Find("Track").GetComponent<Track>();
+
+
+
+
 
 		}
 
@@ -50,37 +76,82 @@ namespace IsaacFagg
 		{
 			if (carState == CarState.Moving)
 			{
-				Accelerate();
-				Brake();
-				Turn();
+				Moving();
+				Turning();
 			}
 			
 
 			CalculateVelocity();
 		}
 
-		private void Accelerate()
+		private void TouchControls()
 		{
-			if (Input.GetButton("Accelerate"))
+			if (Input.touchCount > 0)
+			{
+				Touch touch = Input.GetTouch(0);
+			}
+		}
+
+
+
+
+		private void Moving()
+		{
+			if (carGear == CarGear.Accelerating)
 			{
 				rb.AddForce(transform.up * car.acceleration);
-
 			}
-		}
-
-		private void Brake()
-		{
-			if (Input.GetButton("Brake"))
+			else if (carGear == CarGear.Braking)
 			{
 				rb.AddForce(transform.up * -car.acceleration);
-
 			}
+			
 		}
 
-		private void Turn()
+		public void StartBrake()
 		{
-			rb.angularVelocity = (Input.GetAxis("Horizontal") * -car.torque);
+			carGear = CarGear.Braking;
 		}
+
+		public void EndBrake()
+		{
+			carGear = CarGear.Accelerating;
+		}
+
+		private void Turning()
+		{
+			//Get the longest or newest touch?
+			//Sensitivy Settings
+
+			if (carDirection == CarDirection.Left)
+			{
+				rb.angularVelocity = (-0.25f * -car.torque);
+			}
+			if (carDirection == CarDirection.Right)
+			{
+				rb.angularVelocity = (0.25f * -car.torque);
+			}
+
+		}
+
+		public void TouchTurnLeft()
+		{
+			carDirection = CarDirection.Left;
+			Debug.Log("Turning Left");
+		}
+
+		public void TouchTurnRight()
+		{
+			carDirection = CarDirection.Right;
+
+			Debug.Log("Turning Left");
+		}
+
+		public void StopTurning()
+		{
+			carDirection = CarDirection.Forward;
+		}
+
 
 		private void CalculateVelocity()
 		{
@@ -91,15 +162,18 @@ namespace IsaacFagg
 		private void WheelTurn()
 		{
 
-			float wheelRot = Mathf.Clamp(Input.GetAxisRaw("Horizontal") * wheelMinMax, -wheelMinMax, wheelMinMax);
-			if (wheelRot > wheelMinMax)
+			float wheelRot = 0f;
+			
+			if (carDirection == CarDirection.Left)
 			{
-				wheelRot = wheelMinMax;
+				wheelRot = Mathf.Clamp(-1f * wheelMinMax, -wheelMinMax, wheelMinMax);
 			}
-			else if (wheelRot < -wheelMinMax)
+			if (carDirection == CarDirection.Right)
 			{
-				wheelRot = -wheelMinMax;
+				wheelRot = Mathf.Clamp(1f * wheelMinMax, -wheelMinMax, wheelMinMax);
 			}
+
+
 
 			Vector3 frontWheelRotation =  new Vector3(0f, 0f, -wheelRot);
 			Vector3 backWheelRotation = new Vector3(0f, 0f, wheelRot * backWheelTurn);

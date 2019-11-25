@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Audio;
 
-namespace IsaacFagg.Audio
+namespace IsaacFagg.Preferences
 {
 	public class Volume : MonoBehaviour
 	{
