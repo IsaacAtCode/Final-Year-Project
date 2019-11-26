@@ -5,20 +5,6 @@ using UnityEngine.SceneManagement;
 
 public class Scene : MonoBehaviour
 {
-	private static bool created = false;
-
-	private void Awake()
-	{
-		if (!created)
-		{
-			DontDestroyOnLoad(this.gameObject);
-			created = true;
-		}
-	}
-
-
-
-
 	public void GoToScene(string sceneName)
 	{
 		//possibly change to additive

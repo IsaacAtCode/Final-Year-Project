@@ -4084,7 +4084,7 @@ MonoBehaviour:
   lapTotal: 0
   lastCheck: 0
   passedCheck: []
-  countdown: 1
+  countdown: 5
   countdownTimer: 0
 --- !u!1 &2032039784
 GameObject:

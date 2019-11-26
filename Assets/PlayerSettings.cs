@@ -39,17 +39,6 @@ namespace IsaacFagg.Settings
 
 		//Stuff to save the settings
 
-		private void Awake()
-		{
-			if (!created)
-			{
-				DontDestroyOnLoad(this.gameObject);
-				created = true;
-			}
-		}
-
-
-
 	}
 
 	public enum SpeedDisplay
