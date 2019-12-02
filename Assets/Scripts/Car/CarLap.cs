@@ -53,7 +53,7 @@ namespace IsaacFagg
 			raceState = RaceState.Starting;
 
 
-			hud.UpdateCounter(lastCheck.ToString() + "/" + track.maxCheckpoints, hud.checkCount);
+			//hud.UpdateCounter(lastCheck.ToString() + "/" + track.maxCheckpoints, hud.checkCount);
 			hud.UpdateCounter((lapCount + 1).ToString() + "/" + track.maxLaps + " Laps", hud.lapCount);
 
 		}
@@ -100,7 +100,7 @@ namespace IsaacFagg
 					CheckpointPass(cp);
 				}
 
-				hud.UpdateCounter(lastCheck.ToString() + "/" + track.maxCheckpoints, hud.checkCount);
+				//hud.UpdateCounter(lastCheck.ToString() + "/" + track.maxCheckpoints, hud.checkCount);
 
 			}
 		}

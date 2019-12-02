@@ -60,11 +60,6 @@ namespace IsaacFagg
 			cl = GetComponent<CarLap>();
 
 			currentTrack = GameObject.Find("Track").GetComponent<Track>();
-
-
-
-
-
 		}
 
 		private void Update()
