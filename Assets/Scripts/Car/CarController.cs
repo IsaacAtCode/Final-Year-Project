@@ -21,7 +21,7 @@ namespace IsaacFagg
 		public float wheelMinMax = 10f;
 		public float backWheelTurn = 0.5f;
 
-		public Track currentTrack;
+		public TrackManager trackM;
 
         public float turnRate = 0.5f;
 
@@ -59,7 +59,7 @@ namespace IsaacFagg
 			rb = GetComponent<Rigidbody2D>();
 			cl = GetComponent<CarLap>();
 
-			currentTrack = GameObject.Find("Track").GetComponent<Track>();
+			trackM = GameObject.Find("Track").GetComponent<TrackManager>();
 		}
 
 		private void Update()

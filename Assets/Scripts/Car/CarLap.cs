@@ -10,7 +10,7 @@ namespace IsaacFagg
 	public class CarLap : MonoBehaviour
 	{
 		private Rigidbody2D rb;
-		private Track track;
+		private TrackManager trackM;
 		private CarController cc;
 
 		public PlayerHUD hud;
@@ -46,15 +46,15 @@ namespace IsaacFagg
 		private void Start()
 		{
 			rb = GetComponent<Rigidbody2D>();
-			track = GameObject.FindGameObjectWithTag("Track").GetComponent<Track>();
+			trackM = GameObject.FindGameObjectWithTag("Track").GetComponent<TrackManager>();
 			cc = GetComponent<CarController>();
 
 			StartCoroutine(StartRace());
 			raceState = RaceState.Starting;
 
 
-			//hud.UpdateCounter(lastCheck.ToString() + "/" + track.maxCheckpoints, hud.checkCount);
-			hud.UpdateCounter((lapCount + 1).ToString() + "/" + track.maxLaps + " Laps", hud.lapCount);
+			//hud.UpdateCounter(lastCheck.ToString() + "/" + trackM.maxCheckpoints, hud.checkCount);
+			hud.UpdateCounter((lapCount + 1).ToString() + "/" + trackM.maxLaps + " Laps", hud.lapCount);
 
 		}
 
@@ -89,7 +89,7 @@ namespace IsaacFagg
 
 				if (cp.finishLine == true && CheckAllCheckpointsPassed())
 				{
-					if (lapCount == track.maxLaps - 1)
+					if (lapCount == trackM.maxLaps - 1)
 					{
 						raceState = RaceState.Finished;
 					}
@@ -100,7 +100,7 @@ namespace IsaacFagg
 					CheckpointPass(cp);
 				}
 
-				//hud.UpdateCounter(lastCheck.ToString() + "/" + track.maxCheckpoints, hud.checkCount);
+				//hud.UpdateCounter(lastCheck.ToString() + "/" + trackM.maxCheckpoints, hud.checkCount);
 
 			}
 		}
@@ -144,12 +144,12 @@ namespace IsaacFagg
 
 			SetLastLap();
 
-			hud.UpdateCounter((lapCount + 1).ToString() + "/" + track.maxLaps + " Laps", hud.lapCount);
+			hud.UpdateCounter((lapCount + 1).ToString() + "/" + trackM.maxLaps + " Laps", hud.lapCount);
 		}
 
 		private bool CheckAllCheckpointsPassed()
 		{
-			if (passedCheck.Count == track.maxCheckpoints - 1 && lastCheck != 0)
+			if (passedCheck.Count == trackM.maxCheckpoints - 1 && lastCheck != 0)
 			{
 				return true;
 			}

@@ -12,7 +12,7 @@ namespace IsaacFagg.UI
 		public Car pCar;
 		public CarController pController;
 		public CarLap pLap;
-		public Track track;
+		public TrackManager trackM;
 
 
 		[Header("Laps")]
@@ -95,7 +95,7 @@ namespace IsaacFagg.UI
 			if (pLap.raceState == CarLap.RaceState.Finished)
 			{
 				UpdateCounter("Finished Race", finishText);
-				UpdateCounter(track.maxLaps + "/" + track.maxLaps, lapCount);
+				UpdateCounter(trackM.maxLaps + "/" + trackM.maxLaps, lapCount);
 			}
 			else
 			{

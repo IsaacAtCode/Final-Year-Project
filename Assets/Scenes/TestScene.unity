@@ -1721,10 +1721,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 2000496946}
-  pCar: {fileID: 0}
-  pController: {fileID: 0}
-  pLap: {fileID: 0}
-  track: {fileID: 1560770703}
+  pCar: {fileID: 2000496948}
+  pController: {fileID: 2000496947}
+  pLap: {fileID: 2000496952}
+  trackM: {fileID: 1560770703}
   lapCount: {fileID: 628933469}
   lapTime: {fileID: 2106828447}
   bestLap: {fileID: 1700401002}
@@ -2711,12 +2711,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1560770702}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5601dca37cee5c84681a4afd68b90396, type: 3}
+  m_Script: {fileID: 11500000, guid: 7bd98a26a99fa2e48a42f20781c4a5bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trackName: TestTrack
-  maxLaps: 2
-  maxCheckpoints: 3
+  trackName: 
+  maxLaps: 3
+  maxCheckpoints: 0
   checkpoints: []
   trackFriction: 0
   kerbFricition: 0
@@ -4158,7 +4158,7 @@ MonoBehaviour:
   wheel_br: {fileID: 1217067251}
   wheelMinMax: 10
   backWheelTurn: 0.25
-  currentTrack: {fileID: 0}
+  trackM: {fileID: 0}
   turnRate: 1
   carState: 0
   carGear: 0

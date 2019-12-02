@@ -1,13 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using IsaacFagg.Settings;
 
-namespace IsaacFagg.Settings
-{ 
-	public class PlayerSettings : MonoBehaviour
+namespace IsaacFagg.Player
+{
+    [RequireComponent(typeof(Player))]
+    public class PlayerSettings : MonoBehaviour
 	{
-		private static bool created = false;
 
+        private Player player;
 
 		[Header("Display")]
 		public int fpsLimiter;
@@ -37,9 +39,16 @@ namespace IsaacFagg.Settings
 		[Header("Notifications")]
 		public bool notifOn = true;
 
-		//Stuff to save the settings
+        //Stuff to save the settings
 
-	}
+        private void Start()
+        {
+            player = GetComponent<Player>();
+        }
+
+
+    }
+
 
 	public enum SpeedDisplay
 	{
