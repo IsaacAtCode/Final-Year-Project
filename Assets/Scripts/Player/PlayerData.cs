@@ -7,6 +7,7 @@ namespace IsaacFagg.Player
     [RequireComponent(typeof(Player))]
     public class PlayerData : MonoBehaviour
     {
+
         //Database for all the data kept from the player
         private Player player;
 

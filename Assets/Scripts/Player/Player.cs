@@ -7,11 +7,19 @@ namespace IsaacFagg.Player
     public class Player : MonoBehaviour
     {
         public string nick;
-        public int age; //Age not DOB so less invasive
         public Gender gender;
         public string UUID;
-        public bool hasConsent;
         public bool firstLoad = true;
+
+        [Header("Age")]
+        public bool underAge;
+        public int age; //Age not DOB so less invasive
+
+
+        [Header("Consent")]
+        public bool infoConsent;
+        public bool agreeConsent;
+        public bool hasConsent;
 
         private void Awake()
         {
@@ -44,6 +52,17 @@ namespace IsaacFagg.Player
         public void SetAge(int newAge)
         {
             age = newAge;
+
+            if (age <= 18)
+            {
+                Debug.Log("Too young, do smth");
+            }
+            else
+            {
+                Debug.Log("New age = " + age);
+            }
+
+
         }
 
         public void SetGender(Gender newGender)
