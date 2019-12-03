@@ -28,9 +28,9 @@ namespace IsaacFagg.Paths
 			EditorGUI.BeginChangeCheck();
 
 
-			if (GUILayout.Button("Create New Path"))
+			if (GUILayout.Button("Reset Path"))
 			{
-				Undo.RecordObject(creator, "Create new path");
+				Undo.RecordObject(creator, "Resetting Path");
 
 				creator.CreatePath();
 			}
