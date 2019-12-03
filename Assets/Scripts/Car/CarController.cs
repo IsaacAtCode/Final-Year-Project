@@ -23,7 +23,7 @@ namespace IsaacFagg
 
 		public TrackManager trackM;
 
-        public float turnRate = 0.5f;
+		public float turnRate = 0.5f;
 
 		public enum CarState
 		{
@@ -47,7 +47,7 @@ namespace IsaacFagg
 			Left,
 			Forward,
 			Right,
-            Both,
+			Both,
 			//Backwards,
 		}
 		public CarDirection carDirection = CarDirection.Forward;
@@ -94,12 +94,12 @@ namespace IsaacFagg
 		{
 			if (carGear == CarGear.Accelerating)
 			{
-                rb.drag = 1f;
-                rb.AddForce(transform.up * car.acceleration);
+				rb.drag = 1f;
+				rb.AddForce(transform.up * car.acceleration);
 			}
 			else if (carGear == CarGear.Braking)
 			{
-                rb.AddForce(transform.up * -car.acceleration);
+				rb.AddForce(transform.up * -car.acceleration);
 			}
 			
 		}
@@ -134,40 +134,40 @@ namespace IsaacFagg
 
 		public void TouchTurnLeft()
 		{
-            if (carDirection == CarDirection.Forward)
-            {
-                carDirection = CarDirection.Left;
-            }
-            else if (carDirection == CarDirection.Right)
-            {
-                carDirection = CarDirection.Both;
-            }
+			if (carDirection == CarDirection.Forward)
+			{
+				carDirection = CarDirection.Left;
+			}
+			else if (carDirection == CarDirection.Right)
+			{
+				carDirection = CarDirection.Both;
+			}
 			
 		}
 
 		public void TouchTurnRight()
 		{
-            if (carDirection == CarDirection.Forward)
-            {
-                carDirection = CarDirection.Right;
-            }
-            else if (carDirection == CarDirection.Left)
-            {
-                carDirection = CarDirection.Both;
-            }
+			if (carDirection == CarDirection.Forward)
+			{
+				carDirection = CarDirection.Right;
+			}
+			else if (carDirection == CarDirection.Left)
+			{
+				carDirection = CarDirection.Both;
+			}
 
-        }
+		}
 
 		public void StopTurning()
 		{
-            if (carDirection == CarDirection.Both)
-            {
+			if (carDirection == CarDirection.Both)
+			{
 
-            }
-            else
-            {
-                carDirection = CarDirection.Forward;
-            }
+			}
+			else
+			{
+				carDirection = CarDirection.Forward;
+			}
 
 			
 		}

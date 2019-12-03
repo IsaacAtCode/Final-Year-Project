@@ -233,11 +233,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nick: 
-  age: 0
   gender: 0
   UUID: 
-  hasConsent: 0
   firstLoad: 1
+  underAge: 0
+  age: 0
+  infoConsent: 0
+  agreeConsent: 0
+  hasConsent: 0
 --- !u!1 &2073121625
 GameObject:
   m_ObjectHideFlags: 0
@@ -267,7 +270,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f414a591a5383fe459832840b70ab472, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneToLoad: 2
+  sceneToLoad: 3
 --- !u!4 &2073121627
 Transform:
   m_ObjectHideFlags: 0
