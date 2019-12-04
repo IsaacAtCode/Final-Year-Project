@@ -13,45 +13,15 @@ namespace IsaacFagg
 		public Rigidbody2D rb;
 		private CarLap cl;
 
-		[Header("Wheels")]
-		public GameObject wheel_fl;
-		public GameObject wheel_fr;
-		public GameObject wheel_bl;
-		public GameObject wheel_br;
-		public float wheelMinMax = 10f;
-		public float backWheelTurn = 0.5f;
-
 		public TrackManager trackM;
 
 		public float turnRate = 0.5f;
 
-		public enum CarState
-		{
-			NoMove,
-			Moving,
-			Auto,
-		}
 		public CarState carState;
 
-		public enum CarGear
-		{
-			Accelerating,
-			Braking,
-			Reversing,
-			Stopped,
-		}
 		public CarGear carGear;
 
-		public enum CarDirection
-		{
-			Left,
-			Forward,
-			Right,
-			Both,
-			//Backwards,
-		}
 		public CarDirection carDirection = CarDirection.Forward;
-
 
 		public void Start()
 		{
@@ -64,7 +34,7 @@ namespace IsaacFagg
 
 		private void Update()
 		{
-			WheelTurn();
+			car.WheelTurn(carDirection);
 		}
 
 		private void FixedUpdate()
@@ -179,38 +149,6 @@ namespace IsaacFagg
 
 		}
 
-		private void WheelTurn()
-		{
-
-			float wheelRot = 0f;
-			
-			if (carDirection == CarDirection.Left)
-			{
-				wheelRot = Mathf.Clamp(-1f * wheelMinMax, -wheelMinMax, wheelMinMax);
-			}
-			if (carDirection == CarDirection.Right)
-			{
-				wheelRot = Mathf.Clamp(1f * wheelMinMax, -wheelMinMax, wheelMinMax);
-			}
-
-
-
-			Vector3 frontWheelRotation =  new Vector3(0f, 0f, -wheelRot);
-			Vector3 backWheelRotation = new Vector3(0f, 0f, wheelRot * backWheelTurn);
-
-
-
-			wheel_fl.transform.localRotation = Quaternion.Lerp(wheel_fl.transform.rotation, Quaternion.Euler(frontWheelRotation), 1f);
-			wheel_fr.transform.localRotation = Quaternion.Lerp(wheel_fr.transform.rotation, Quaternion.Euler(frontWheelRotation), 1f);
-
-			wheel_bl.transform.localRotation = Quaternion.Lerp(wheel_bl.transform.rotation, Quaternion.Euler(backWheelRotation), 1f);
-			wheel_br.transform.localRotation = Quaternion.Lerp(wheel_br.transform.rotation, Quaternion.Euler(backWheelRotation), 1f);
-
-
-
-
-		}
-
 		Vector2 ForwardVelocity()
 		{
 			return transform.up * Vector2.Dot(rb.velocity, transform.up);
@@ -221,4 +159,5 @@ namespace IsaacFagg
 		}
 
 	}
+
 }

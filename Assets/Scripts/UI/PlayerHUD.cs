@@ -33,8 +33,8 @@ namespace IsaacFagg.UI
 		[Header("Countdown")]
 		public Text countdown;
 
-        [Header("Pause")]
-        public bool isPaused = false;
+		[Header("Pause")]
+		public bool isPaused = false;
 
 		private void Start()
 		{
@@ -58,18 +58,18 @@ namespace IsaacFagg.UI
 			//Speedo
 			UpdateCounter((pController.rb.velocity.magnitude * 10).ToString("0") + " mph", speedo);
 
-            //Countdown
-            if (pLap.raceState == CarLap.RaceState.Starting)
-            {
-                UpdateCounter((Mathf.Ceil(pLap.countdownTimer)).ToString(), countdown);
-            }
-            else
-            {
-                UpdateCounter("", countdown);
-            }
+			//Countdown
+			if (pLap.raceState == CarLap.RaceState.Starting)
+			{
+				UpdateCounter((Mathf.Ceil(pLap.countdownTimer)).ToString(), countdown);
+			}
+			else
+			{
+				UpdateCounter("", countdown);
+			}
 
-            //Finish
-            ShowFinish();
+			//Finish
+			ShowFinish();
 
 		}
 
@@ -103,23 +103,29 @@ namespace IsaacFagg.UI
 			}
 		}
 
-        public void Pause()
-        {
-            if (isPaused)
-            {
-                isPaused = false;
-            }
-            else if (!isPaused)
-            {
-                isPaused = true;
-            }
-            Debug.Log(isPaused);
-        }
+		public void Pause()
+		{
+			if (isPaused)
+			{
+				isPaused = false;
+				Time.timeScale = 0;
+				//Hide Hud
+				//pausePanel.SetActive(true);
+			}
+			else if (!isPaused)
+			{
+				isPaused = true;
+				Time.timeScale = 1;
+				//Hud
+				//pausePanel.SetActive(false);
+			}
+			Debug.Log(isPaused);
+		}
 
 
 
-        //Only show the best lap after a lap has been completed
+		//Only show the best lap after a lap has been completed
 
 
-    }
+	}
 }

@@ -63,18 +63,18 @@ namespace IsaacFagg
 			//Check if its player or ai
 			if (raceState == RaceState.Starting)
 			{
-				cc.carState = CarController.CarState.NoMove;
+				cc.carState = CarState.NoMove;
 				StartCountdown();
 			}
 			else if (raceState == RaceState.Ongoing)
 			{
-				cc.carState = CarController.CarState.Moving;
+				cc.carState = CarState.Moving;
 				lapTotal += Time.deltaTime;
 				currentLap.time += Time.deltaTime;
 			}
 			else if (raceState == RaceState.Finished)
 			{
-				cc.carState = CarController.CarState.Auto;
+				cc.carState = CarState.Auto;
 				//Finish
 			}
 

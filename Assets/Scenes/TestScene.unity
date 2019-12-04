@@ -4221,12 +4221,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 0}
-  wheel_fl: {fileID: 1445301721}
-  wheel_fr: {fileID: 751822761}
-  wheel_bl: {fileID: 1788637708}
-  wheel_br: {fileID: 1217067251}
-  wheelMinMax: 10
-  backWheelTurn: 0.25
   trackM: {fileID: 0}
   turnRate: 1
   carState: 0
@@ -4247,6 +4241,12 @@ MonoBehaviour:
   acceleration: 15
   torque: 125
   drift: 0.97
+  wheel_fl: {fileID: 1445301721}
+  wheel_fr: {fileID: 751822761}
+  wheel_bl: {fileID: 1788637708}
+  wheel_br: {fileID: 1217067251}
+  wheelMinMax: 10
+  backWheelTurn: 0.5
 --- !u!4 &2000496949
 Transform:
   m_ObjectHideFlags: 0
