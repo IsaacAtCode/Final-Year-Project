@@ -19,7 +19,7 @@ namespace IsaacFagg.UI
 			Settings,
 			Loading,
 		}
-		//MenuState menuState = MenuState.Main;
+		MenuState menuState;
 		public int menuNum;
 
 		public Animator anim;
@@ -30,6 +30,8 @@ namespace IsaacFagg.UI
 			mainPanel = GameObject.Find("Main");
 			trackPanel = GameObject.Find("Track");
 			settingsPanel = GameObject.Find("Settings");
+
+            ChangeMenu(0);
 		}
 
 		public void ChangeMenu(int newMenu)
