@@ -19,7 +19,7 @@ namespace IsaacFagg.UI
 			Settings,
 			Loading,
 		}
-		MenuState menuState = MenuState.Main;
+		//MenuState menuState = MenuState.Main;
 		public int menuNum;
 
 		public Animator anim;
