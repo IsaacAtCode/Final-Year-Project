@@ -9,21 +9,27 @@ public class TrackGenerator : MonoBehaviour
 {
 	[SerializeField]
 	public Track track;
-	public GameObject trackGO;
+    public GameObject trackGO;
+    public GameObject gravelGO;
 
-	public PlayerData pd;
+
+    public PlayerData pd;
 
 	//public ConvexHull ch;
-
-    public PathCreator pc;
-    public RoadCreator rc;
 
     [Header("Convex Hull")]
     public Transform[] points;
     [Range(0.05f, 1.5f)]
     public float size;
     public bool drawIt;
-    public List<Transform> result;
+    private List<Transform> result;
+
+    [Header("Road")]
+    public Material roadMat;
+    public Material gravelMat;
+
+    [Header("Reset")]
+    public bool generateNewTrack = false;
 
 	private void Awake()
 	{
@@ -37,36 +43,41 @@ public class TrackGenerator : MonoBehaviour
 			track = gameObject.AddComponent<Track>();
 		}
 
-        if (pc == null)
-        {
-            trackGO = new GameObject("New Track");
-            //rc = trackGO.AddComponent<RoadCreator>();
-            pc = trackGO.AddComponent<PathCreator>();
-        }
-
         CreateNewTrack();
 	}
 
 	private void Update()
 	{
+        if (generateNewTrack == true)
+        {
+            CreateNewTrack();
+            generateNewTrack = false;
+        }
+
+
         GenerateConvexHull();
     }
 
     public void CreateNewTrack()
     {
+        trackGO = new GameObject("New Track");
+        gravelGO = new GameObject("Gravel");
+        gravelGO.transform.parent = trackGO.transform;
 
-        pc.CreatePath();
-        //Generate the points
+        PathCreator tPC = trackGO.AddComponent<PathCreator>();
+        PathCreator gPC = gravelGO.AddComponent<PathCreator>();
+
+
+        tPC.CreatePath();
         points = GenerateRandomTranforms();
-        //Create the convex hull
         GenerateConvexHull();
-        //Get the corners
-        //result
-        //move first points
-        GenerateBevierPath();
-        //AutosetControlPoints
+        GenerateBevierPath(tPC);
 
+        //Add Midpoints
 
+        gPC.path = tPC.path;
+
+        AddRoad();
     }
 
     public Transform[] GenerateRandomTranforms()
@@ -145,9 +156,7 @@ public class TrackGenerator : MonoBehaviour
         }
     }
 
-
-
-    public void GenerateBevierPath()
+    public void GenerateBevierPath(PathCreator pc)
     {
 
         List<Transform> corners = new List<Transform>(result);
@@ -156,12 +165,10 @@ public class TrackGenerator : MonoBehaviour
         {
             Vector2 startPos = new Vector2(corners[0].position.x, corners[0].position.y);
             pc.path.MovePoint(0, startPos);
-            Debug.Log("Moving first point to " + startPos);
 
 
             Vector2 secondPos = new Vector2(corners[1].position.x, corners[1].position.y);
             pc.path.MovePoint(3, secondPos);
-            Debug.Log("Moving second point to " + secondPos);
 
 
 
@@ -176,6 +183,32 @@ public class TrackGenerator : MonoBehaviour
         pc.path.IsClosed = true;
         pc.path.AutoSetControlPoints = true;
     }
+
+    public void AddRoad()
+    {
+        RoadCreator rc = trackGO.AddComponent<RoadCreator>();
+        trackGO.GetComponent<MeshRenderer>().material = roadMat;
+        rc.roadWidth = 10f;
+        rc.UpdateRoad();
+
+        AddGravel();
+    }
+
+    private void AddGravel()
+    {
+        RoadCreator rc = gravelGO.AddComponent<RoadCreator>();
+        gravelGO.GetComponent<MeshRenderer>().material = gravelMat;
+        rc.roadWidth = 20f;
+        rc.UpdateRoad();
+    }
+
+    private void AddSides()
+    {
+
+    }
+
+
+
 
     void OnDrawGizmos()
     {
