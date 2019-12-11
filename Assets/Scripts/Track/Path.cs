@@ -162,6 +162,8 @@ namespace IsaacFagg.Paths
 
 		public void MovePoint(int i, Vector2 pos)
 		{
+
+            Debug.Log("Point being moved  - " + i + " to " + pos);
 			Vector2 deltaMove = pos - points[i];
 
 			if (i % 3 == 0 || !autoSetControlPoints)
