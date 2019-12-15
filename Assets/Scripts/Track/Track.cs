@@ -16,7 +16,7 @@ namespace IsaacFagg.Tracks
 		//public List<Vector2> points = new List<Vector2>();
 		public Transform[] points;
 
-        public float difficulty = 1;
+		public float difficulty = 1;
 
 		public Direction dir;
 
