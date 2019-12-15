@@ -31,7 +31,7 @@ namespace IsaacFagg.UI
 			trackPanel = GameObject.Find("Track");
 			settingsPanel = GameObject.Find("Settings");
 
-            ChangeMenu(0);
+			ChangeMenu(0);
 		}
 
 		public void ChangeMenu(int newMenu)

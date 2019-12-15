@@ -24,6 +24,8 @@ public class TrackGenerator : MonoBehaviour
 	public bool drawIt;
 	private List<Transform> result;
 
+	public float difficulty = 1;
+
 	[Header("Road")]
 	public Material roadMat;
 	public Material gravelMat;
@@ -72,6 +74,7 @@ public class TrackGenerator : MonoBehaviour
 		points = GenerateRandomTranforms();
 		GenerateConvexHull();
 		GenerateBevierPath(tPC);
+		GenerateMidPoints(tPC);
 
 		//Add Midpoints
 
@@ -184,20 +187,56 @@ public class TrackGenerator : MonoBehaviour
 		pc.path.AutoSetControlPoints = true;
 	}
 
+	public void GenerateMidPoints(PathCreator pc)
+	{
+		int segments = pc.path.NumSegments;
+		List<Vector2> midPoints = new List<Vector2>(pc.path.points);
+
+
+		for (int i = 0; i < segments; i++)
+		{
+			Vector2 firstPoint = midPoints[segments]%segments;
+			Vector2 secondPoint = midPoints[segments + 1] % segments;
+		}
+
+		//Go Through each segment and split it.
+
+
+
+
+	}
+
+
+
 	public void AddRoad()
 	{
 		RoadCreator rc = trackGO.AddComponent<RoadCreator>();
 		trackGO.GetComponent<MeshRenderer>().material = roadMat;
+
+		AddCollider(trackGO);
+
+
 		rc.roadWidth = 10f;
 		rc.UpdateRoad();
 
 		AddGravel();
 	}
 
+	private void AddCollider(GameObject go)
+	{
+		go.AddComponent<Mesh2DColliderMaker>();
+
+		go.GetComponent<PolygonCollider2D>().isTrigger = true;
+	}
+
+
 	private void AddGravel()
 	{
 		RoadCreator rc = gravelGO.AddComponent<RoadCreator>();
 		gravelGO.GetComponent<MeshRenderer>().material = gravelMat;
+
+		AddCollider(gravelGO);
+
 		rc.roadWidth = 20f;
 		rc.UpdateRoad();
 	}

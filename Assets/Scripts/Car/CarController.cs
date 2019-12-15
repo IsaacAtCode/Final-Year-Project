@@ -12,7 +12,7 @@ namespace IsaacFagg
 
 		private Car car;
 		public Rigidbody2D rb;
-		private CarLap cl;
+		public CarLap cl;
 
 		public TrackManager trackM;
 
@@ -28,9 +28,9 @@ namespace IsaacFagg
 		{
 			car = GetComponent<Car>();
 			rb = GetComponent<Rigidbody2D>();
-			cl = GetComponent<CarLap>();
+			//cl = GetComponent<CarLap>();
 
-			trackM = GameObject.Find("Track").GetComponent<TrackManager>();
+			//trackM = GameObject.Find("Track").GetComponent<TrackManager>();
 		}
 
 		private void Update()

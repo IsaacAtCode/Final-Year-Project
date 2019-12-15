@@ -9,7 +9,7 @@ namespace IsaacFagg.Paths
 	{
 
 		[SerializeField, HideInInspector]
-		List<Vector2> points;
+		public List<Vector2> points;
 		[SerializeField, HideInInspector]
 		bool isClosed;
 		[SerializeField, HideInInspector]
