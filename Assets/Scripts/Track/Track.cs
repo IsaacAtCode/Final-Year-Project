@@ -4,42 +4,28 @@ using UnityEngine;
 
 namespace IsaacFagg.Tracks
 {
-	public class Track : MonoBehaviour
+	public class Track
 	{
-		//Track Details
-		//All details for future track generation
+		public TrackType trackType;
 
+		//Random
+		public List<Vector2> fillPoints;
+
+		//Player Data
+		public float difficulty = 1;
+		public Rotation rot;
+
+		//Main
 		public float height = 250.0f;
 		public float width = 250.0f;
 
-		public int pointCount = 10;
-		//public List<Vector2> points = new List<Vector2>();
-		public Transform[] points;
-
-		public float difficulty = 1;
-
-		public Direction dir;
-
-		public string trackName = "Speedway";
-		//public int straightCount;
-		//public int turnCount;
-
+		public List<Vector2> vPoints;
+		public List<Transform> tPoints;
 		public List<Segment> segments;
 
-	}
+		public string trackName = "Speedway";
 
-	public class Straight
-	{
-		private float length;
-	}
-	public class Turn
-	{
-		[Range(0,1)]
-		private int direction; //Left is 0, Right is 1
-		private float arc; //In radians
-		//Start and end radius
-		private float startRad;
-		private float endRad; 
+		//Name Generator
 	}
 
 	public class Segment
@@ -47,7 +33,7 @@ namespace IsaacFagg.Tracks
 		public Transform location;
 	}
 
-	public enum Direction
+	public enum Rotation
 	{
 		Clockwise,
 		Anticlockwise,

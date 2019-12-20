@@ -15,8 +15,8 @@ namespace IsaacFagg.Paths
 		public Color segmentColor = Color.green;
 		public Color selectedSegmentColor = Color.yellow;
 
-		public float anchorDiameter = .1f;
-		public float controlDiameter = .075f;
+		public float anchorDiameter = 5f;
+		public float controlDiameter = 2f;
 
 		public bool displayControlPoints = true;
 

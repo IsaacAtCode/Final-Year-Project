@@ -7,7 +7,6 @@ using IsaacFagg.Paths;
 
 public class TrackGenerator : MonoBehaviour
 {
-	[SerializeField]
 	public Track track;
 	public GameObject trackGO;
 	public GameObject gravelGO;
@@ -23,6 +22,10 @@ public class TrackGenerator : MonoBehaviour
 	public float size;
 	public bool drawIt;
 	private List<Transform> result;
+
+	[Header("Points")]
+	public List<Vector2> midPoints;
+
 
 	public float difficulty = 1;
 
@@ -42,7 +45,7 @@ public class TrackGenerator : MonoBehaviour
 	{
 		if (track == null)
 		{
-			track = gameObject.AddComponent<Track>();
+			//track = gameObject.AddComponent<Track>();
 		}
 
 		CreateNewTrack();
@@ -71,7 +74,7 @@ public class TrackGenerator : MonoBehaviour
 
 
 		tPC.CreatePath();
-		points = GenerateRandomTranforms();
+		//points = GenerateRandomTranforms();
 		GenerateConvexHull();
 		GenerateBevierPath(tPC);
 		GenerateMidPoints(tPC);
@@ -83,28 +86,28 @@ public class TrackGenerator : MonoBehaviour
 		AddRoad();
 	}
 
-	public Transform[] GenerateRandomTranforms()
-	{
-		Transform[] transforms = new Transform[track.pointCount];
-		Vector3 newPos;
-		GameObject newGO;
+	//public Transform[] GenerateRandomTranforms()
+	//{
+	//	Transform[] transforms = new Transform[track.fillPoints];
+	//	Vector3 newPos;
+	//	GameObject newGO;
 
-		for (int i = 0; i < track.pointCount; ++i)
-		{
-			float x = Random.Range(0.0f, track.width) - track.width / 2;  // we subtract 125 to keep the square centralized  
-			float y = Random.Range(0.0f, track.height) - track.height / 2;
-			newPos = new Vector3(x, y, 0);
+	//	for (int i = 0; i < track.fillPoints; ++i)
+	//	{
+	//		float x = Random.Range(0.0f, track.width) - track.width / 2;  // we subtract 125 to keep the square centralized  
+	//		float y = Random.Range(0.0f, track.height) - track.height / 2;
+	//		newPos = new Vector3(x, y, 0);
 
-			newGO = new GameObject("Point " + i);
-			newGO.transform.position = newPos;
-			newGO.transform.parent = this.gameObject.transform;
+	//		newGO = new GameObject("Point " + i);
+	//		newGO.transform.position = newPos;
+	//		newGO.transform.parent = this.gameObject.transform;
 
 
-			transforms[i] = newGO.transform;
-		}
+	//		transforms[i] = newGO.transform;
+	//	}
 
-		return transforms;
-	}
+	//	return transforms;
+	//}
 
 	private void GenerateConvexHull()
 	{
@@ -189,15 +192,18 @@ public class TrackGenerator : MonoBehaviour
 
 	public void GenerateMidPoints(PathCreator pc)
 	{
-		int segments = pc.path.NumSegments;
-		List<Vector2> midPoints = new List<Vector2>(pc.path.points);
+		//int segments = pc.path.NumSegments;
+		//List<Vector2> midPoints = new List<Vector2>(pc.path.points.Count*2);
 
 
-		for (int i = 0; i < segments; i++)
-		{
-			Vector2 firstPoint = midPoints[segments]%segments;
-			Vector2 secondPoint = midPoints[segments + 1] % segments;
-		}
+		//for (int i = 0; i < pc.path.points.Count; i++)
+		//{
+		//	float newPointX = (pc.path.points[i].x + pc.path.points[i].x) / 2;
+		//	float newPointY = (pc.path.points[i].y + pc.path.points[i].y) / 2;
+		//	midPoints[i * 2] = pc.path.points[i];
+		//	midPoints[i * 2 + 1] = new Vector2(newPointX, newPointY);
+
+		//}
 
 		//Go Through each segment and split it.
 
@@ -246,7 +252,15 @@ public class TrackGenerator : MonoBehaviour
 
 	}
 
+	private void GenerateCheckpoints()
+	{
+		//Start Line?
+	}
 
+	private void PopulateObstacles()
+	{
+		//Half the checkpoint count
+	}
 
 
 	void OnDrawGizmos()
