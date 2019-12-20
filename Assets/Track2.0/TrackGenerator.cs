@@ -7,7 +7,7 @@ using IsaacFagg.Paths;
 namespace IsaacFagg.Tracks
 {
 	[ExecuteInEditMode]
-	public class NewTrackGenerator : MonoBehaviour
+	public class TrackGenerator : MonoBehaviour
 	{
 		public bool generateNewTrack = false;
 
@@ -261,6 +261,8 @@ namespace IsaacFagg.Tracks
 		//Checkpoints
 		private void GenerateCheckpoints(Path path, GameObject go)
 		{
+			//Invisible Checkpoints
+
 			List<Checkpoint> checkpoints = new List<Checkpoint>();
 			List<Vector2> checkpointLocations = new List<Vector2>(allPoints);
 
