@@ -25,12 +25,13 @@ namespace IsaacFagg.Tracks
 		private List<Vector2> hullPoints;
 		public List<Vector2> allPoints;
 
-		[Header("Path")]
-		//private Path path;
-
 		[Header("Road")]
 		public Material roadMat;
 		public Material gravelMat;
+
+		[Header("Checkpoint")]
+		public GameObject checkpointGO;
+		public float checkpointSpacing;
 
 		private void Update()
 		{
@@ -53,10 +54,12 @@ namespace IsaacFagg.Tracks
 				//Generate Random Width/Height
 				float randomWidth = Random.Range(minWidth, maxWidth);
 				float randomHeight = Random.Range(minHeight,maxHeight);
+				track.width = randomWidth;
+				track.height = randomHeight;
 				randomPoints = GenerateRandomPoints(20, randomWidth,randomHeight);
+
 				GenerateConvexHull();
 				GenerateMidpoints();
-				allPoints = hullPoints;
 
 			}
 			else if (type == TrackType.PlayerData)
@@ -66,6 +69,8 @@ namespace IsaacFagg.Tracks
 			}
 
 			GenerateGameObjects();
+
+
 		}
 
 		#region Generation
@@ -84,6 +89,8 @@ namespace IsaacFagg.Tracks
 			gPC.path = tPC.path;
 			AddRoad(trackGO, roadMat,20f);
 			AddRoad(gravelGO,gravelMat, 30f);
+
+			GenerateCheckpoints(tPC.path, trackGO);
 		}
 
 		public void AddRoad(GameObject go, Material mat, float width)
@@ -215,7 +222,7 @@ namespace IsaacFagg.Tracks
 				float newY = Midpoint(hullPoints[i].y, hullPoints[i + 1].y);
 
 				float diffX = (hullPoints[i].x - hullPoints[i + 1].x) * difficulty;
-				float diffY = (hullPoints[i].y - hullPoints[i + 1].y) * difficulty	;
+				float diffY = (hullPoints[i].y - hullPoints[i + 1].y) * difficulty;
 
 				Vector2 newPoint = new Vector2(newX, newY);
 
@@ -252,9 +259,48 @@ namespace IsaacFagg.Tracks
 		#endregion
 
 		//Checkpoints
+		private void GenerateCheckpoints(Path path, GameObject go)
+		{
+			List<Checkpoint> checkpoints = new List<Checkpoint>();
+			List<Vector2> checkpointLocations = new List<Vector2>(allPoints);
 
+			GameObject checkpointParent = new GameObject("Checkpoints");
+			checkpointParent.transform.parent = go.transform;
+
+			for (int i = 0; i < checkpointLocations.Count; i++)
+			{
+				Vector3 newPos = new Vector3(checkpointLocations[i].x, checkpointLocations[i].y, 0);
+
+				GameObject checkpoint = Instantiate(checkpointGO, checkpointParent.transform);
+
+				checkpoint.name = ("Checkpoint: " + i);
+				checkpoint.transform.position = newPos;
+				Checkpoint cp = checkpoint.GetComponent<Checkpoint>();
+				cp.position = i;
+
+				if (i == 0)
+				{
+					cp.finishLine = true;
+				}
+
+				Vector2 anchor = new Vector2(path.points[i * 3 + 1].x, path.points[i * 3 + 1].y);
+				float angle = Mathf.Atan2(anchor.y, anchor.x) * Mathf.Rad2Deg;
+				checkpoint.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+
+
+
+
+
+
+
+			}
+
+		}
 		//Obstacles
+		private void GenerateObstacles()
+		{
 
+		}
 	}
 
 	public enum TrackType

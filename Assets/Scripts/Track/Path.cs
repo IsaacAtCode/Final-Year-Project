@@ -203,7 +203,7 @@ namespace IsaacFagg.Paths
 			}
 		}
 
-		public Vector2[] CalculateEvenlySpacedPoints(float spacing, float resolution = 1)
+		public List<Vector2> CalculateEvenlySpacedPoints(float spacing, float resolution = 1)
 		{
 			List<Vector2> evenlySpacedPoints = new List<Vector2>();
 			evenlySpacedPoints.Add(points[0]);
@@ -237,7 +237,7 @@ namespace IsaacFagg.Paths
 				}
 			}
 
-			return evenlySpacedPoints.ToArray();
+			return evenlySpacedPoints;
 		}
 
 

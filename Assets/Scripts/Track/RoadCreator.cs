@@ -18,32 +18,32 @@ public class RoadCreator : MonoBehaviour
 	public void UpdateRoad()
 	{
 		Path path = GetComponent<PathCreator>().path;
-		Vector2[] points = path.CalculateEvenlySpacedPoints(spacing);
+		List<Vector2> points = path.CalculateEvenlySpacedPoints(spacing);
 		GetComponent<MeshFilter>().mesh = CreateRoadMesh(points, path.IsClosed);
 
-		int textureRepeat = Mathf.RoundToInt(tiling * points.Length * spacing * .05f);
+		int textureRepeat = Mathf.RoundToInt(tiling * points.Count * spacing * .05f);
 		GetComponent<MeshRenderer>().sharedMaterial.mainTextureScale = new Vector2(1, textureRepeat);
 	}
 
-	Mesh CreateRoadMesh(Vector2[] points, bool isClosed)
+	Mesh CreateRoadMesh(List<Vector2> points, bool isClosed)
 	{
-		Vector3[] verts = new Vector3[points.Length * 2];
+		Vector3[] verts = new Vector3[points.Count * 2];
 		Vector2[] uvs = new Vector2[verts.Length];
-		int numTris = 2 * (points.Length - 1) + ((isClosed) ? 2 : 0);
+		int numTris = 2 * (points.Count - 1) + ((isClosed) ? 2 : 0);
 		int[] tris = new int[numTris * 3];
 		int vertIndex = 0;
 		int triIndex = 0;
 
-		for (int i = 0; i < points.Length; i++)
+		for (int i = 0; i < points.Count; i++)
 		{
 			Vector2 forward = Vector2.zero;
-			if (i < points.Length - 1 || isClosed)
+			if (i < points.Count - 1 || isClosed)
 			{
-				forward += points[(i + 1) % points.Length] - points[i];
+				forward += points[(i + 1) % points.Count] - points[i];
 			}
 			if (i > 0 || isClosed)
 			{
-				forward += points[i] - points[(i - 1 + points.Length) % points.Length];
+				forward += points[i] - points[(i - 1 + points.Count) % points.Count];
 			}
 
 			forward.Normalize();
@@ -52,12 +52,12 @@ public class RoadCreator : MonoBehaviour
 			verts[vertIndex] = points[i] + left * roadWidth * .5f;
 			verts[vertIndex + 1] = points[i] - left * roadWidth * .5f;
 
-			float completionPercent = i / (float)(points.Length - 1);
+			float completionPercent = i / (float)(points.Count - 1);
 			float v = 1 - Mathf.Abs(2 * completionPercent - 1);
 			uvs[vertIndex] = new Vector2(0, v);
 			uvs[vertIndex + 1] = new Vector2(1, v);
 
-			if (i < points.Length - 1 || isClosed)
+			if (i < points.Count - 1 || isClosed)
 			{
 				tris[triIndex] = vertIndex;
 				tris[triIndex + 1] = (vertIndex + 2) % verts.Length;
