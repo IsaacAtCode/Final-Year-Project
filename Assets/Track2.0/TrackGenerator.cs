@@ -33,10 +33,21 @@ namespace IsaacFagg.Tracks
 		public GameObject checkpointGO;
 		public float checkpointSpacing;
 
+		[Header("Track Info")]
+		public float tDistance;
+		public string tName;
+
+		public float maxDegs = 100;
+
+
 		private void Update()
 		{
 			if (generateNewTrack == true)
 			{
+				GameObject oldTrack = GameObject.Find(tName);
+				DestroyImmediate(oldTrack);
+
+
 				GenerateNewTrack(TrackType.Random);
 				generateNewTrack = false;
 			}
@@ -61,6 +72,14 @@ namespace IsaacFagg.Tracks
 				GenerateConvexHull();
 				GenerateMidpoints();
 
+				GenerateGameObjects("before point fix");
+
+
+				for (int i = 0; i < 10; i++)
+				{
+					FixAngles(allPoints);
+				}
+
 			}
 			else if (type == TrackType.PlayerData)
 			{
@@ -68,17 +87,18 @@ namespace IsaacFagg.Tracks
 				//GenerateNewTrackBasedOnThat
 			}
 
-			GenerateGameObjects();
+			GenerateGameObjects(tName);
 
+			tDistance = CalculateDistance(allPoints);
 
 		}
 
 		#region Generation
 
-		public void GenerateGameObjects()
+		public void GenerateGameObjects(string trackName)
 		{
 			//Random Track Name Generator
-			GameObject trackGO = new GameObject("New Track");
+			GameObject trackGO = new GameObject(trackName);
 			GameObject gravelGO = new GameObject("Gravel");
 			gravelGO.transform.parent = trackGO.transform;
 
@@ -218,22 +238,32 @@ namespace IsaacFagg.Tracks
 
 			for (int i = 0; i < hullPoints.Count - 1; i++)
 			{
+				int makeMidPoint = Random.Range(0, 10);
+
+				allPoints.Add(hullPoints[i]);
+
+				//Chnage Range and range
+				if (makeMidPoint > 4)
+				{
 				float newX = Midpoint(hullPoints[i].x, hullPoints[i + 1].x);
-				float newY = Midpoint(hullPoints[i].y, hullPoints[i + 1].y);
+					float newY = Midpoint(hullPoints[i].y, hullPoints[i + 1].y);
 
-				float diffX = (hullPoints[i].x - hullPoints[i + 1].x) * difficulty;
-				float diffY = (hullPoints[i].y - hullPoints[i + 1].y) * difficulty;
+					float diffX = (hullPoints[i].x - hullPoints[i + 1].x) * difficulty;
+					float diffY = (hullPoints[i].y - hullPoints[i + 1].y) * difficulty;
 
-				Vector2 newPoint = new Vector2(newX, newY);
+					Vector2 newPoint = new Vector2(newX, newY);
 
-				newPoint.x += Random.Range(-diffX, diffX);
-				newPoint.y += Random.Range(-diffY, diffY);
+					newPoint.x += Random.Range(-diffX, diffX);
+					newPoint.y += Random.Range(-diffY, diffY);
 
 
-				allPoints.Insert((i * 2), hullPoints[i]);
-				allPoints.Insert((i * 2+1), newPoint);
+					
+					allPoints.Add(newPoint);
+				}				
 			}
 		}
+
+
 
 		private float Midpoint(float x, float y)
 		{
@@ -248,7 +278,49 @@ namespace IsaacFagg.Tracks
 			return new Vector2(_x, _y);
 		}
 
-		
+		private void FixAngles(List<Vector2> points)
+		{
+			for (int i = 0; i < points.Count; ++i)
+			{
+				int previous = (i - 1 < 0) ? points.Count - 1 : i - 1;
+				int next = (i + 1) % points.Count;
+				float px = points[i].x - points[previous].x;
+				float py = points[i].y - points[previous].y;
+				float pl = (float)Mathf.Sqrt(px * px + py * py);
+				px /= pl;
+				py /= pl;
+
+				float nx = points[i].x - points[next].x;
+				float ny = points[i].y - points[next].y;
+				nx = -nx;
+				ny = -ny;
+				float nl = (float)Mathf.Sqrt(nx * nx + ny * ny);
+				nx /= nl;
+				ny /= nl;
+				//I got a vector going to the next and to the previous points, normalised.  
+
+				float a = (float)Mathf.Atan2(px * ny - py * nx, px * nx + py * ny); // perp dot product between the previous and next point. Google it you should learn about it!  
+
+				if (Mathf.Abs(a * Mathf.Rad2Deg) <= 100) continue;
+
+				float nA = maxDegs * Mathf.Sign(a) * Mathf.Deg2Rad;
+				float diff = nA - a;
+				float cos = (float)Mathf.Cos(diff);
+				float sin = (float)Mathf.Sin(diff);
+				float newX = nx * cos - ny * sin;
+				float newY = nx * sin + ny * cos;
+				newX *= nl;
+				newY *= nl;
+
+				Vector2 nextV = new Vector2(points[i].x + newX, points[i].y + newY);
+
+
+				points[next] = nextV;
+
+
+				//I got the difference between the current angle and 100degrees, and built a new vector that puts the next point at 100 degrees.  
+			}
+		}
 
 
 
@@ -271,7 +343,8 @@ namespace IsaacFagg.Tracks
 
 			for (int i = 0; i < checkpointLocations.Count; i++)
 			{
-				Vector3 newPos = new Vector3(checkpointLocations[i].x, checkpointLocations[i].y, 0);
+
+				Vector3 newPos = checkpointLocations[i];
 
 				GameObject checkpoint = Instantiate(checkpointGO, checkpointParent.transform);
 
@@ -280,10 +353,17 @@ namespace IsaacFagg.Tracks
 				Checkpoint cp = checkpoint.GetComponent<Checkpoint>();
 				cp.position = i;
 
+				SpriteRenderer sprite = checkpoint.GetComponent<SpriteRenderer>();
+
 				if (i == 0)
 				{
 					cp.finishLine = true;
+					sprite.enabled = true;
 				}
+				//else if (i>0)
+				//{
+				//	sprite.enabled = false;
+				//}
 
 				Vector2 anchor = new Vector2(path.points[i * 3 + 1].x, path.points[i * 3 + 1].y);
 				float angle = Mathf.Atan2(anchor.y, anchor.x) * Mathf.Rad2Deg;
@@ -292,17 +372,29 @@ namespace IsaacFagg.Tracks
 
 
 
-
-
-
 			}
 
 		}
 		//Obstacles
-		private void GenerateObstacles()
+		private void GenerateObstacles(int spawnRate)
 		{
 
 		}
+
+		private float CalculateDistance(List<Vector2> points)
+		{
+			float distance = 0;
+
+			for (int i = 0; i < points.Count - 1; i++)
+			{
+				distance += Vector2.Distance(points[i], points[i + 1]);
+			}
+
+			return distance;
+		}
+
+
+
 	}
 
 	public enum TrackType
