@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Checkpoint
   - Track
+  - CurrentTrack
   layers:
   - Default
   - TransparentFX

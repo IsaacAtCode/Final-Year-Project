@@ -77,12 +77,12 @@ namespace IsaacFagg.Tracks
 				GenerateConvexHull();
 				allPoints = GenerateMidpoints(hullPoints);
 
-				//for (int i = 0; i < 10; i++)
-				//{
-				//	FixAngles(allPoints);
-				//}
+                for (int i = 0; i < 10; i++)
+                {
+                    FixAngles(allPoints);
+                }
 
-			}
+            }
 			else if (type == TrackType.PlayerData)
 			{
 				//GetPlayerData
@@ -91,7 +91,7 @@ namespace IsaacFagg.Tracks
 
 			GenerateGameObjects(tName);
 
-			tDistance = CalculateDistance(allPoints);
+			tDistance = Mathf.RoundToInt(CalculateDistance(allPoints));
 
 		}
 
@@ -237,7 +237,7 @@ namespace IsaacFagg.Tracks
 
 		private List<Vector2> GenerateMidpoints(List<Vector2> inputPoints)
 		{
-			List<Vector2> outputPoints = new List<Vector2>(inputPoints.Count * 2);
+			List<Vector2> outputPoints = new List<Vector2>();
 
 
 			for (int i = 0; i < inputPoints.Count - 1; i++)
