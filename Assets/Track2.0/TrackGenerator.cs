@@ -25,6 +25,8 @@ namespace IsaacFagg.Tracks
 		private List<Vector2> hullPoints;
 		public List<Vector2> allPoints;
 
+        public float minDistance = 50;
+
 		[Header("Road")]
 		public Material roadMat;
 		public Material gravelMat;
@@ -44,10 +46,13 @@ namespace IsaacFagg.Tracks
 		{
 			if (generateNewTrack == true)
 			{
-				GameObject oldTrack = GameObject.Find(tName);
-				DestroyImmediate(oldTrack);
+                GameObject[] oldTrack = GameObject.FindGameObjectsWithTag("CurrentTrack");
 
-
+                foreach (GameObject item in oldTrack)
+                {
+                    DestroyImmediate(item);
+                }
+                
 				GenerateNewTrack(TrackType.Random);
 				generateNewTrack = false;
 			}
@@ -70,15 +75,12 @@ namespace IsaacFagg.Tracks
 				randomPoints = GenerateRandomPoints(20, randomWidth,randomHeight);
 
 				GenerateConvexHull();
-				GenerateMidpoints();
+				allPoints = GenerateMidpoints(hullPoints);
 
-				GenerateGameObjects("before point fix");
-
-
-				for (int i = 0; i < 10; i++)
-				{
-					FixAngles(allPoints);
-				}
+				//for (int i = 0; i < 10; i++)
+				//{
+				//	FixAngles(allPoints);
+				//}
 
 			}
 			else if (type == TrackType.PlayerData)
@@ -101,8 +103,10 @@ namespace IsaacFagg.Tracks
 			GameObject trackGO = new GameObject(trackName);
 			GameObject gravelGO = new GameObject("Gravel");
 			gravelGO.transform.parent = trackGO.transform;
+            trackGO.tag = ("CurrentTrack");
+            gravelGO.tag = ("CurrentTrack");
 
-			PathCreator tPC = trackGO.AddComponent<PathCreator>();
+            PathCreator tPC = trackGO.AddComponent<PathCreator>();
 			PathCreator gPC = gravelGO.AddComponent<PathCreator>();
 
 			GenerateBevierPath(tPC);
@@ -231,36 +235,44 @@ namespace IsaacFagg.Tracks
 			}
 		}
 
-		private void GenerateMidpoints()
+		private List<Vector2> GenerateMidpoints(List<Vector2> inputPoints)
 		{
-			allPoints = new List<Vector2>(hullPoints.Count * 2);
+			List<Vector2> outputPoints = new List<Vector2>(inputPoints.Count * 2);
 
 
-			for (int i = 0; i < hullPoints.Count - 1; i++)
+			for (int i = 0; i < inputPoints.Count - 1; i++)
 			{
-				int makeMidPoint = Random.Range(0, 10);
+                if (Vector2.Distance(inputPoints[i],inputPoints[i+1]) > minDistance)
+                {
 
-				allPoints.Add(hullPoints[i]);
+                    outputPoints.Add(inputPoints[i]);
 
-				//Chnage Range and range
-				if (makeMidPoint > 4)
-				{
-				float newX = Midpoint(hullPoints[i].x, hullPoints[i + 1].x);
-					float newY = Midpoint(hullPoints[i].y, hullPoints[i + 1].y);
+                    //Chnage Range and range
+                    float newX = Midpoint(inputPoints[i].x, inputPoints[i + 1].x);
+                    float newY = Midpoint(inputPoints[i].y, inputPoints[i + 1].y);
 
-					float diffX = (hullPoints[i].x - hullPoints[i + 1].x) * difficulty;
-					float diffY = (hullPoints[i].y - hullPoints[i + 1].y) * difficulty;
+                    float diffX = (inputPoints[i].x - inputPoints[i + 1].x) * difficulty;
+                    float diffY = (inputPoints[i].y - inputPoints[i + 1].y) * difficulty;
 
-					Vector2 newPoint = new Vector2(newX, newY);
+                    Vector2 newPoint = new Vector2(newX, newY);
 
-					newPoint.x += Random.Range(-diffX, diffX);
-					newPoint.y += Random.Range(-diffY, diffY);
+                    newPoint.x += Random.Range(-diffX, diffX);
+                    newPoint.y += Random.Range(-diffY, diffY);
 
+                    GameObject MidpointGO = new GameObject("Midpoint");
+                    MidpointGO.transform.position = newPoint;
+                    MidpointGO.tag = ("CurrentTrack");
 
-					
-					allPoints.Add(newPoint);
-				}				
+                    outputPoints.Add(newPoint);
+
+                }
+                else
+                {
+                    outputPoints.Add(inputPoints[i]);
+                }
 			}
+
+            return outputPoints;
 		}
 
 
@@ -350,7 +362,8 @@ namespace IsaacFagg.Tracks
 
 				checkpoint.name = ("Checkpoint: " + i);
 				checkpoint.transform.position = newPos;
-				Checkpoint cp = checkpoint.GetComponent<Checkpoint>();
+                checkpoint.tag = ("CurrentTrack");
+                Checkpoint cp = checkpoint.GetComponent<Checkpoint>();
 				cp.position = i;
 
 				SpriteRenderer sprite = checkpoint.GetComponent<SpriteRenderer>();
