@@ -38,6 +38,7 @@ namespace IsaacFagg.Tracks
 		[Header("Track Info")]
 		public float tDistance;
 		public string tName;
+        public Rotation tRot;
 
 		public float maxDegs = 100;
 
@@ -92,6 +93,8 @@ namespace IsaacFagg.Tracks
 			GenerateGameObjects(tName);
 
 			tDistance = Mathf.RoundToInt(CalculateDistance(allPoints));
+
+            tRot = RotationCheck(allPoints);
 
 		}
 
@@ -336,14 +339,26 @@ namespace IsaacFagg.Tracks
 
 
 
-		#endregion
+        #endregion
 
-		#region Player Data Generation
+        #region Player Data Generation
 
-		#endregion
+        //Player Data Get
 
-		//Checkpoints
-		private void GenerateCheckpoints(Path path, GameObject go)
+        
+
+
+        //Set Name Based on previous tracks
+
+
+
+        #endregion
+
+
+        #region General Generation
+
+        //Checkpoints
+        private void GenerateCheckpoints(Path path, GameObject go)
 		{
 			//Invisible Checkpoints
 
@@ -394,6 +409,31 @@ namespace IsaacFagg.Tracks
 
 		}
 
+        private Rotation RotationCheck(List<Vector2> points)
+        {
+
+            Rotation rot = Rotation.Clockwise;
+            Vector2 centre = Vector2.zero;
+
+            foreach (Vector2 item in points)
+            {
+                centre += item;
+            }
+
+            centre /= points.Count;
+
+            if (((points[0].x - centre.x) * (points[points.Count - 1].y - centre.y) - (points[0].y - centre.y) * (points[points.Count - 1].x - centre.x)) > 0)
+            {
+                rot = Rotation.Clockwise;
+            }
+            else
+            {
+                rot = Rotation.Anticlockwise;
+            }
+
+            return rot;
+        }
+
 		private float CalculateDistance(List<Vector2> points)
 		{
 			float distance = 0;
@@ -405,12 +445,11 @@ namespace IsaacFagg.Tracks
 
 			return distance;
 		}
+        #endregion
 
+    }
 
-
-	}
-
-	public enum TrackType
+    public enum TrackType
 	{
 		Random,
 		PlayerData,

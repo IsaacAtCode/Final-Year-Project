@@ -8,9 +8,6 @@ namespace IsaacFagg.Tracks
 	{
 		public TrackType trackType;
 
-		//Random
-		public List<Vector2> fillPoints;
-
 		//Player Data
 		public float difficulty = 1;
 		public Rotation rot;
@@ -19,14 +16,13 @@ namespace IsaacFagg.Tracks
 		public float height = 250.0f;
 		public float width = 250.0f;
 
-		public List<Vector2> vPoints;
-		public List<Transform> tPoints;
-		public List<Segment> segments;
+		public List<Vector2> points;
+        public List<Checkpoint> checkpoints;
 
-		public string trackName = "Speedway";
+		public string trackName = "";
 
-		//Name Generator
-	}
+        //Name Generator
+    }
 
 	public class Segment
 	{
