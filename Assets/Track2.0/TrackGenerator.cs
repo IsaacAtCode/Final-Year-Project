@@ -25,20 +25,22 @@ namespace IsaacFagg.Tracks
 		private List<Vector2> hullPoints;
 		public List<Vector2> allPoints;
 
-        public float minDistance = 50;
+		public float minDistance = 50;
 
 		[Header("Road")]
 		public Material roadMat;
 		public Material gravelMat;
+		public Sprite background;
 
 		[Header("Checkpoint")]
+		public List<Checkpoint> checkpoints = new List<Checkpoint>();
 		public GameObject checkpointGO;
 		public float checkpointSpacing;
 
 		[Header("Track Info")]
 		public float tDistance;
 		public string tName;
-        public Rotation tRot;
+		public Rotation tRot;
 
 		public float maxDegs = 100;
 
@@ -47,15 +49,16 @@ namespace IsaacFagg.Tracks
 		{
 			if (generateNewTrack == true)
 			{
-                GameObject[] oldTrack = GameObject.FindGameObjectsWithTag("CurrentTrack");
-
-                foreach (GameObject item in oldTrack)
-                {
-                    DestroyImmediate(item);
-                }
-                
-				GenerateNewTrack(TrackType.Random);
 				generateNewTrack = false;
+				GameObject[] oldTrack = GameObject.FindGameObjectsWithTag("CurrentTrack");
+
+				foreach (GameObject item in oldTrack)
+				{
+					DestroyImmediate(item);
+				}
+				
+				GenerateNewTrack(TrackType.Random);
+
 			}
 		}
 
@@ -78,12 +81,13 @@ namespace IsaacFagg.Tracks
 				GenerateConvexHull();
 				allPoints = GenerateMidpoints(hullPoints);
 
-                for (int i = 0; i < 10; i++)
-                {
-                    FixAngles(allPoints);
-                }
 
-            }
+				for (int i = 0; i < 10; i++)
+				{
+					FixAngles(allPoints);
+				}
+
+			}
 			else if (type == TrackType.PlayerData)
 			{
 				//GetPlayerData
@@ -94,11 +98,14 @@ namespace IsaacFagg.Tracks
 
 			tDistance = Mathf.RoundToInt(CalculateDistance(allPoints));
 
-            tRot = RotationCheck(allPoints);
+			tRot = RotationCheck(allPoints);
+
+			CheckpointCollisionCheck();
+
 
 		}
 
-		#region Generation
+		#region Mesh Generation
 
 		public void GenerateGameObjects(string trackName)
 		{
@@ -106,16 +113,16 @@ namespace IsaacFagg.Tracks
 			GameObject trackGO = new GameObject(trackName);
 			GameObject gravelGO = new GameObject("Gravel");
 			gravelGO.transform.parent = trackGO.transform;
-            trackGO.tag = ("CurrentTrack");
-            gravelGO.tag = ("CurrentTrack");
+			trackGO.tag = ("CurrentTrack");
 
-            PathCreator tPC = trackGO.AddComponent<PathCreator>();
+			PathCreator tPC = trackGO.AddComponent<PathCreator>();
 			PathCreator gPC = gravelGO.AddComponent<PathCreator>();
 
 			GenerateBevierPath(tPC);
 			gPC.path = tPC.path;
 			AddRoad(trackGO, roadMat,20f);
 			AddRoad(gravelGO,gravelMat, 30f);
+			AddBackground(background);
 
 			GenerateCheckpoints(tPC.path, trackGO);
 		}
@@ -123,12 +130,17 @@ namespace IsaacFagg.Tracks
 		public void AddRoad(GameObject go, Material mat, float width)
 		{
 			RoadCreator rc = go.AddComponent<RoadCreator>();
-			go.GetComponent<MeshRenderer>().material = mat;
+			MeshRenderer mr = go.GetComponent<MeshRenderer>();
+			mr.material = mat;
+			mr.sortingLayerName = "Track";
+			mr.sortingOrder = 0;
 
 			AddCollider(go);
 
 			rc.roadWidth = width;
 			rc.UpdateRoad();
+
+
 
 		}
 
@@ -161,6 +173,23 @@ namespace IsaacFagg.Tracks
 			pc.path.IsClosed = true;
 			pc.path.AutoSetControlPoints = true;
 		}
+
+		private void AddBackground(Sprite backgroundSprite)
+		{
+			GameObject oldBackground = GameObject.Find("Background");
+			DestroyImmediate(oldBackground);
+	
+
+			GameObject background = new GameObject("Background");
+			background.layer = (12);
+			background.transform.position = new Vector3(0,0,30f);
+			SpriteRenderer spriteRender =  background.AddComponent<SpriteRenderer>();
+			spriteRender.sprite = backgroundSprite;
+			spriteRender.drawMode = SpriteDrawMode.Tiled;
+			spriteRender.size = new Vector2(maxWidth, maxHeight) * 1.5f;
+
+		}
+
 
 #endregion 
 
@@ -245,37 +274,37 @@ namespace IsaacFagg.Tracks
 
 			for (int i = 0; i < inputPoints.Count - 1; i++)
 			{
-                if (Vector2.Distance(inputPoints[i],inputPoints[i+1]) > minDistance)
-                {
+				if (Vector2.Distance(inputPoints[i],inputPoints[i+1]) > minDistance)
+				{
 
-                    outputPoints.Add(inputPoints[i]);
+					outputPoints.Add(inputPoints[i]);
 
-                    //Chnage Range and range
-                    float newX = Midpoint(inputPoints[i].x, inputPoints[i + 1].x);
-                    float newY = Midpoint(inputPoints[i].y, inputPoints[i + 1].y);
+					//Chnage Range and range
+					float newX = Midpoint(inputPoints[i].x, inputPoints[i + 1].x);
+					float newY = Midpoint(inputPoints[i].y, inputPoints[i + 1].y);
 
-                    float diffX = (inputPoints[i].x - inputPoints[i + 1].x) * difficulty;
-                    float diffY = (inputPoints[i].y - inputPoints[i + 1].y) * difficulty;
+					float diffX = (inputPoints[i].x - inputPoints[i + 1].x) * difficulty;
+					float diffY = (inputPoints[i].y - inputPoints[i + 1].y) * difficulty;
 
-                    Vector2 newPoint = new Vector2(newX, newY);
+					Vector2 newPoint = new Vector2(newX, newY);
 
-                    newPoint.x += Random.Range(-diffX, diffX);
-                    newPoint.y += Random.Range(-diffY, diffY);
+					newPoint.x += Random.Range(-diffX, diffX);
+					newPoint.y += Random.Range(-diffY, diffY);
 
-                    GameObject MidpointGO = new GameObject("Midpoint");
-                    MidpointGO.transform.position = newPoint;
-                    MidpointGO.tag = ("CurrentTrack");
+					GameObject MidpointGO = new GameObject("Midpoint");
+					MidpointGO.transform.position = newPoint;
+					MidpointGO.tag = ("CurrentTrack");
 
-                    outputPoints.Add(newPoint);
+					outputPoints.Add(newPoint);
 
-                }
-                else
-                {
-                    outputPoints.Add(inputPoints[i]);
-                }
+				}
+				else
+				{
+					outputPoints.Add(inputPoints[i]);
+				}
 			}
 
-            return outputPoints;
+			return outputPoints;
 		}
 
 
@@ -339,30 +368,29 @@ namespace IsaacFagg.Tracks
 
 
 
-        #endregion
+		#endregion
 
-        #region Player Data Generation
+		#region Player Data Generation
 
-        //Player Data Get
+		//Player Data Get
 
-        
-
-
-        //Set Name Based on previous tracks
+		
 
 
+		//Set Name Based on previous tracks
 
-        #endregion
 
 
-        #region General Generation
+		#endregion
 
-        //Checkpoints
-        private void GenerateCheckpoints(Path path, GameObject go)
+		#region General Generation
+
+		//Checkpoints
+		private void GenerateCheckpoints(Path path, GameObject go)
 		{
-			//Invisible Checkpoints
+			checkpoints.Clear();
 
-			List<Checkpoint> checkpoints = new List<Checkpoint>();
+			//Invisible Checkpoints
 			List<Vector2> checkpointLocations = new List<Vector2>(allPoints);
 
 			GameObject checkpointParent = new GameObject("Checkpoints");
@@ -377,9 +405,9 @@ namespace IsaacFagg.Tracks
 
 				checkpoint.name = ("Checkpoint: " + i);
 				checkpoint.transform.position = newPos;
-                checkpoint.tag = ("CurrentTrack");
-                Checkpoint cp = checkpoint.GetComponent<Checkpoint>();
-				cp.position = i;
+				Checkpoint cp = checkpoint.GetComponent<Checkpoint>();
+				checkpoints.Add(cp);
+;				cp.position = i;
 
 				SpriteRenderer sprite = checkpoint.GetComponent<SpriteRenderer>();
 
@@ -393,12 +421,10 @@ namespace IsaacFagg.Tracks
 				//	sprite.enabled = false;
 				//}
 
-				Vector2 anchor = new Vector2(path.points[i * 3 + 1].x, path.points[i * 3 + 1].y);
-				float angle = Mathf.Atan2(anchor.y, anchor.x) * Mathf.Rad2Deg;
-				checkpoint.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
-
-
-
+				Vector3 targetPos = new Vector3(path.points[i * 3 + 1].x, path.points[i * 3 + 1].y, 0);
+				Vector3 difference = targetPos - checkpoint.transform.position;
+				float rotZ = Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg;
+				checkpoint.transform.rotation = Quaternion.Euler(0f, 0f, rotZ + 90f);
 
 			}
 
@@ -409,30 +435,41 @@ namespace IsaacFagg.Tracks
 
 		}
 
-        private Rotation RotationCheck(List<Vector2> points)
-        {
+		private void GeneratePlayerSpawnpoint()
+		{
+			GameObject playerSpawn = new GameObject("Player Spawn");
+			playerSpawn.tag = "Player Spawn";
+			playerSpawn.transform.position = checkpoints[0].gameObject.transform.position;
 
-            Rotation rot = Rotation.Clockwise;
-            Vector2 centre = Vector2.zero;
+		}
+		#endregion
 
-            foreach (Vector2 item in points)
-            {
-                centre += item;
-            }
+		#region Checks
 
-            centre /= points.Count;
+		private Rotation RotationCheck(List<Vector2> points)
+		{
 
-            if (((points[0].x - centre.x) * (points[points.Count - 1].y - centre.y) - (points[0].y - centre.y) * (points[points.Count - 1].x - centre.x)) > 0)
-            {
-                rot = Rotation.Clockwise;
-            }
-            else
-            {
-                rot = Rotation.Anticlockwise;
-            }
+			Rotation rot = Rotation.Clockwise;
+			Vector2 centre = Vector2.zero;
 
-            return rot;
-        }
+			foreach (Vector2 item in points)
+			{
+				centre += item;
+			}
+
+			centre /= points.Count;
+
+			if (((points[0].x - centre.x) * (points[points.Count - 1].y - centre.y) - (points[0].y - centre.y) * (points[points.Count - 1].x - centre.x)) > 0)
+			{
+				rot = Rotation.Clockwise;
+			}
+			else
+			{
+				rot = Rotation.Anticlockwise;
+			}
+
+			return rot;
+		}
 
 		private float CalculateDistance(List<Vector2> points)
 		{
@@ -445,11 +482,77 @@ namespace IsaacFagg.Tracks
 
 			return distance;
 		}
-        #endregion
 
-    }
 
-    public enum TrackType
+		List<KeyValuePair<BoxCollider2D, BoxCollider2D>> usedCollider = new List<KeyValuePair<BoxCollider2D, BoxCollider2D>>();
+		public List<BoxCollider2D> boxColliders = new List<BoxCollider2D>();
+
+		private void CheckpointCollisionCheck()
+		{
+			boxColliders.Clear();
+
+
+			foreach (Checkpoint item in checkpoints)
+			{
+				boxColliders.Add(item.GetComponent<BoxCollider2D>());
+			}
+
+			for (int i = 0; i < boxColliders.Count; i++)
+			{
+				CollisionCheck(i, ref usedCollider);
+			}
+		}
+
+		private void CollisionCheck(int currentIndex, ref List<KeyValuePair<BoxCollider2D, BoxCollider2D>> usedCollider)
+		{
+			for (int i = 0; i < boxColliders.Count; i++)
+			{
+				//Make sure that this two Colliders are not the-same
+				if (boxColliders[currentIndex] != boxColliders[i])
+				{
+					//Now, make sure we have not checked between this 2 Objects
+					if (!checkedBefore(usedCollider, boxColliders[currentIndex], boxColliders[i]))
+					{
+						if (boxColliders[currentIndex].IsTouching(boxColliders[i]))
+						{
+							//FINALLY, COLLISION IS DETECTED HERE, call ArrayCollisionDetection
+							ArrayCollisionDetection(boxColliders[currentIndex], boxColliders[i]);
+						}
+						//Mark it checked now
+						usedCollider.Add(new KeyValuePair<BoxCollider2D, BoxCollider2D>(boxColliders[currentIndex], boxColliders[i]));
+					}
+				}
+			}
+		}
+
+		bool checkedBefore(List<KeyValuePair<BoxCollider2D, BoxCollider2D>> usedCollider, BoxCollider2D col1, BoxCollider2D col2)
+		{
+			bool checkedBefore = false;
+			for (int i = 0; i < usedCollider.Count; i++)
+			{
+				//Check if key and value exist and vice versa
+				if ((usedCollider[i].Key == col1 && usedCollider[i].Value == col2) ||
+						(usedCollider[i].Key == col2 && usedCollider[i].Value == col1))
+				{
+					checkedBefore = true;
+					break;
+				}
+			}
+			return checkedBefore;
+		}
+
+		void ArrayCollisionDetection(Collider2D col1, Collider2D col2)
+		{
+			Debug.Log(col1.name + " is Touching " + col2.name);
+		}
+
+
+
+		#endregion
+
+	}
+
+	public enum TrackType
 	{
 		Random,
 		PlayerData,
