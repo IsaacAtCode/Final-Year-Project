@@ -5,32 +5,80 @@ using UnityEngine.UI;
 
 public class StarRating : MonoBehaviour
 {
+    [Header("Variables")]
 	public int score;
 
-	public Button[] stars;
+    [Header("Toggles")]
+    public Toggle star1;
+    public Toggle star2;
+    public Toggle star3;
+    public Toggle star4;
+    public Toggle star5;
 
-	public Button star1;
-	public Button star2;
-	public Button star3;
-	public Button star4;
-	public Button star5;
+    public ToggleGroup starGroup;
+	private Toggle[] stars;
 
-	//Select 1 button, selects all buttons before it
+    [Header("Images")]
+    public Image image1;
+    public Image image2;
+    public Image image3;
+    public Image image4;
 
-	//Deselecting only does 1 deselect
+    private Image[] images;
 
-	//outputs score
+    private void Start()
+    {
+        starGroup = GetComponent<ToggleGroup>();
 
-	public int GenerateScore()
-	{
-		foreach (Button star in stars)
-		{
-			if (star.spriteState = )
-			{
+        stars = new[] { star1, star2, star3, star4, star5 };
+        images = new[] { image1, image2, image3, image4 };
 
-			}
-		}
-	}
+        HideAllImages();
+    }
 
+    private void Update()
+    {
+        score = GenerateScore();
+    }
+
+    public int GenerateScore()
+    {
+        int number = 0;
+
+        for (int i = 0; i < stars.Length; i++)
+        {
+            if (stars[i].isOn)
+            {
+                number = i + 1;
+            }
+        }
+
+        return number;
+    }
+
+    private void HideAllImages()
+    {
+        foreach (Image image in images)
+        {
+            image.enabled = false;
+        }
+    }
+
+    public void ShowImages(int starPos)
+    {
+        HideAllImages();
+
+        if (stars[starPos - 1].isOn)
+        {
+            for (int i = 0; i < images.Length; i++)
+            {
+                if (i < starPos)
+                {
+                    images[i].enabled = true;
+                }
+            }
+        }
+        
+    }
 
 }
