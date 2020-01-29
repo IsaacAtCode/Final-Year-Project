@@ -37,7 +37,10 @@ namespace IsaacFagg.Tracks
 		public GameObject checkpointGO;
 		public float checkpointSpacing;
 
-		[Header("Track Info")]
+        [Header("Track Info")]
+        public GameObject trackGO;
+        public Track track;
+
 		public float tDistance;
 		public string tName;
 		public Rotation tRot;
@@ -65,7 +68,7 @@ namespace IsaacFagg.Tracks
 
 		public void GenerateNewTrack(TrackType type)
 		{
-			Track track = new Track();
+			track = new Track();
 			track.trackType = type;
 
 
@@ -102,6 +105,7 @@ namespace IsaacFagg.Tracks
 
 			CheckpointCollisionCheck();
 
+            
 
 		}
 
@@ -110,7 +114,7 @@ namespace IsaacFagg.Tracks
 		public void GenerateGameObjects(string trackName)
 		{
 			//Random Track Name Generator
-			GameObject trackGO = new GameObject(trackName);
+			trackGO = new GameObject(trackName);
 			GameObject gravelGO = new GameObject("Gravel");
 			gravelGO.transform.parent = trackGO.transform;
 			trackGO.tag = ("CurrentTrack");
@@ -192,7 +196,6 @@ namespace IsaacFagg.Tracks
 
 
 #endregion 
-
 
 		#region Random Generation
 
@@ -276,10 +279,8 @@ namespace IsaacFagg.Tracks
 			{
 				if (Vector2.Distance(inputPoints[i],inputPoints[i+1]) > minDistance)
 				{
-
 					outputPoints.Add(inputPoints[i]);
 
-					//Chnage Range and range
 					float newX = Midpoint(inputPoints[i].x, inputPoints[i + 1].x);
 					float newY = Midpoint(inputPoints[i].y, inputPoints[i + 1].y);
 
@@ -291,12 +292,7 @@ namespace IsaacFagg.Tracks
 					newPoint.x += Random.Range(-diffX, diffX);
 					newPoint.y += Random.Range(-diffY, diffY);
 
-					GameObject MidpointGO = new GameObject("Midpoint");
-					MidpointGO.transform.position = newPoint;
-					MidpointGO.tag = ("CurrentTrack");
-
 					outputPoints.Add(newPoint);
-
 				}
 				else
 				{
@@ -306,8 +302,6 @@ namespace IsaacFagg.Tracks
 
 			return outputPoints;
 		}
-
-
 
 		private float Midpoint(float x, float y)
 		{
@@ -440,8 +434,16 @@ namespace IsaacFagg.Tracks
 			GameObject playerSpawn = new GameObject("Player Spawn");
 			playerSpawn.tag = "Player Spawn";
 			playerSpawn.transform.position = checkpoints[0].gameObject.transform.position;
-
 		}
+
+        private void SaveTrack()
+        {
+
+        }
+
+
+
+
 		#endregion
 
 		#region Checks
@@ -555,6 +557,7 @@ namespace IsaacFagg.Tracks
 	public enum TrackType
 	{
 		Random,
+        Human,
 		PlayerData,
 	}
 }

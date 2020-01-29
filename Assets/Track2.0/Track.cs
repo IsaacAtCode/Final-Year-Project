@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace IsaacFagg.Tracks
 {
-	public class Track
+	public class Track : MonoBehaviour
 	{
 		public TrackType trackType;
 
