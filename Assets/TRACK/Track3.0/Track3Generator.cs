@@ -40,11 +40,14 @@ namespace IsaacFagg.Track3
             if (generateNewTrack)
             {
                 track.GenerateTrack();
-                if (track.name == null || track.name == "")
+                if (track.type == TrackType.Random)
                 {
                     track.name = randomNameGenerator.GenerateName();
                 }
+
                 generateNewTrack = false;
+
+
 
                 GenerateFromTrack();
 
@@ -55,6 +58,8 @@ namespace IsaacFagg.Track3
 
         private void GenerateFromTrack()
         {
+            DeleteOldTrack();
+
             GameObject trackGO = new GameObject(track.name);
             GameObject gravelGO = new GameObject("Gravel");
             trackGO.transform.parent = this.gameObject.transform;
@@ -68,7 +73,7 @@ namespace IsaacFagg.Track3
             gPC.path = tPC.path;
             AddRoad(trackGO, roadMat, 20f);
             AddRoad(gravelGO, gravelMat, 30f);
-            AddBackground(background);
+            //AddBackground(background);
 
             //GenerateCheckpoints(tPC.path, trackGO);
         }
@@ -132,6 +137,17 @@ namespace IsaacFagg.Track3
             spriteRender.size = new Vector2(track.width, track.height) * 1.5f;
 
         }
+
+        private void DeleteOldTrack()
+        {
+            GameObject[] oldTrack = GameObject.FindGameObjectsWithTag("CurrentTrack");
+
+            foreach (GameObject item in oldTrack)
+            {
+                DestroyImmediate(item);
+            }
+        }
+
 
 
 
