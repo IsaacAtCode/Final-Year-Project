@@ -4320,7 +4320,6 @@ MonoBehaviour:
   track: {fileID: 0}
   tDistance: 1329
   tName: Track Name
-  tRot: 0
   maxDegs: 100
   boxColliders:
   - {fileID: 1942148157}
@@ -4468,6 +4467,131 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &1548486441
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1548486445}
+  - component: {fileID: 1548486444}
+  - component: {fileID: 1548486443}
+  - component: {fileID: 1548486442}
+  m_Layer: 0
+  m_Name: Track 3 Test
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1548486442
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1548486441}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f530c1957700f5340bf0825227d38ab7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  locationNames:
+  - English
+  - American
+  - Italian
+  - French
+  - Australian
+  - Spanish
+  - Russian
+  - Chinese
+  - Mexican
+  - Brazilian
+  roadNames:
+  - Highway
+  - Motorway
+  - Speedway
+  - Racecourse
+  - Raceway
+  - Race Track
+  - Ring
+--- !u!114 &1548486443
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1548486441}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b278fb5a503d625408e787e3019cb529, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  name: The Russian Motorway
+  type: 0
+  difficulty: 1
+  points:
+  - {x: 55.87687, y: 221.92928}
+  - {x: 111.01241, y: 257.0619}
+  - {x: 157.05328, y: 265.24213}
+  - {x: 205.47943, y: 176.43312}
+  - {x: 233.34987, y: 159.3059}
+  - {x: 234.49657, y: 149.62852}
+  - {x: 227.9772, y: 100.163734}
+  - {x: 190.44511, y: 70.76727}
+  - {x: 179.35956, y: 1.9654793}
+  - {x: 120.482185, y: -17.526794}
+  - {x: 128.58836, y: 85.50011}
+  - {x: 51.28524, y: 75.71391}
+  rotation: 0
+  length: 812.5797
+  straights: 0
+  corners: 12
+  totalAngles: 0
+  height: 282.76892
+  width: 234.49657
+  minPoints: 5
+  maxPoints: 20
+  minDistance: 50
+  maxLength: 0
+  minStraights: 1
+  minStraightLength: 200
+  minCorners: 4
+  minHeight: 250
+  maxHeight: 1500
+  minWidth: 250
+  maxWidth: 1500
+--- !u!114 &1548486444
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1548486441}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6de25faad88212342a9fe0045cab14eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  track: {fileID: 1548486443}
+  randomNameGenerator: {fileID: 1548486442}
+  generateNewTrack: 0
+--- !u!4 &1548486445
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1548486441}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1582585239
 GameObject:
   m_ObjectHideFlags: 0

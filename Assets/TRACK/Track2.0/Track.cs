@@ -6,11 +6,9 @@ namespace IsaacFagg.Tracks
 {
 	public class Track : MonoBehaviour
 	{
-		public TrackType trackType;
 
 		//Player Data
 		public float difficulty = 1;
-		public Rotation rot;
 
 		//Main
 		public float height = 250.0f;
@@ -29,10 +27,6 @@ namespace IsaacFagg.Tracks
 		public Transform location;
 	}
 
-	public enum Rotation
-	{
-		Clockwise,
-		Anticlockwise,
-	}
+
 
 }

@@ -43,7 +43,6 @@ namespace IsaacFagg.Tracks
 
 		public float tDistance;
 		public string tName;
-		public Rotation tRot;
 
 		public float maxDegs = 100;
 
@@ -60,48 +59,18 @@ namespace IsaacFagg.Tracks
 					DestroyImmediate(item);
 				}
 				
-				GenerateNewTrack(TrackType.Random);
+				GenerateNewTrack();
 
 			}
 		}
 
 
-		public void GenerateNewTrack(TrackType type)
+		public void GenerateNewTrack()
 		{
-			track = new Track();
-			track.trackType = type;
-
-
-			if (type == TrackType.Random)
-			{
-				//Generate Random Width/Height
-				float randomWidth = Random.Range(minWidth, maxWidth);
-				float randomHeight = Random.Range(minHeight,maxHeight);
-				track.width = randomWidth;
-				track.height = randomHeight;
-				randomPoints = GenerateRandomPoints(20, randomWidth,randomHeight);
-
-				GenerateConvexHull();
-				allPoints = GenerateMidpoints(hullPoints);
-
-
-				for (int i = 0; i < 10; i++)
-				{
-					FixAngles(allPoints);
-				}
-
-			}
-			else if (type == TrackType.PlayerData)
-			{
-				//GetPlayerData
-				//GenerateNewTrackBasedOnThat
-			}
 
 			GenerateGameObjects(tName);
 
 			tDistance = Mathf.RoundToInt(CalculateDistance(allPoints));
-
-			tRot = RotationCheck(allPoints);
 
 			CheckpointCollisionCheck();
 
@@ -448,30 +417,30 @@ namespace IsaacFagg.Tracks
 
 		#region Checks
 
-		private Rotation RotationCheck(List<Vector2> points)
-		{
+		//private Rotation RotationCheck(List<Vector2> points)
+		//{
 
-			Rotation rot = Rotation.Clockwise;
-			Vector2 centre = Vector2.zero;
+		//	Rotation rot = Rotation.Clockwise;
+		//	Vector2 centre = Vector2.zero;
 
-			foreach (Vector2 item in points)
-			{
-				centre += item;
-			}
+		//	foreach (Vector2 item in points)
+		//	{
+		//		centre += item;
+		//	}
 
-			centre /= points.Count;
+		//	centre /= points.Count;
 
-			if (((points[0].x - centre.x) * (points[points.Count - 1].y - centre.y) - (points[0].y - centre.y) * (points[points.Count - 1].x - centre.x)) > 0)
-			{
-				rot = Rotation.Clockwise;
-			}
-			else
-			{
-				rot = Rotation.Anticlockwise;
-			}
+		//	if (((points[0].x - centre.x) * (points[points.Count - 1].y - centre.y) - (points[0].y - centre.y) * (points[points.Count - 1].x - centre.x)) > 0)
+		//	{
+		//		rot = Rotation.Clockwise;
+		//	}
+		//	else
+		//	{
+		//		rot = Rotation.Anticlockwise;
+		//	}
 
-			return rot;
-		}
+		//	return rot;
+		//}
 
 		private float CalculateDistance(List<Vector2> points)
 		{
@@ -554,10 +523,5 @@ namespace IsaacFagg.Tracks
 
 	}
 
-	public enum TrackType
-	{
-		Random,
-        Human,
-		PlayerData,
-	}
+
 }
