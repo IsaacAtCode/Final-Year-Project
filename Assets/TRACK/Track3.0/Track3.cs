@@ -36,18 +36,16 @@ namespace IsaacFagg.Track3
         [Header("Constraints")]
         public int minPoints;
         public int maxPoints;
-
         public float minDistance = 50f;
-
-        public float maxLength;
-        public int minStraights = 1;
-        public float minStraightLength = 100f;
-        public int minCorners = 4;
         public float minHeight;
         public float maxHeight;
         public float minWidth;
         public float maxWidth;
 
+        [Header("Checks")]
+        public float maxLength;
+        public int minStraights = 1;
+        public float minStraightLength = 100f;
 
 
         private int retries = 0;
@@ -87,6 +85,7 @@ namespace IsaacFagg.Track3
             {
                 if (retries < 5)
                 {
+                    Debug.Log("Retried " + retries + " times");
                     retries++;
                     GenerateTrack();
                 }
@@ -286,7 +285,6 @@ namespace IsaacFagg.Track3
             {
                 if (Vector2.Distance(points[i], points[i+1]) > minStraightLength)
                 {
-                    Debug.Log(Vector2.Distance(points[i], points[i + 1]));
                     straights++;
                 }
             }

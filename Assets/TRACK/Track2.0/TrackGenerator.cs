@@ -112,9 +112,6 @@ namespace IsaacFagg.Tracks
 
 			rc.roadWidth = width;
 			rc.UpdateRoad();
-
-
-
 		}
 
 		private void AddCollider(GameObject go)
@@ -333,18 +330,6 @@ namespace IsaacFagg.Tracks
 
 		#endregion
 
-		#region Player Data Generation
-
-		//Player Data Get
-
-		
-
-
-		//Set Name Based on previous tracks
-
-
-
-		#endregion
 
 		#region General Generation
 
