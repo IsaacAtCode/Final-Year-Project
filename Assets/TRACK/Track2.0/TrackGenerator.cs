@@ -37,9 +37,9 @@ namespace IsaacFagg.Tracks
 		public GameObject checkpointGO;
 		public float checkpointSpacing;
 
-        [Header("Track Info")]
-        public GameObject trackGO;
-        public Track track;
+		[Header("Track Info")]
+		public GameObject trackGO;
+		public Track track;
 
 		public float tDistance;
 		public string tName;
@@ -74,7 +74,7 @@ namespace IsaacFagg.Tracks
 
 			CheckpointCollisionCheck();
 
-            
+			
 
 		}
 
@@ -390,10 +390,10 @@ namespace IsaacFagg.Tracks
 			playerSpawn.transform.position = checkpoints[0].gameObject.transform.position;
 		}
 
-        private void SaveTrack()
-        {
+		private void SaveTrack()
+		{
 
-        }
+		}
 
 
 
