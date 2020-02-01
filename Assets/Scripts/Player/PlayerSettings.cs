@@ -5,11 +5,11 @@ using IsaacFagg.Settings;
 
 namespace IsaacFagg.Player
 {
-    [RequireComponent(typeof(Player))]
-    public class PlayerSettings : MonoBehaviour
+	[RequireComponent(typeof(Player))]
+	public class PlayerSettings : MonoBehaviour
 	{
 
-        private Player player;
+		private Player player;
 
 		[Header("Display")]
 		public int fpsLimiter;
@@ -39,15 +39,15 @@ namespace IsaacFagg.Player
 		[Header("Notifications")]
 		public bool notifOn = true;
 
-        //Stuff to save the settings
+		//Stuff to save the settings
 
-        private void Start()
-        {
-            player = GetComponent<Player>();
-        }
+		private void Start()
+		{
+			player = GetComponent<Player>();
+		}
 
 
-    }
+	}
 
 
 	public enum SpeedDisplay
