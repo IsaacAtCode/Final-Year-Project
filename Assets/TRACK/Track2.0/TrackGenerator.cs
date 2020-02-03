@@ -70,9 +70,9 @@ namespace IsaacFagg.Tracks
 
 			GenerateGameObjects(tName);
 
-			tDistance = Mathf.RoundToInt(CalculateDistance(allPoints));
+			//tDistance = Mathf.RoundToInt(CalculateDistance(allPoints));
 
-			CheckpointCollisionCheck();
+			//CheckpointCollisionCheck();
 
 			
 
@@ -402,105 +402,9 @@ namespace IsaacFagg.Tracks
 
 		#region Checks
 
-		//private Rotation RotationCheck(List<Vector2> points)
-		//{
-
-		//	Rotation rot = Rotation.Clockwise;
-		//	Vector2 centre = Vector2.zero;
-
-		//	foreach (Vector2 item in points)
-		//	{
-		//		centre += item;
-		//	}
-
-		//	centre /= points.Count;
-
-		//	if (((points[0].x - centre.x) * (points[points.Count - 1].y - centre.y) - (points[0].y - centre.y) * (points[points.Count - 1].x - centre.x)) > 0)
-		//	{
-		//		rot = Rotation.Clockwise;
-		//	}
-		//	else
-		//	{
-		//		rot = Rotation.Anticlockwise;
-		//	}
-
-		//	return rot;
-		//}
-
-		private float CalculateDistance(List<Vector2> points)
-		{
-			float distance = 0;
-
-			for (int i = 0; i < points.Count - 1; i++)
-			{
-				distance += Vector2.Distance(points[i], points[i + 1]);
-			}
-
-			return distance;
-		}
 
 
-		List<KeyValuePair<BoxCollider2D, BoxCollider2D>> usedCollider = new List<KeyValuePair<BoxCollider2D, BoxCollider2D>>();
-		public List<BoxCollider2D> boxColliders = new List<BoxCollider2D>();
 
-		private void CheckpointCollisionCheck()
-		{
-			boxColliders.Clear();
-
-
-			foreach (Checkpoint item in checkpoints)
-			{
-				boxColliders.Add(item.GetComponent<BoxCollider2D>());
-			}
-
-			for (int i = 0; i < boxColliders.Count; i++)
-			{
-				CollisionCheck(i, ref usedCollider);
-			}
-		}
-
-		private void CollisionCheck(int currentIndex, ref List<KeyValuePair<BoxCollider2D, BoxCollider2D>> usedCollider)
-		{
-			for (int i = 0; i < boxColliders.Count; i++)
-			{
-				//Make sure that this two Colliders are not the-same
-				if (boxColliders[currentIndex] != boxColliders[i])
-				{
-					//Now, make sure we have not checked between this 2 Objects
-					if (!checkedBefore(usedCollider, boxColliders[currentIndex], boxColliders[i]))
-					{
-						if (boxColliders[currentIndex].IsTouching(boxColliders[i]))
-						{
-							//FINALLY, COLLISION IS DETECTED HERE, call ArrayCollisionDetection
-							ArrayCollisionDetection(boxColliders[currentIndex], boxColliders[i]);
-						}
-						//Mark it checked now
-						usedCollider.Add(new KeyValuePair<BoxCollider2D, BoxCollider2D>(boxColliders[currentIndex], boxColliders[i]));
-					}
-				}
-			}
-		}
-
-		bool checkedBefore(List<KeyValuePair<BoxCollider2D, BoxCollider2D>> usedCollider, BoxCollider2D col1, BoxCollider2D col2)
-		{
-			bool checkedBefore = false;
-			for (int i = 0; i < usedCollider.Count; i++)
-			{
-				//Check if key and value exist and vice versa
-				if ((usedCollider[i].Key == col1 && usedCollider[i].Value == col2) ||
-						(usedCollider[i].Key == col2 && usedCollider[i].Value == col1))
-				{
-					checkedBefore = true;
-					break;
-				}
-			}
-			return checkedBefore;
-		}
-
-		void ArrayCollisionDetection(Collider2D col1, Collider2D col2)
-		{
-			Debug.Log(col1.name + " is Touching " + col2.name);
-		}
 
 
 

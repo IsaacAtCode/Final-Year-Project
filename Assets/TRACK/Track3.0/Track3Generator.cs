@@ -16,6 +16,11 @@ namespace IsaacFagg.Track3
 		public Track3 track;
 		public RandomNameGenerator randomNameGenerator;
 
+		[Header("Checkpoints")]
+		public List<Vector2> checkpointLocations;
+		public GameObject checkpointTemplate;
+		public int checkpointCount = 40;
+
 		[Header("Road")]
 		public Material roadMat;
 		public Material gravelMat;
@@ -88,13 +93,13 @@ namespace IsaacFagg.Track3
 			gPC.path = tPC.path;
 			mPC.path = tPC.path;
 
-			AddRoad(trackGO, roadMat, 20f);
-			AddRoad(gravelGO, gravelMat, 30f);
-			AddRoad(minimapGO, minimapMat, 50f);
+			AddMesh(trackGO, roadMat, 20f);
+			AddMesh(gravelGO, gravelMat, 30f);
+			AddMesh(minimapGO, minimapMat, 50f);
 
 			//AddBackground(background);
 
-			//GenerateCheckpoints(tPC.path, trackGO);
+			GenerateCheckpoints(tPC.path, trackGO);
 		}
 
 		public void GenerateBevierPath(PathCreator pc)
@@ -120,7 +125,7 @@ namespace IsaacFagg.Track3
 			pc.path.AutoSetControlPoints = true;
 		}
 
-		public void AddRoad(GameObject go, Material mat, float width)
+		public void AddMesh(GameObject go, Material mat, float width)
 		{
 			RoadCreator rc = go.AddComponent<RoadCreator>();
 			MeshRenderer mr = go.GetComponent<MeshRenderer>();
@@ -156,6 +161,80 @@ namespace IsaacFagg.Track3
 			spriteRender.size = new Vector2(track.width, track.height) * 1.5f;
 
 		}
+
+		private void GenerateCheckpoints(Path path, GameObject go)
+		{
+			track.checkpoints.Clear();
+
+			//Invisible Checkpoints
+			checkpointLocations = path.CalculateEvenlySpacedPoints(track.length/checkpointCount, 1);
+
+			GameObject checkpointParent = new GameObject("Checkpoints");
+			checkpointParent.transform.position = track.centre;
+			checkpointParent.transform.parent = go.transform;
+
+			if (track.rotation == Rotation.Anticlockwise)
+			{
+				for (int i = checkpointLocations.Count - 1; i >= 0 ; i--)
+				{
+					CreateCheckpoint(i, checkpointParent.transform);
+				}
+			}
+			else
+			{
+				for (int i = 0; i < checkpointLocations.Count; i++)
+				{
+					CreateCheckpoint(i, checkpointParent.transform);
+				}
+			}
+
+			track.CheckpointCollisionCheck();
+		}
+
+		private void CreateCheckpoint(int i, Transform parent)
+		{
+			Vector3 newPos = checkpointLocations[i];
+
+			GameObject checkpoint = Instantiate(checkpointTemplate, parent);
+
+			checkpoint.name = ("Checkpoint: " + i);
+			checkpoint.transform.position = newPos;
+			Checkpoint cp = checkpoint.GetComponent<Checkpoint>();
+			track.checkpoints.Add(cp);
+			cp.position = i;
+
+			SpriteRenderer sprite = checkpoint.GetComponent<SpriteRenderer>();
+
+			if (i == 0)
+			{
+				cp.finishLine = true;
+				sprite.enabled = true;
+			}
+			//else if (i>0)
+			//{
+			//	sprite.enabled = false;
+			//}
+			Vector3 targetPos;
+
+			if (i == 0)
+			{
+				targetPos = new Vector3(checkpointLocations[checkpointLocations.Count - 1].x, checkpointLocations[checkpointLocations.Count - 1].y);
+			}
+			else
+			{
+				targetPos = new Vector3(checkpointLocations[i - 1].x, checkpointLocations[i - 1].y);
+			}
+			Vector3 difference = targetPos - newPos;
+			float rotZ = Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg;
+			checkpoint.transform.rotation = Quaternion.Euler(0f, 0f, rotZ + 90f);
+		}
+
+
+
+
+
+
+
 
 		private void DeleteOldTrack()
 		{

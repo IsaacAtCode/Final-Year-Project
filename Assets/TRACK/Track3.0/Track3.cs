@@ -27,6 +27,8 @@ namespace IsaacFagg.Track3
 
 		public Vector2 centre;
 
+		public List<Checkpoint> checkpoints;
+
 		[Header("Properties - Non Essential")]
 		public float length;
 		public int straights;
@@ -50,7 +52,7 @@ namespace IsaacFagg.Track3
 		public float minStraightLength = 100f;
 
 
-		private int retries = 0;
+		public int retries = 0;
 
 		private void Start()
 		{
@@ -77,6 +79,8 @@ namespace IsaacFagg.Track3
 
 			//if (pointGenerated)
 			//{
+
+			//Measurements
 			GetCentre();
 			GetLength();
 			GetTrackSize();
@@ -85,23 +89,16 @@ namespace IsaacFagg.Track3
 
 			//}
 
+			//Checks
+
+			RotationCheck(points, centre);
+
 			if (straights < minStraights)
 			{
-				if (retries < 5)
-				{
-					Debug.Log("Retried " + retries + " times");
-					retries++;
-					GenerateTrack();
-				}
-				else
-				{
-					Debug.Log("Retried 5 times and cannot make map with 1 straight");
-				}
-
+				//Debug.Log("Retried " + retries + " times");
+				retries++;
+				GenerateTrack();
 			}
-
-
-
 		}
 
 		#region Random Track Generation
@@ -248,7 +245,6 @@ namespace IsaacFagg.Track3
 			}
 
 			centre /= points.Count;
-
 		}
 
 
@@ -325,6 +321,94 @@ namespace IsaacFagg.Track3
 		#endregion
 
 		#region Checks
+
+		private Rotation RotationCheck(List<Vector2> points, Vector2 centre)
+		{
+
+			Rotation rot;
+
+			if (((points[0].x - centre.x) * (points[points.Count - 1].y - centre.y) - (points[0].y - centre.y) * (points[points.Count - 1].x - centre.x)) > 0)
+			{
+				rot = Rotation.Clockwise;
+			}
+			else
+			{
+				rot = Rotation.Anticlockwise;
+			}
+
+			return rot;
+		}
+
+		List<KeyValuePair<BoxCollider2D, BoxCollider2D>> usedCollider;
+		public List<BoxCollider2D> boxColliders;
+
+		public void CheckpointCollisionCheck()
+		{
+			boxColliders = new List<BoxCollider2D>();
+			usedCollider = new List<KeyValuePair<BoxCollider2D, BoxCollider2D>>();
+
+			int collisions = 0;
+
+			foreach (Checkpoint item in checkpoints)
+			{
+				boxColliders.Add(item.GetComponent<BoxCollider2D>());
+			}
+
+			for (int i = 0; i < boxColliders.Count; i++)
+			{
+				CollisionCheck(i, ref usedCollider);
+			}
+
+		}
+
+		private void CollisionCheck(int currentIndex, ref List<KeyValuePair<BoxCollider2D, BoxCollider2D>> usedCollider)
+		{
+			for (int i = 0; i < boxColliders.Count; i++)
+			{
+				//Make sure that this two Colliders are not the-same
+				if (boxColliders[currentIndex] != boxColliders[i])
+				{
+
+					//Now, make sure we have not checked between this 2 Objects
+					if (!CheckedBefore(usedCollider, boxColliders[currentIndex], boxColliders[i]))
+					{
+
+
+						if (boxColliders[currentIndex].IsTouching(boxColliders[i]))
+						{
+							Debug.Log("Getting here");
+
+							//FINALLY, COLLISION IS DETECTED HERE, call ArrayCollisionDetection
+							ArrayCollisionDetection(boxColliders[currentIndex], boxColliders[i]);
+						}
+						//Mark it checked now
+						usedCollider.Add(new KeyValuePair<BoxCollider2D, BoxCollider2D>(boxColliders[currentIndex], boxColliders[i]));
+					}
+				}
+			}
+		}
+
+		bool CheckedBefore(List<KeyValuePair<BoxCollider2D, BoxCollider2D>> usedCollider, BoxCollider2D col1, BoxCollider2D col2)
+		{
+			bool checkedBefore = false;
+			for (int i = 0; i < usedCollider.Count; i++)
+			{
+				//Check if key and value exist and vice versa
+				if ((usedCollider[i].Key == col1 && usedCollider[i].Value == col2) ||
+						(usedCollider[i].Key == col2 && usedCollider[i].Value == col1))
+				{
+					checkedBefore = true;
+					break;
+				}
+			}
+			return checkedBefore;
+		}
+
+		void ArrayCollisionDetection(Collider2D col1, Collider2D col2)
+		{
+			Debug.Log(col1.name + " is Touching " + col2.name);
+		}
+
 
 		#endregion
 
