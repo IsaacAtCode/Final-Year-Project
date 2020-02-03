@@ -6,6 +6,8 @@ using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using IsaacFagg.Paths;
+using IsaacFagg.Utility;
 
 namespace IsaacFagg.Track3
 {
@@ -14,7 +16,7 @@ namespace IsaacFagg.Track3
 		public new string name;
 
 		public TrackType type;
-		//private bool pointGenerated = false;
+		private bool pointsGenerated = false;
 
 
 		[Header("Properties - Essential")]
@@ -22,10 +24,11 @@ namespace IsaacFagg.Track3
 		public float difficulty = 1;
 
 		public List<Vector2> points;
+		public Path path;
 		private List<float> distanceBetweenPoints;
 		public Rotation rotation;
 
-		public Vector2 centre;
+		public Vector2 centre = Vector2.zero;
 
 		public List<Checkpoint> checkpoints;
 
@@ -61,7 +64,7 @@ namespace IsaacFagg.Track3
 
 		public void GenerateTrack()
 		{
-			//if (!pointGenerated)
+			//if (!pointsGenerated)
 			//{
 			if (type == TrackType.Random)
 			{
@@ -77,8 +80,6 @@ namespace IsaacFagg.Track3
 			}
 			//}
 
-			//if (pointGenerated)
-			//{
 
 			//Measurements
 			GetCentre();
@@ -87,19 +88,12 @@ namespace IsaacFagg.Track3
 			GetStraights();
 			GetCorners();
 
-			//}
 
 			//Checks
 
 			RotationCheck(points, centre);
-
-			if (straights < minStraights)
-			{
-				//Debug.Log("Retried " + retries + " times");
-				retries++;
-				GenerateTrack();
-			}
 		}
+
 
 		#region Random Track Generation
 
@@ -115,7 +109,7 @@ namespace IsaacFagg.Track3
 
 			rotation = (Rotation)Random.Range(0,2);
 
-			//pointGenerated = true;
+			//pointsGenerated = true;
 		}
 
 		//Straightforward Point Generation
@@ -232,7 +226,6 @@ namespace IsaacFagg.Track3
 
 		#endregion
 
-
 		#region Measurements
 
 		private void GetCentre()
@@ -339,8 +332,58 @@ namespace IsaacFagg.Track3
 			return rot;
 		}
 
+		public List<Vector2> intersections;
+
+		public void OverlapCheck(List<Vector2> points)
+		{
+			intersections = new List<Vector2>();
+
+			for (int i = 0; i < points.Count-1; i++)
+			{
+				for (int j = points.Count - 1; j >= 1; j--)
+				{
+					if (j != i && j!= i+1 && i != j && i != j-1)
+					{
+						Vector2 intersect = MathsUtility.PointOfLineLineIntersection(points[i], points[i + 1], points[j], points[j - 1]);
+
+						if (Mathf.Min(points[i].x, points[i+1].x) <= intersect.x && intersect.x <= Mathf.Max(points[i].x, points[i + 1].x))
+						{
+							intersections.Add(intersect);
+						}
+					}
+				}
+			}
+
+			GameObject interParent = GameObject.Find("Intersections Parent");
+			if (interParent == null)
+			{
+				interParent = new GameObject("Intersections Parent");
+			}
+
+
+			foreach (Vector2 point in intersections)
+			{
+				GameObject intersect = new GameObject("intersect");
+				intersect.transform.parent = interParent.transform;
+
+				Vector2 newPos = new Vector2(point.x, point.y);
+
+				intersect.transform.position = newPos;
+
+			}
+
+
+		}
+
+
+
+		#endregion
+
 		List<KeyValuePair<BoxCollider2D, BoxCollider2D>> usedCollider;
 		public List<BoxCollider2D> boxColliders;
+
+		#region Checkpoints
+
 
 		public void CheckpointCollisionCheck()
 		{

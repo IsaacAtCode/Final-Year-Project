@@ -89,7 +89,6 @@ namespace IsaacFagg.Paths
 
 		}
 
-
 		public int NumPoints
 		{
 			get
@@ -305,13 +304,14 @@ namespace IsaacFagg.Paths
 				points[points.Count - 2] = (points[points.Count - 1] + points[points.Count - 3]) * .5f;
 			}
 		}
-
-
-
 		int LoopIndex(int i)
 		{
 			return (i + points.Count) % points.Count;
 		}
+
+		
+
+
 
 	}
 }

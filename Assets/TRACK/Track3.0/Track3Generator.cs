@@ -46,6 +46,7 @@ namespace IsaacFagg.Track3
 			if (generateNewTrack)
 			{
 				track.GenerateTrack();
+
 				if (track.type == TrackType.Random)
 				{
 					track.name = randomNameGenerator.GenerateName();
@@ -88,10 +89,11 @@ namespace IsaacFagg.Track3
 			PathCreator gPC = gravelGO.AddComponent<PathCreator>();
 			PathCreator mPC = minimapGO.AddComponent<PathCreator>();
 
-			GenerateBevierPath(tPC);
+			track.path = GenerateBevierPath();
 
-			gPC.path = tPC.path;
-			mPC.path = tPC.path;
+			tPC.path = track.path;
+			gPC.path = track.path;
+			mPC.path = track.path;
 
 			AddMesh(trackGO, roadMat, 20f);
 			AddMesh(gravelGO, gravelMat, 30f);
@@ -102,27 +104,29 @@ namespace IsaacFagg.Track3
 			GenerateCheckpoints(tPC.path, trackGO);
 		}
 
-		public void GenerateBevierPath(PathCreator pc)
+		public Path GenerateBevierPath()
 		{
+			Path newPath = new Path(track.centre);
+
 
 			if (track.points.Count > 1)
 			{
-				pc.path.MovePoint(0, track.points[0]);
+				newPath.MovePoint(0, track.points[0]);
 
-				pc.path.MovePoint(3, track.points[1]);
-
-
+				newPath.MovePoint(3, track.points[1]);
 
 				for (int i = 0; i < track.points.Count - 2; i++)
 				{
 					//Vector2 anchorPos = new Vector2(allPoints[i + 2].x, allPoints[i + 2].y);
 
-					pc.path.AddSegment(track.points[i + 2]);
+					newPath.AddSegment(track.points[i + 2]);
 				}
 			}
 
-			pc.path.IsClosed = true;
-			pc.path.AutoSetControlPoints = true;
+			newPath.IsClosed = true;
+			newPath.AutoSetControlPoints = true;
+
+			return newPath;
 		}
 
 		public void AddMesh(GameObject go, Material mat, float width)
@@ -189,6 +193,9 @@ namespace IsaacFagg.Track3
 			}
 
 			track.CheckpointCollisionCheck();
+
+			track.OverlapCheck(track.points);
+
 		}
 
 		private void CreateCheckpoint(int i, Transform parent)
