@@ -41,7 +41,7 @@ namespace IsaacFagg.Player
 
 		//Stuff to save the settings
 
-		private void Start()
+		private void Awake()
 		{
 			player = GetComponent<Player>();
 		}
