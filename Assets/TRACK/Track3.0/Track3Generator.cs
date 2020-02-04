@@ -12,6 +12,8 @@ namespace IsaacFagg.Track3
 	[ExecuteInEditMode]
 	public class Track3Generator : MonoBehaviour
 	{
+		public bool generateNewTrack = false;
+
 		[Header("Components")]
 		public Track3 track;
 		public RandomNameGenerator randomNameGenerator;
@@ -27,8 +29,6 @@ namespace IsaacFagg.Track3
 		public Material gravelMat;
 		public Material minimapMat;
 		public Sprite background;
-
-		public bool generateNewTrack = false;
 
 		private void Start()
 		{
@@ -235,6 +235,29 @@ namespace IsaacFagg.Track3
 		}
 
 
+
+
+		#region Race
+
+		public void RacePreparations()
+		{
+
+		}
+
+
+		private void SetPlayerSpawn()
+		{
+
+		}
+
+
+
+
+		#endregion
+
+		#region Other
+
+
 		private void OnDrawGizmos()
 		{
 			Gizmos.color = Color.blue;
@@ -244,10 +267,6 @@ namespace IsaacFagg.Track3
 				Gizmos.DrawLine(checkpointLocations[i], checkpointLocations[i + 1]);
 			}
 		}
-
-
-
-
 
 		private void DeleteOldTrack()
 		{
@@ -260,5 +279,6 @@ namespace IsaacFagg.Track3
 
 			DestroyImmediate(GameObject.FindGameObjectWithTag("MinimapTrack"));
 		}
+		#endregion
 	}
 }

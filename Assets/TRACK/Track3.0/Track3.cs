@@ -29,7 +29,6 @@ namespace IsaacFagg.Track3
 		public Rotation rotation;
 
 		public Vector2 centre = Vector2.zero;
-
 		
 
 		[Header("Properties - Non Essential")]
@@ -355,7 +354,6 @@ namespace IsaacFagg.Track3
 							if (!points.Contains(intersect))
 							{
 								intersections.Add(intersect);
-
 							}
 
 
@@ -364,29 +362,34 @@ namespace IsaacFagg.Track3
 				}
 			}
 
-			GameObject interParent = GameObject.Find("Intersections Parent");
-			if (interParent == null)
-			{
-				interParent = new GameObject("Intersections Parent");
-			}
+			//GameObject interParent = GameObject.Find("Intersections Parent");
+			//if (interParent == null)
+			//{
+			//	interParent = new GameObject("Intersections Parent");
+			//}
 
 
-			foreach (Vector2 point in intersections)
-			{
-				GameObject intersect = new GameObject("intersect");
-				intersect.transform.parent = interParent.transform;
+			//foreach (Vector2 point in intersections)
+			//{
+			//	GameObject intersect = new GameObject("intersect");
+			//	intersect.transform.parent = interParent.transform;
 
-				Vector2 newPos = new Vector2(point.x, point.y);
+			//	Vector2 newPos = new Vector2(point.x, point.y);
 
-				intersect.transform.position = newPos;
+			//	intersect.transform.position = newPos;
 
-			}
+			//}
 		}
 
 		#endregion
+
+
+
+
+
 	}
 
-	public enum Rotation
+    public enum Rotation
 	{
 		Clockwise,
 		Anticlockwise,
