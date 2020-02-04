@@ -6,6 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using IsaacFagg.Paths;
+using IsaacFagg.Utility;
 
 namespace IsaacFagg.Track3
 {
@@ -192,8 +193,6 @@ namespace IsaacFagg.Track3
 					CreateCheckpoint(i, checkpointParent.transform);
 				}
 			}
-
-			track.OverlapCheck(checkpointLocations);
 		}
 
 		private void CreateCheckpoint(int i, Transform parent)
@@ -229,9 +228,8 @@ namespace IsaacFagg.Track3
 			{
 				targetPos = new Vector3(checkpointLocations[i - 1].x, checkpointLocations[i - 1].y);
 			}
-			Vector3 difference = targetPos - newPos;
-			float rotZ = Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg;
-			checkpoint.transform.rotation = Quaternion.Euler(0f, 0f, rotZ + 90f);
+
+			checkpoint.transform.rotation = MathsUtility.LookAt(newPos, targetPos);
 		}
 
 

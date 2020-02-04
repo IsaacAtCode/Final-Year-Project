@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace IsaacFagg
+namespace IsaacFagg.Cars
 {
 	public class PlayerFollow : MonoBehaviour
 	{

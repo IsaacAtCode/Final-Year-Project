@@ -61,6 +61,16 @@ namespace IsaacFagg.Utility
 
 			return signedArea >= 0;
 		}
+
+		public static Quaternion LookAt(Vector3 pos, Vector3 targetPos)
+		{
+			Vector3 difference = targetPos - pos;
+			float rotZ = Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg;
+			return Quaternion.Euler(0f, 0f, rotZ + 90f);
+		}
+
+		
+
 	}
 }
 
