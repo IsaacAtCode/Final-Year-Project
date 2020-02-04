@@ -30,7 +30,7 @@ namespace IsaacFagg.Track3
 
 		public Vector2 centre = Vector2.zero;
 
-		public List<Checkpoint> checkpoints;
+		
 
 		[Header("Properties - Non Essential")]
 		public float length;
@@ -342,13 +342,23 @@ namespace IsaacFagg.Track3
 			{
 				for (int j = points.Count - 1; j >= 1; j--)
 				{
-					if (j != i && j!= i+1 && i != j && i != j-1)
+					if (j == i || j == i + 1 || j == i - 1 || i == j - 1 || i == j + 1)
 					{
-						Vector2 intersect = MathsUtility.PointOfLineLineIntersection(points[i], points[i + 1], points[j], points[j - 1]);
-
-						if (Mathf.Min(points[i].x, points[i+1].x) <= intersect.x && intersect.x <= Mathf.Max(points[i].x, points[i + 1].x))
+						continue;
+					}
+					else
+					{
+						if (MathsUtility.LineSegmentsIntersect(points[i], points[i + 1], points[j], points[j - 1]))
 						{
-							intersections.Add(intersect);
+							Vector2 intersect = MathsUtility.PointOfLineLineIntersection(points[i], points[i + 1], points[j], points[j - 1]);
+
+							if (!points.Contains(intersect))
+							{
+								intersections.Add(intersect);
+
+							}
+
+
 						}
 					}
 				}
@@ -371,91 +381,9 @@ namespace IsaacFagg.Track3
 				intersect.transform.position = newPos;
 
 			}
-
-
 		}
-
-
 
 		#endregion
-
-		List<KeyValuePair<BoxCollider2D, BoxCollider2D>> usedCollider;
-		public List<BoxCollider2D> boxColliders;
-
-		#region Checkpoints
-
-
-		public void CheckpointCollisionCheck()
-		{
-			boxColliders = new List<BoxCollider2D>();
-			usedCollider = new List<KeyValuePair<BoxCollider2D, BoxCollider2D>>();
-
-			int collisions = 0;
-
-			foreach (Checkpoint item in checkpoints)
-			{
-				boxColliders.Add(item.GetComponent<BoxCollider2D>());
-			}
-
-			for (int i = 0; i < boxColliders.Count; i++)
-			{
-				CollisionCheck(i, ref usedCollider);
-			}
-
-		}
-
-		private void CollisionCheck(int currentIndex, ref List<KeyValuePair<BoxCollider2D, BoxCollider2D>> usedCollider)
-		{
-			for (int i = 0; i < boxColliders.Count; i++)
-			{
-				//Make sure that this two Colliders are not the-same
-				if (boxColliders[currentIndex] != boxColliders[i])
-				{
-
-					//Now, make sure we have not checked between this 2 Objects
-					if (!CheckedBefore(usedCollider, boxColliders[currentIndex], boxColliders[i]))
-					{
-
-
-						if (boxColliders[currentIndex].IsTouching(boxColliders[i]))
-						{
-							Debug.Log("Getting here");
-
-							//FINALLY, COLLISION IS DETECTED HERE, call ArrayCollisionDetection
-							ArrayCollisionDetection(boxColliders[currentIndex], boxColliders[i]);
-						}
-						//Mark it checked now
-						usedCollider.Add(new KeyValuePair<BoxCollider2D, BoxCollider2D>(boxColliders[currentIndex], boxColliders[i]));
-					}
-				}
-			}
-		}
-
-		bool CheckedBefore(List<KeyValuePair<BoxCollider2D, BoxCollider2D>> usedCollider, BoxCollider2D col1, BoxCollider2D col2)
-		{
-			bool checkedBefore = false;
-			for (int i = 0; i < usedCollider.Count; i++)
-			{
-				//Check if key and value exist and vice versa
-				if ((usedCollider[i].Key == col1 && usedCollider[i].Value == col2) ||
-						(usedCollider[i].Key == col2 && usedCollider[i].Value == col1))
-				{
-					checkedBefore = true;
-					break;
-				}
-			}
-			return checkedBefore;
-		}
-
-		void ArrayCollisionDetection(Collider2D col1, Collider2D col2)
-		{
-			Debug.Log(col1.name + " is Touching " + col2.name);
-		}
-
-
-		#endregion
-
-
 	}
 
 	public enum Rotation

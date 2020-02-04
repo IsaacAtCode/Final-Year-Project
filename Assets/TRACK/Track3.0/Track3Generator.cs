@@ -17,6 +17,7 @@ namespace IsaacFagg.Track3
 		public RandomNameGenerator randomNameGenerator;
 
 		[Header("Checkpoints")]
+		public List<Checkpoint> checkpoints;
 		public List<Vector2> checkpointLocations;
 		public GameObject checkpointTemplate;
 		public int checkpointCount = 40;
@@ -168,13 +169,13 @@ namespace IsaacFagg.Track3
 
 		private void GenerateCheckpoints(Path path, GameObject go)
 		{
-			track.checkpoints.Clear();
+			checkpoints.Clear();
 
 			//Invisible Checkpoints
 			checkpointLocations = path.CalculateEvenlySpacedPoints(track.length/checkpointCount, 1);
 
 			GameObject checkpointParent = new GameObject("Checkpoints");
-			checkpointParent.transform.position = track.centre;
+			checkpointParent.transform.position = Vector2.zero;
 			checkpointParent.transform.parent = go.transform;
 
 			if (track.rotation == Rotation.Anticlockwise)
@@ -192,10 +193,7 @@ namespace IsaacFagg.Track3
 				}
 			}
 
-			track.CheckpointCollisionCheck();
-
-			track.OverlapCheck(track.points);
-
+			track.OverlapCheck(checkpointLocations);
 		}
 
 		private void CreateCheckpoint(int i, Transform parent)
@@ -207,7 +205,7 @@ namespace IsaacFagg.Track3
 			checkpoint.name = ("Checkpoint: " + i);
 			checkpoint.transform.position = newPos;
 			Checkpoint cp = checkpoint.GetComponent<Checkpoint>();
-			track.checkpoints.Add(cp);
+			checkpoints.Add(cp);
 			cp.position = i;
 
 			SpriteRenderer sprite = checkpoint.GetComponent<SpriteRenderer>();
@@ -237,7 +235,15 @@ namespace IsaacFagg.Track3
 		}
 
 
+		private void OnDrawGizmos()
+		{
+			Gizmos.color = Color.blue;
 
+			for (int i = 0; i < checkpointLocations.Count - 1; i++)
+			{
+				Gizmos.DrawLine(checkpointLocations[i], checkpointLocations[i + 1]);
+			}
+		}
 
 
 
