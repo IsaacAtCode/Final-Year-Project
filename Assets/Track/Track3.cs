@@ -22,6 +22,7 @@ namespace IsaacFagg.Track3
 		[Header("Properties - Essential")]
 		[Range(0.1f, 5f)]
 		public float difficulty = 1;
+		public float calculatedDifficulty;
 
 		public List<Vector2> points;
 		public Path path;
@@ -317,7 +318,7 @@ namespace IsaacFagg.Track3
 
 	}
 
-    public enum Rotation
+	public enum Rotation
 	{
 		Clockwise,
 		Anticlockwise,

@@ -8451,6 +8451,7 @@ MonoBehaviour:
   name: The Australian Race Track
   type: 0
   difficulty: 1.86
+  calculatedDifficulty: 0
   points:
   - {x: 76.8638, y: 28.318005}
   - {x: 79.07225, y: 359.5047}
@@ -11703,7 +11704,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1696284637}
   - component: {fileID: 1696284636}
-  - component: {fileID: 1696284640}
   - component: {fileID: 1696284638}
   - component: {fileID: 1696284639}
   m_Layer: 8
@@ -11806,7 +11806,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 202c7fcc0ae0ded4ea27d15b5b85c8f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  carGO: {fileID: 0}
   wheel_FL: {fileID: 892290883}
   wheel_FR: {fileID: 79648007}
   wheel_BL: {fileID: 646236623}
@@ -11816,21 +11815,6 @@ MonoBehaviour:
   wheelSprite: {fileID: 0}
   wheelMinMax: 10
   backWheelMultiplier: 0.5
---- !u!114 &1696284640
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1696284635}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 370bdf4f195dae444b8673375d2f1430, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  acceleration: 0
-  torque: 0
-  drift: 0
 --- !u!1 &1698531144
 GameObject:
   m_ObjectHideFlags: 0

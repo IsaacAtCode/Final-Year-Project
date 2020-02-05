@@ -9,7 +9,6 @@ namespace IsaacFagg.Cars
 		public GameObject playerGO;
 		private Transform player;
 		private Rigidbody2D rb;
-		private Car cs;
 		public float playerOffsetY;
 
 		//Slight Drag to player
@@ -22,7 +21,6 @@ namespace IsaacFagg.Cars
 			playerGO = GameObject.FindGameObjectWithTag("Player");
 			player = playerGO.GetComponent<Transform>();
 			rb = playerGO.GetComponent<Rigidbody2D>();
-			cs = playerGO.GetComponent<Car>();
 		}
 
 		private void FixedUpdate()
