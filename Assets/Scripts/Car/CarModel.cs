@@ -8,9 +8,7 @@ namespace IsaacFagg.Cars
     [RequireComponent(typeof(Car3))]
     public class CarModel : MonoBehaviour
     {
-        private SpriteRenderer renderer;
-
-        public GameObject carGO;
+        private SpriteRenderer render;
 
         [Header("Wheels")]
         public GameObject wheel_FL;
@@ -27,18 +25,15 @@ namespace IsaacFagg.Cars
 
         private void Start()
         {
-            renderer = GetComponentInChildren<SpriteRenderer>();
+            render = GetComponent<SpriteRenderer>();
         }
 
 
         public void CreateCar()
         {
-            renderer.sprite = carSprite;
-            renderer.color = carColour;
+            render.sprite = carSprite;
+            render.color = carColour;
         }
-
-
-
 
         public void WheelTurn(CarTurn dir)
         {
@@ -63,9 +58,4 @@ namespace IsaacFagg.Cars
             wheel_BR.transform.localRotation = Quaternion.Lerp(wheel_BR.transform.rotation, Quaternion.Euler(backWheelRotation), 1f);
         }
     }
-
-
-
-
-
 }
