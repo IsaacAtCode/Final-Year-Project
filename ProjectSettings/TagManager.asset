@@ -8,6 +8,10 @@ TagManager:
   - Track
   - CurrentTrack
   - MinimapTrack
+  - Obstacle
+  - Oil
+  - Gravel
+  - OffCourse
   layers:
   - Default
   - TransparentFX

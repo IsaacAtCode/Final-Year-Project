@@ -33,8 +33,7 @@ namespace IsaacFagg.Player
 
 		[Header("Controls")]
 		public ControlType controlType;
-		public float touchSensitivity;
-		public float tiltSensitivity;
+		public float sensitivity;
 
 		[Header("Notifications")]
 		public bool notifOn = true;

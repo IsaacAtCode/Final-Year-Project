@@ -22,7 +22,7 @@ namespace IsaacFagg.Race
 
             GetVariables();
 
-            SpawnCar();
+            //SpawnCar();
         }
 
         private void GetVariables()

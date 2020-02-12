@@ -7,30 +7,33 @@ namespace IsaacFagg.Cars
 	public class PlayerFollow : MonoBehaviour
 	{
 		public GameObject playerGO;
-		private Transform player;
-		private Rigidbody2D rb;
-		public float playerOffsetY;
+		private Transform playerTransform;
+		public float offset;
 
 		//Slight Drag to player
 		public float damping;
 
-		Vector3 velocity;
-
 		private void Start()
 		{
-			playerGO = GameObject.FindGameObjectWithTag("Player");
-			player = playerGO.GetComponent<Transform>();
-			rb = playerGO.GetComponent<Rigidbody2D>();
+			if (playerGO == null)
+			{
+				playerGO = GameObject.FindGameObjectWithTag("Player");
+			}
+			playerTransform = playerGO.GetComponent<Transform>();
+
+			Vector3 targetPosition = new Vector3(playerTransform.position.x, playerTransform.position.y, -offset);
+			transform.position = targetPosition;
+
 		}
 
 		private void FixedUpdate()
 		{
-			if (player == null)
+			if (playerTransform == null)
 			{
 				return;
 			}
 
-			Vector3 targetPosition = new Vector3(player.position.x, player.position.y - playerOffsetY, -10);
+			Vector3 targetPosition = new Vector3(playerTransform.position.x, playerTransform.position.y, -offset);
 			transform.position = Vector3.Lerp(transform.position, targetPosition, damping * Time.deltaTime);
 		}
 

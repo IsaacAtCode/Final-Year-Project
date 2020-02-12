@@ -19,13 +19,13 @@ public class Mesh2DColliderMaker : MonoBehaviour
 		polyCollider = GetComponent<PolygonCollider2D>();
 	}
 
-//#if UNITY_EDITOR
+#if UNITY_EDITOR
 	void Update()
 	{
-		//if (!Application.isPlaying)
+		if (!Application.isPlaying)
 			CreatePolygon2DColliderPoints();
 	}
-//#endif
+#endif
 
 	#endregion
 

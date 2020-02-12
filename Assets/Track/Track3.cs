@@ -44,10 +44,8 @@ namespace IsaacFagg.Track3
 		public int minPoints;
 		public int maxPoints;
 		public float minDistance = 50f;
-		public float minHeight;
-		public float maxHeight;
-		public float minWidth;
-		public float maxWidth;
+		public float minHW;
+		public float maxHW;
 
 		[Header("Checks")]
 		public float maxLength;
@@ -97,8 +95,8 @@ namespace IsaacFagg.Track3
 
 		private void RandomTrack()
 		{
-			float randomHeight = Random.Range(minHeight, maxHeight);
-			float randomWidth = Random.Range(minWidth, maxWidth);
+			float randomHeight = Random.Range(minHW, maxHW);
+			float randomWidth = Random.Range(minHW, maxHW);
 
 			height = randomHeight;
 			width = randomWidth;

@@ -1,11 +1,8 @@
 ﻿//using System.Collections;
 //using System.Collections.Generic;
 //using UnityEngine;
-//using IsaacFagg.Tracks;
 
 
-//namespace IsaacFagg.Cars
-//{
 //	public class CarController : MonoBehaviour
 //	{
 
@@ -43,7 +40,7 @@
 //				Moving();
 //				Turning();
 //			}
-			
+
 
 //			CalculateVelocity();
 //		}
@@ -70,7 +67,7 @@
 //			{
 //				rb.AddForce(transform.up * -car.acceleration);
 //			}
-			
+
 //		}
 
 //		public void StartBrake()
@@ -111,7 +108,7 @@
 //			{
 //				carDirection = CarDirection.Both;
 //			}
-			
+
 //		}
 
 //		public void TouchTurnRight()
@@ -138,13 +135,13 @@
 //				carDirection = CarDirection.Forward;
 //			}
 
-			
+
 //		}
 
 
 //		private void CalculateVelocity()
 //		{
-//			rb.velocity = ForwardVelocity() + (RightVelocity()*car.drift);
+//			rb.velocity = ForwardVelocity() + (RightVelocity() * car.drift);
 
 //		}
 
@@ -159,4 +156,3 @@
 
 //	}
 
-//}

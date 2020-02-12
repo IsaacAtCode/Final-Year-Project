@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace IsaacFagg.Cars
 {
-    [RequireComponent(typeof(Car3))]
+    [RequireComponent(typeof(Car))]
     public class CarModel : MonoBehaviour
     {
         private SpriteRenderer render;

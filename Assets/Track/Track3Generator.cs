@@ -79,6 +79,7 @@ namespace IsaacFagg.Track3
 
 			//Tags
 			trackGO.tag = "CurrentTrack";
+			gravelGO.tag = "Gravel";
 			minimapGO.tag = "MinimapTrack";
 
 			//Layers
@@ -98,7 +99,7 @@ namespace IsaacFagg.Track3
 			mPC.path = track.path;
 
 			AddMesh(trackGO, roadMat, 20f);
-			AddMesh(gravelGO, gravelMat, 30f);
+			AddMesh(gravelGO, gravelMat, 50f);
 			AddMesh(minimapGO, minimapMat, 50f);
 
 			//AddBackground(background);
@@ -203,6 +204,7 @@ namespace IsaacFagg.Track3
 
 			checkpoint.name = ("Checkpoint: " + i);
 			checkpoint.transform.position = newPos;
+			checkpoint.tag = "Checkpoint";
 			Checkpoint cp = checkpoint.GetComponent<Checkpoint>();
 			checkpoints.Add(cp);
 			cp.position = i;
@@ -214,10 +216,11 @@ namespace IsaacFagg.Track3
 				cp.finishLine = true;
 				sprite.enabled = true;
 			}
-			//else if (i>0)
+			//else if (i > 0)
 			//{
 			//	sprite.enabled = false;
 			//}
+
 			Vector3 targetPos;
 
 			if (i == 0)
@@ -230,6 +233,12 @@ namespace IsaacFagg.Track3
 			}
 
 			checkpoint.transform.rotation = MathsUtility.LookAt(newPos, targetPos);
+		}
+
+		private void CreateBorders()
+		{
+			float borderWidth = track.width * 1.5f;
+			float borderHeight = track.height * 1.5f;
 		}
 
 
