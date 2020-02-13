@@ -235,13 +235,9 @@ namespace IsaacFagg.Track3
 			checkpoint.transform.rotation = MathsUtility.LookAt(newPos, targetPos);
 		}
 
-		private void CreateBorders()
-		{
-			float borderWidth = track.width * 1.5f;
-			float borderHeight = track.height * 1.5f;
-		}
+		#region Obstacles
 
-
+		#endregion
 
 
 		#region Race
@@ -261,6 +257,7 @@ namespace IsaacFagg.Track3
 
 
 		#endregion
+
 
 		#region Other
 

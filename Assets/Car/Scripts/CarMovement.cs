@@ -25,24 +25,32 @@ namespace IsaacFagg.Cars
         float m_SteeringDirection = 0f;
 
         [Header("Drifting")]
-        float driftFactor;
-
         public float driftFactorSticky = 0.9f;
         public float driftFactorSlippy = 1;
         public float maxStickyVelocity = 2.5f;
         public float minSlippyVelocity = 1.5f;
 
+        bool tempDrift = false;
+        float m_DriftingForce = 0f;
+
+        [Header("Obstacles")]
+        public float trackFriction = 1f;
+        public float gravelFriction = 3f;
+        public float oilSlipTime = 3f;
+
+
+        CarModel cm;
         Rigidbody2D rb;
 
         private void Awake()
         {
+            cm = GetComponent<CarModel>();
             rb = GetComponent<Rigidbody2D>();
         }
 
         private void Update()
         {
             UpdateEnginePower();
-
         }
 
         void UpdateEnginePower()
@@ -67,6 +75,7 @@ namespace IsaacFagg.Cars
 
         private void ApplyEngineForce()
         {
+            //From back tires
             float engineForce = maxEngineForce;
 
             if (m_EnginePower < 0f)
@@ -74,7 +83,15 @@ namespace IsaacFagg.Cars
                 engineForce = maxReverseForce;
             }
 
-            rb.AddForce(transform.up * m_EnginePower * engineForce * m_CurrentMaxEnginePower, ForceMode2D.Force);
+            Vector3 totalForce = transform.up * m_EnginePower * engineForce * m_CurrentMaxEnginePower;
+
+
+            //rb.AddForce(totalForce, ForceMode2D.Force);
+
+            rb.AddForceAtPosition(totalForce/2, cm.wheel_BL.transform.position, ForceMode2D.Force);
+            rb.AddForceAtPosition(totalForce/2, cm.wheel_BR.transform.position, ForceMode2D.Force);
+
+
         }
 
         private void ApplySteeringForce()
@@ -87,13 +104,14 @@ namespace IsaacFagg.Cars
 
         public void ApplyDriftForce()
         {
-            driftFactor = driftFactorSticky;
+            SetDriftForce(driftFactorSticky);
+
             if (RightVelocity().magnitude > maxStickyVelocity)
             {
-                driftFactor = driftFactorSlippy;
+                SetDriftForce(driftFactorSlippy);
             }
 
-            rb.velocity = ForwardVelocity() + RightVelocity() * driftFactor;
+            rb.velocity = ForwardVelocity() + RightVelocity() * m_DriftingForce;
         }
 
         public void SetEnginePower(float power)
@@ -107,8 +125,21 @@ namespace IsaacFagg.Cars
             m_SteeringDirection = Mathf.Clamp(direction, -1f, 1f);
         }
 
+        public void SetDriftForce(float force)
+        {
+            if (!tempDrift)
+            {
+                m_DriftingForce = Mathf.Clamp(force, 0f, 1f);
+            }
+        }
 
-
+        IEnumerator TempDriftLerp(float countdown)
+        {
+            tempDrift = true;
+            m_DriftingForce = driftFactorSlippy;
+            yield return new WaitForSeconds(countdown);
+            tempDrift = false;
+        }
 
 
         public void OnCollideWithObstacle()
@@ -118,19 +149,18 @@ namespace IsaacFagg.Cars
 
         public void OnEnterTrack()
         {
-            rb.drag = 10f;
+            rb.drag = trackFriction;
         }
 
         public void OnEnterGravel()
         {
-            rb.drag = 30f;
+            rb.drag = gravelFriction;
         }
 
 
         public void OnCollideWithOil()
         {
-            m_EnginePower = 0f;
-            //reduce friction
+            StartCoroutine(TempDriftLerp(oilSlipTime));
         }
 
         public void OnEnterOffCourse()

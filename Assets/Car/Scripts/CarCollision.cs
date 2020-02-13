@@ -9,7 +9,7 @@ namespace IsaacFagg.Cars
     {
         CarMovement movement;
 
-        public List<Collider2D> triggers = new List<Collider2D>();
+        public List<string> triggers = new List<string>();
 
         private void Awake()
         {
@@ -26,8 +26,18 @@ namespace IsaacFagg.Cars
             else
             {
                 movement.OnExitOffCourse();
-
             }
+
+            if (triggers.Contains("CurrentTrack"))
+            {
+                movement.OnEnterTrack();
+            }
+            else if (!triggers.Contains("CurrentTrack") && triggers.Contains("Gravel"))
+            {
+                movement.OnEnterGravel();
+            }
+
+
         }
 
         private void OnCollisionEnter2D(Collision2D collision)
@@ -42,32 +52,18 @@ namespace IsaacFagg.Cars
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            if (!triggers.Contains(collision))
+            if (!triggers.Contains(collision.tag))
             {
-                triggers.Add(collision);
+                triggers.Add(collision.tag);
             }
-
-
-            if (collision.CompareTag("Oil") == true )
-            {
-                movement.OnCollideWithOil();
-            }
-
-            if (collision.CompareTag("CurrentTrack") == true)
-            {
-                movement.OnEnterTrack();
-            }
-            else if (collision.CompareTag("Gravel") == true)
-            {
-                movement.OnEnterGravel();
-            }          
         }
+
 
         private void OnTriggerExit2D(Collider2D collision)
         {
-            if (triggers.Contains(collision))
+            if (triggers.Contains(collision.tag))
             {
-                triggers.Remove(collision);
+                triggers.Remove(collision.tag);
             }
         }
 
