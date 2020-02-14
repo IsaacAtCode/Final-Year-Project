@@ -31,14 +31,14 @@ namespace IsaacFagg.Cars
         public float minSlippyVelocity = 1.5f;
 
         bool tempDrift = false;
-        float m_DriftingForce = 0f;
+        public float m_DriftingForce = 0f;
 
         [Header("Obstacles")]
         public float trackFriction = 1f;
         public float gravelFriction = 3f;
         public float oilSlipTime = 3f;
 
-
+        Vector2 com = new Vector2(0, 0.5f);
         CarModel cm;
         Rigidbody2D rb;
 
@@ -46,11 +46,16 @@ namespace IsaacFagg.Cars
         {
             cm = GetComponent<CarModel>();
             rb = GetComponent<Rigidbody2D>();
+
+            rb.centerOfMass = com;
         }
 
         private void Update()
         {
             UpdateEnginePower();
+            cm.WheelTurn(m_SteeringDirection);
+
+            Debug.Log(m_DriftingForce);
         }
 
         void UpdateEnginePower()
@@ -109,6 +114,8 @@ namespace IsaacFagg.Cars
             if (RightVelocity().magnitude > maxStickyVelocity)
             {
                 SetDriftForce(driftFactorSlippy);
+
+                Debug.Log("now this is pod racing");
             }
 
             rb.velocity = ForwardVelocity() + RightVelocity() * m_DriftingForce;
@@ -135,6 +142,7 @@ namespace IsaacFagg.Cars
 
         IEnumerator TempDriftLerp(float countdown)
         {
+            Debug.Log("temp drift");
             tempDrift = true;
             m_DriftingForce = driftFactorSlippy;
             yield return new WaitForSeconds(countdown);

@@ -374,8 +374,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b1a141a1a6e93941ba177adaee07c1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  direction: 0
-  turn: 0
   speed: 0
 --- !u!114 &6246123562399183930
 MonoBehaviour:
@@ -410,18 +408,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fab9ec69b50fee549a8ca4b4e59cd9fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxEngineForce: 500
+  maxEngineForce: 350
   maxReverseForce: 150
   reversePower: -0.2
   acceleration: 3
   deceleration: 1
-  maxSteeringTorque: 250
-  driftFactorSticky: 0.9
+  maxSteeringTorque: 150
+  driftFactorSticky: 0.85
   driftFactorSlippy: 1
   maxStickyVelocity: 10
   minSlippyVelocity: 1.5
-  trackFriction: 1
-  gravelFriction: 3
+  m_DriftingForce: 0
+  trackFriction: 1.5
+  gravelFriction: 7
   oilSlipTime: 3
 --- !u!114 &6246123562399183878
 MonoBehaviour:
@@ -509,7 +508,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 10
+  m_Mass: 5
   m_LinearDrag: 10
   m_AngularDrag: 1
   m_GravityScale: 0
@@ -527,7 +526,7 @@ BoxCollider2D:
   m_GameObject: {fileID: 6246123562399183934}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: cf35d00750ba82b4093152f76e2e2601, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0

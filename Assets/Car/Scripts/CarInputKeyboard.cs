@@ -14,7 +14,15 @@ namespace IsaacFagg.Cars
 
 		void UpdateEnginePower()
 		{
-			SetEnginePower(Input.GetAxisRaw("Vertical"));
+			if (Input.GetAxisRaw("Vertical") == -1)
+			{
+				SetEnginePower(-1);
+			}
+			else
+			{
+				SetEnginePower(1);
+			}
+			
 		}
 
 		void UpdateSteering()

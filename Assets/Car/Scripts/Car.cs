@@ -6,10 +6,7 @@ namespace IsaacFagg.Cars
 {
 	public class Car : MonoBehaviour
 	{
-		CarModel carModel;
-
-		public CarDirection direction;
-		public CarTurn turn;
+		CarModel cm;
 
 		public float speed;
 
@@ -17,29 +14,15 @@ namespace IsaacFagg.Cars
 
 		private void Start()
 		{
-			carModel = GetComponent<CarModel>();
+			cm = GetComponent<CarModel>();
 		}
 
 		private void Update()
 		{
 			speed = GetComponent<Rigidbody2D>().velocity.magnitude;	
+
 		}
-	}
 
 
-
-	public enum CarDirection
-	{
-		Forward,
-		Stationary,
-		Backwards,
-	}
-
-
-	public enum CarTurn
-	{
-		Left,
-		Forward,
-		Right,
 	}
 }

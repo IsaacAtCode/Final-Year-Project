@@ -35,15 +35,15 @@ namespace IsaacFagg.Cars
             render.color = carColour;
         }
 
-        public void WheelTurn(CarTurn dir)
+        public void WheelTurn(float dir)
         {
             float wheelRot = 0f;
 
-            if (dir == CarTurn.Left)
+            if (dir >= 0.5)
             {
                 wheelRot = Mathf.Clamp(-1f * wheelMinMax, -wheelMinMax, wheelMinMax);
             }
-            if (dir == CarTurn.Right)
+            if (dir <= -0.5)
             {
                 wheelRot = Mathf.Clamp(1f * wheelMinMax, -wheelMinMax, wheelMinMax);
             }
