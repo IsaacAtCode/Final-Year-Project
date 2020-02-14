@@ -20,7 +20,6 @@ namespace IsaacFagg.Cars
         {
             if (triggers.Count == 0)
             {
-                Debug.Log("Offtrack");
                 movement.OnEnterOffCourse();
             }
             else

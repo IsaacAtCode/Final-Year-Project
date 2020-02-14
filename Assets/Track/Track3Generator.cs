@@ -76,6 +76,7 @@ namespace IsaacFagg.Track3
 			//Parents
 			trackGO.transform.parent = this.gameObject.transform;
 			gravelGO.transform.parent = trackGO.transform;
+			minimapGO.transform.parent = trackGO.transform;
 
 			//Tags
 			trackGO.tag = "CurrentTrack";
@@ -209,7 +210,7 @@ namespace IsaacFagg.Track3
 			checkpoints.Add(cp);
 			cp.position = i;
 
-			SpriteRenderer sprite = checkpoint.GetComponent<SpriteRenderer>();
+			SpriteRenderer sprite = checkpoint.GetComponentInChildren<SpriteRenderer>();
 
 			if (i == 0)
 			{
@@ -236,25 +237,6 @@ namespace IsaacFagg.Track3
 		}
 
 		#region Obstacles
-
-		#endregion
-
-
-		#region Race
-
-		public void RacePreparations()
-		{
-
-		}
-
-
-		private void SetPlayerSpawn()
-		{
-
-		}
-
-
-
 
 		#endregion
 

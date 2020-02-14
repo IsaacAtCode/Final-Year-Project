@@ -9,11 +9,13 @@ namespace IsaacFagg.Race
 {
     public class RaceManager : MonoBehaviour
     {
-
+        private GameObject playerCar;
         public GameObject carPrefab;
 
         public List<Checkpoint> checkpoints;
+        [HideInInspector]
         public Vector2 playerSpawn;
+        [HideInInspector]
         public Quaternion playerRot;
 
 
@@ -27,27 +29,31 @@ namespace IsaacFagg.Race
 
         private void GetVariables()
         {
-            Track3Generator trackGen = GetComponent<Track3Generator>();
+            Track3Generator trackGen = GameObject.FindGameObjectWithTag("Track").GetComponent<Track3Generator>();
 
             checkpoints = trackGen.checkpoints;
             playerSpawn = trackGen.checkpointLocations[trackGen.checkpointLocations.Count - 1];
 
 
             Vector3 targetPos = trackGen.checkpointLocations[0];
-
-
             playerRot = MathsUtility.LookAt(playerSpawn, targetPos);
         }
 
 
         private void SpawnCar()
         {
-            //Get line gradient, spawn parallel
+            if (GameObject.Find("Car"))
+            {
+                playerCar = GameObject.Find("Car");
+            }
+            else
+            {
+                playerCar = Instantiate(carPrefab);
+            }
 
+            playerCar.transform.position = playerSpawn;
 
-            GameObject car = Instantiate(carPrefab, playerSpawn, Quaternion.identity);
-
-            car.transform.rotation = playerRot;
+            playerCar.transform.rotation = playerRot;
 
         }
 

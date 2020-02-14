@@ -54,8 +54,6 @@ namespace IsaacFagg.Cars
         {
             UpdateEnginePower();
             cm.WheelTurn(m_SteeringDirection);
-
-            Debug.Log(m_DriftingForce);
         }
 
         void UpdateEnginePower()
@@ -67,7 +65,9 @@ namespace IsaacFagg.Cars
                 speedChange = deceleration;
             }
 
-            m_EnginePower = Mathf.MoveTowards(m_EnginePower, m_TargetEnginePower, speedChange * Time.deltaTime);
+            float targetEnginePower = m_TargetEnginePower * m_CurrentMaxEnginePower;
+
+            m_EnginePower = Mathf.MoveTowards(m_EnginePower, targetEnginePower, speedChange * Time.deltaTime);
         }
 
 
@@ -88,7 +88,7 @@ namespace IsaacFagg.Cars
                 engineForce = maxReverseForce;
             }
 
-            Vector3 totalForce = transform.up * m_EnginePower * engineForce * m_CurrentMaxEnginePower;
+            Vector3 totalForce = transform.up * m_EnginePower * engineForce;
 
 
             //rb.AddForce(totalForce, ForceMode2D.Force);
@@ -114,8 +114,6 @@ namespace IsaacFagg.Cars
             if (RightVelocity().magnitude > maxStickyVelocity)
             {
                 SetDriftForce(driftFactorSlippy);
-
-                Debug.Log("now this is pod racing");
             }
 
             rb.velocity = ForwardVelocity() + RightVelocity() * m_DriftingForce;
