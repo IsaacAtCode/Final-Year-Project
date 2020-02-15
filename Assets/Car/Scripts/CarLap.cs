@@ -1,217 +1,207 @@
-﻿//using System.Collections;
-//using System.Collections.Generic;
-//using System.Linq;
-//using UnityEngine;
-//using IsaacFagg.UI;
-//using IsaacFagg.Tracks;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
+using IsaacFagg.UI;
 
-//namespace IsaacFagg.Cars
-//{
-//	[RequireComponent(typeof(Car))]
-//	public class CarLap : MonoBehaviour
-//	{
-//		private Rigidbody2D rb;
-//		private TrackManager trackM;
-//		private CarController cc;
+namespace IsaacFagg.Cars
+{
+	[RequireComponent(typeof(Car))]
+	public class CarLap : MonoBehaviour
+	{
+		private Rigidbody2D rb;
 
-//		public PlayerHUD hud;
-
-//		public enum RaceState
-//		{
-//			Starting,
-//			Ongoing,
-//			Paused,
-//			Finished,
-//		}
-//		public RaceState raceState;
+		public enum RaceState
+		{
+			Starting,
+			Ongoing,
+			Paused,
+			Finished,
+		}
+		public RaceState raceState;
 
 
-//		[Header("Lap")]
-//		//public List<Lap> laps = new List<Lap>();
-//		//public Lap currentLap;
-//		//public Lap lastLap;
-//		//public Lap bestLap;
-//		public int lapCount = 0;
-//		public float lapTotal;
+		[Header("Lap")]
+		//public List<Lap> laps = new List<Lap>();
+		//public Lap currentLap;
+		//public Lap lastLap;
+		//public Lap bestLap;
+		public int lapCount = 0;
+		public float lapTotal;
 
 
-//		[Header("Checkpoints")]
-//		public int lastCheck;
-//		public List<Checkpoint> passedCheck;
+		[Header("Checkpoints")]
+		public int lastCheck;
+		public List<Checkpoint> passedCheck;
 
 
-//		//Race Settings
-//		public int countdown = 3;
-//		public float countdownTimer;
+		//Race Settings
+		public int countdown = 3;
+		public float countdownTimer;
 
-//		private void Start()
-//		{
-//			rb = GetComponent<Rigidbody2D>();
-//			trackM = GameObject.FindGameObjectWithTag("Track").GetComponent<TrackManager>();
-//			cc = GetComponent<CarController>();
+		private void Start()
+		{
+			rb = GetComponent<Rigidbody2D>();
 
-//			StartCoroutine(StartRace());
-//			raceState = RaceState.Starting;
+			StartCoroutine(StartRace());
+			raceState = RaceState.Starting;
 
 
-//			//hud.UpdateCounter(lastCheck.ToString() + "/" + trackM.maxCheckpoints, hud.checkCount);
-//			hud.UpdateCounter((lapCount + 1).ToString() + "/" + trackM.maxLaps + " Laps", hud.lapCount);
+			//hud.UpdateCounter(lastCheck.ToString() + "/" + trackM.maxCheckpoints, hud.checkCount);
+			//hud.UpdateCounter((lapCount + 1).ToString() + "/" + trackM.maxLaps + " Laps", hud.lapCount);
 
-//		}
+		}
 
-//		private void Update()
-//		{
-//			//Check if its player or ai
-//			if (raceState == RaceState.Starting)
-//			{
-//				cc.carState = CarState.NoMove;
-//				StartCountdown();
-//			}
-//			else if (raceState == RaceState.Ongoing)
-//			{
-//				cc.carState = CarState.Moving;
-//				lapTotal += Time.deltaTime;
-//				//currentLap.time += Time.deltaTime;
-//			}
-//			else if (raceState == RaceState.Finished)
-//			{
-//				cc.carState = CarState.Auto;
-//				//Finish
-//			}
+		private void Update()
+		{
+			////Check if its player or ai
+			//if (raceState == RaceState.Starting)
+			//{
+			//	cc.carState = CarState.NoMove;
+			//	StartCountdown();
+			//}
+			//else if (raceState == RaceState.Ongoing)
+			//{
+			//	cc.carState = CarState.Moving;
+			//	lapTotal += Time.deltaTime;
+			//	//currentLap.time += Time.deltaTime;
+			//}
+			//else if (raceState == RaceState.Finished)
+			//{
+			//	cc.carState = CarState.Auto;
+			//	//Finish
+			//}
 
-//		}
+		}
 
 
-//		private void OnTriggerEnter2D(Collider2D other)
-//		{
-//			if (other.tag == "Checkpoint")
-//			{
-//				Checkpoint cp = other.gameObject.GetComponent<Checkpoint>();
+		private void OnTriggerEnter2D(Collider2D other)
+		{
+			if (other.tag == "Checkpoint")
+			{
+				Checkpoint cp = other.gameObject.GetComponent<Checkpoint>();
 
-//				if (cp.finishLine == true && CheckAllCheckpointsPassed())
-//				{
-//					if (lapCount == trackM.maxLaps - 1)
-//					{
-//						raceState = RaceState.Finished;
-//					}
-//						FinishLap();
-//				}
-//				else
-//				{
-//					CheckpointPass(cp);
-//				}
+				if (cp.finishLine == true)
+				{
+					//if (lapCount == trackM.maxLaps - 1)
+					//{
+					//	raceState = RaceState.Finished;
+					//}
+					FinishLap();
+				}
+				else
+				{
+					CheckpointPass(cp);
+				}
 
-//				//hud.UpdateCounter(lastCheck.ToString() + "/" + trackM.maxCheckpoints, hud.checkCount);
+				//hud.UpdateCounter(lastCheck.ToString() + "/" + trackM.maxCheckpoints, hud.checkCount);
 
-//			}
-//		}
+			}
+		}
 
-//		IEnumerator StartRace()
-//		{
-			
-//			countdownTimer = countdown;
+		IEnumerator StartRace()
+		{
 
-//			yield return new WaitForSecondsRealtime(countdown);
+			countdownTimer = countdown;
 
-//			if (raceState == RaceState.Starting)
-//			{
-//				raceState = RaceState.Ongoing;
-//				CreateCurrentLap();
-//			}
-//		}
+			yield return new WaitForSecondsRealtime(countdown);
 
-//		private void StartCountdown()
-//		{
-//			countdownTimer -= Time.deltaTime;
-//		}
+			if (raceState == RaceState.Starting)
+			{
+				raceState = RaceState.Ongoing;
+			}
+		}
 
-//		private void CheckpointPass(Checkpoint check)
-//		{
-			
-//			if (check.position == lastCheck + 1)
-//			{
-//				passedCheck.Add(check);
-//				lastCheck++;
+		private void StartCountdown()
+		{
+			countdownTimer -= Time.deltaTime;
+		}
 
-//				//split
-//			}
-//		}
+		private void CheckpointPass(Checkpoint check)
+		{
 
-//		private void FinishLap()
-//		{
-//			lastCheck = 0;
-//			lapCount++;
-//			passedCheck.Clear();
+			if (check.position == lastCheck + 1)
+			{
+				
+				lastCheck++;
 
-//			SetLastLap();
+				//split
+			}
+		}
 
-//			hud.UpdateCounter((lapCount + 1).ToString() + "/" + trackM.maxLaps + " Laps", hud.lapCount);
-//		}
+		private void FinishLap()
+		{
+			lastCheck = 0;
+			lapCount++;
+			passedCheck.Clear();
 
-//		private bool CheckAllCheckpointsPassed()
-//		{
-//			if (passedCheck.Count == trackM.maxCheckpoints - 1 && lastCheck != 0)
-//			{
-//				return true;
-//			}
-//			else
-//			{
-//				Debug.Log("You need to go through all the checkpoints");
-//				return false;
-//			}
-//		}
+			//hud.UpdateCounter((lapCount + 1).ToString() + "/" + trackM.maxLaps + " Laps", hud.lapCount);
+		}
 
-//		private void CreateCurrentLap()
-//		{
-//			if (currentLap == null)
-//			{
-//				//currentLap = new Lap();
-//			}
-//			else
-//			{
-//				currentLap.time = 0;
-//				currentLap.position = lapCount;
-//				//currentLap.playerPosition = 
-//				//currentLap.splits.Clear();
-//			}
-//		}
+		//private bool CheckAllCheckpointsPassed()
+		//{
+		//	if (passedCheck.Count == trackM.maxCheckpoints - 1 && lastCheck != 0)
+		//	{
+		//		return true;
+		//	}
+		//	else
+		//	{
+		//		Debug.Log("You need to go through all the checkpoints");
+		//		return false;
+		//	}
+		//}
 
-//		private void SetLastLap()
-//		{
-//			if (lastLap == null)
-//			{
+		//private void CreateCurrentLap()
+		//{
+		//	if (currentLap == null)
+		//	{
+		//		//currentLap = new Lap();
+		//	}
+		//	else
+		//	{
+		//		currentLap.time = 0;
+		//		currentLap.position = lapCount;
+		//		//currentLap.playerPosition = 
+		//		//currentLap.splits.Clear();
+		//	}
+		//}
 
-//				//lastLap = new Lap();
-//			}
+		//private void SetLastLap()
+		//{
+		//	if (lastLap == null)
+		//	{
 
-//			lastLap = currentLap.DeepCopy(); ;
+		//		//lastLap = new Lap();
+		//	}
 
-//			hud.UpdateCounter(hud.FormatLapTime(lastLap.time), hud.lastLap);
-//			hud.UpdateCounter(hud.FormatLapTime(lapTotal), hud.lapTime);
+		//	lastLap = currentLap.DeepCopy(); ;
 
-//			AddLap(lastLap);
-//			//AddToLapsList
+		//	hud.UpdateCounter(hud.FormatLapTime(lastLap.time), hud.lastLap);
+		//	hud.UpdateCounter(hud.FormatLapTime(lapTotal), hud.lapTime);
 
-//			if (raceState == RaceState.Ongoing)
-//			{
-//				CreateCurrentLap();
-//			}
-//		}
+		//	AddLap(lastLap);
+		//	//AddToLapsList
 
-//		//private void AddLap(Lap newLap)
-//		//{
-//		//	laps.Add(lastLap);
-//		//	SortLaps();
-//		//	hud.UpdateCounter(hud.FormatLapTime(bestLap.time), hud.bestLap);
+		//	if (raceState == RaceState.Ongoing)
+		//	{
+		//		CreateCurrentLap();
+		//	}
+		//}
 
-//		//}
+		//private void AddLap(Lap newLap)
+		//{
+		//	laps.Add(lastLap);
+		//	SortLaps();
+		//	hud.UpdateCounter(hud.FormatLapTime(bestLap.time), hud.bestLap);
 
-//		//private void SortLaps()
-//		//{
-//		//	List<Lap> fastLaps = laps.OrderBy(Lap => Lap.time).ToList();
+		//}
 
-//		//	bestLap = fastLaps[0].DeepCopy();
-//		//}
-//	}
-//}
+		//private void SortLaps()
+		//{
+		//	List<Lap> fastLaps = laps.OrderBy(Lap => Lap.time).ToList();
+
+		//	bestLap = fastLaps[0].DeepCopy();
+		//}
+	}
+}
 

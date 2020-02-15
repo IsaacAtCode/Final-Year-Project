@@ -7,6 +7,11 @@ namespace IsaacFagg.Cars
     [RequireComponent(typeof(Car))]
     public class CarMovement : MonoBehaviour
     {
+        Car car;
+        CarModel cm;
+        Rigidbody2D rb;
+
+
         [Header("Engine")]
         public float maxEngineForce;
         public float maxReverseForce;
@@ -39,11 +44,11 @@ namespace IsaacFagg.Cars
         public float oilSlipTime = 3f;
 
         Vector2 com = new Vector2(0, 0.5f);
-        CarModel cm;
-        Rigidbody2D rb;
+
 
         private void Awake()
         {
+            car = GetComponent<Car>();
             cm = GetComponent<CarModel>();
             rb = GetComponent<Rigidbody2D>();
 
@@ -73,9 +78,13 @@ namespace IsaacFagg.Cars
 
         private void FixedUpdate()
         {
-            ApplyEngineForce();
-            ApplySteeringForce();
-            ApplyDriftForce();
+            if (car.carState == CarState.On )
+            {
+                ApplyEngineForce();
+                ApplySteeringForce();
+                ApplyDriftForce();
+            }
+
         }
 
         private void ApplyEngineForce()
@@ -192,10 +201,6 @@ namespace IsaacFagg.Cars
         {
             return transform.right * Vector2.Dot(rb.velocity, transform.right);
         }
-
-
-
-
-
     }
+
 }

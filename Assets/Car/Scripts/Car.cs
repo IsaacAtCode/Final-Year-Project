@@ -10,6 +10,10 @@ namespace IsaacFagg.Cars
 
 		public float speed;
 
+		public float distanceTravelled = 0;
+		Vector2 lastPos;
+
+		public CarState carState = CarState.Off;
 
 
 		private void Start()
@@ -19,10 +23,19 @@ namespace IsaacFagg.Cars
 
 		private void Update()
 		{
-			speed = GetComponent<Rigidbody2D>().velocity.magnitude;	
+			speed = GetComponent<Rigidbody2D>().velocity.magnitude;
 
+			distanceTravelled += Vector2.Distance(transform.position, lastPos);
+			lastPos = transform.position;
 		}
 
 
+	}
+
+	public enum CarState
+	{
+		Off,
+		On,
+		Auto
 	}
 }

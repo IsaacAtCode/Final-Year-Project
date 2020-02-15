@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using IsaacFagg.Race;
 
 namespace IsaacFagg.Cars
 {
@@ -8,12 +9,16 @@ namespace IsaacFagg.Cars
     public class CarCollision : MonoBehaviour
     {
         CarMovement movement;
+        RaceManager rm;
+        
 
         public List<string> triggers = new List<string>();
 
         private void Awake()
         {
             movement = GetComponent<CarMovement>();
+
+            rm = Object.FindObjectOfType<RaceManager>();
         }
 
         private void Update()
@@ -54,6 +59,11 @@ namespace IsaacFagg.Cars
             if (!triggers.Contains(collision.tag))
             {
                 triggers.Add(collision.tag);
+            }
+
+            if (collision.CompareTag("Checkpoint"))
+            {
+                rm.HitCheckpoint(collision.GetComponent<Checkpoint>());
             }
         }
 

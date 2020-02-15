@@ -12,9 +12,7 @@
 //	{
 //		public GameObject player;
 //		public Car pCar;
-//		public CarController pController;
-//		//public CarLap pLap;
-//		public TrackManager trackM;
+//		public CarLap pLap;
 
 
 //		[Header("Laps")]
@@ -41,7 +39,6 @@
 //		private void Start()
 //		{
 //			pCar = player.GetComponent<Car>();
-//			pController = player.GetComponent<CarController>();
 //			//pLap = player.GetComponent<CarLap>();
 
 //			lastLap.text = "";

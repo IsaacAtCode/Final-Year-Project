@@ -69,8 +69,16 @@ namespace IsaacFagg.Utility
 			return Quaternion.Euler(0f, 0f, rotZ + 90f);
 		}
 
-		
+		public static string FormatLapTime(float time)
+		{
+			int minutes = (int)time / 60;
+			int seconds = (int)time % 60;
+			float milliseconds = time * 100;
+			milliseconds %= 100;
 
+
+			return string.Format("{0:0}:{1:00}:{2:00}", minutes, seconds, milliseconds);
+		}
 	}
 }
 

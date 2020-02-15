@@ -183,17 +183,12 @@ namespace IsaacFagg.Track3
 
 			if (track.rotation == Rotation.Anticlockwise)
 			{
-				for (int i = checkpointLocations.Count - 1; i >= 0 ; i--)
-				{
-					CreateCheckpoint(i, checkpointParent.transform);
-				}
+				checkpointLocations.Reverse();
 			}
-			else
+
+			for (int i = 0; i < checkpointLocations.Count; i++)
 			{
-				for (int i = 0; i < checkpointLocations.Count; i++)
-				{
-					CreateCheckpoint(i, checkpointParent.transform);
-				}
+				CreateCheckpoint(i, checkpointParent.transform);
 			}
 		}
 
