@@ -16,7 +16,6 @@ namespace IsaacFagg.Mobile
             if (leftBrake || rightBrake)
             {
                 braking = true;
-                Debug.Log("braking");
             }
             else
             {

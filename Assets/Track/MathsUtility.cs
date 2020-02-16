@@ -66,7 +66,7 @@ namespace IsaacFagg.Utility
 		{
 			Vector3 difference = targetPos - pos;
 			float rotZ = Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg;
-			return Quaternion.Euler(0f, 0f, rotZ + 90f);
+			return Quaternion.Euler(0f, 0f, rotZ - 90f);
 		}
 
 		public static string FormatLapTime(float time)

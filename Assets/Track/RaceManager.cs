@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System.Linq;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using IsaacFagg.Player;
@@ -14,6 +15,7 @@ namespace IsaacFagg.Race
 		Track3Generator trackGen;
 		private Car car;
 		public GameObject carPrefab;
+		RaceUI raceUI;
 
 		public List<Checkpoint> checkpoints;
 		public List<Vector2> checkpointLocations;
@@ -30,40 +32,60 @@ namespace IsaacFagg.Race
 		[Header("Race Statistics")]
 
 		//Start of Race
-		bool isRaceStarted = false;
-		bool isRaceFinished = false;
+		public bool isRaceStarted = false;
+		public bool isRaceFinished = false;
 		public float countdown = 0;
 
 
 		//Laps
-		bool isLapStarted = false;
-		float currentLapStartTime;
-		public float distanceAtLastCheckpoint = 0f;
-		public float lapCount = 0;
-		public Lap lastLap;
-		public Lap bestLap;
+		float distanceAtLastCheckpoint = 0f;
+		public int lapCount = 0;
+		public Lap lastLap
+		{
+			get
+			{
+				return race.laps[lapCount - 1];
+			}
+		}
+		public Lap bestLap
+		{
+			get
+			{
+				List<Lap> allLaps = new List<Lap>();
+
+				allLaps = race.laps.OrderBy(e => e.time).ToList();
+
+				return allLaps[0];
+			}
+		}
 		public Lap currentLap;
 
+		//Time
 		public float totalTime;
+		public float currentLapTime;
+		float timeAtLastCheckpoint;
 
 		public float lastCheckpoint;
 		public List<Checkpoint> passedCheck;
 
-
-
-		private void Start()
+		private void Awake()
 		{
 			car = GameObject.FindGameObjectWithTag("Player").GetComponent<Car>();
 			trackGen = GameObject.FindGameObjectWithTag("Track").GetComponent<Track3Generator>();
+			raceUI = GetComponent<RaceUI>();
+		}
 
+		private void Start()
+		{
 			GetVariables();
 
 			SpawnCar();
 
-
 			StartCoroutine(StartRaceCountdown());
 
 			car.carState = CarState.Off;
+
+			raceUI.UpdateLap(lapCount, maxLaps);
 		}
 
 		private void Update()
@@ -73,6 +95,7 @@ namespace IsaacFagg.Race
 			if (isRaceStarted && !isRaceFinished)
 			{
 				totalTime += Time.deltaTime;
+				currentLapTime += Time.deltaTime;
 			}
 		}
 
@@ -81,15 +104,12 @@ namespace IsaacFagg.Race
 
 		private void GetVariables()
 		{
-
-
 			checkpoints = trackGen.checkpoints;
 			playerSpawn = trackGen.checkpointLocations[0];
 
 			//Need to fix
 			Vector3 targetPos = trackGen.checkpointLocations[1];
 			playerRot = MathsUtility.LookAt(playerSpawn, targetPos);
-
 
 			checkpoints = trackGen.checkpoints;
 		}
@@ -100,14 +120,15 @@ namespace IsaacFagg.Race
 			if (GameObject.Find("Car"))
 			{
 				car = GameObject.Find("Car").GetComponent<Car>();
+				car.transform.position = playerSpawn;
+				car.transform.rotation = playerRot;
 			}
 			else
 			{
-				car = Instantiate(carPrefab, Vector2.zero, Quaternion.identity).GetComponent<Car>(); ;
+				car = Instantiate(carPrefab, playerSpawn, playerRot).GetComponent<Car>(); ;
 			}
 
-			car.transform.position = playerSpawn;
-			car.transform.rotation = playerRot;
+			
 
 		}
 
@@ -136,8 +157,6 @@ namespace IsaacFagg.Race
 			{
 				countdown = 0;
 			}
-
-
 		}
 
 		#endregion
@@ -159,9 +178,11 @@ namespace IsaacFagg.Race
 
 		public void HitCheckpoint(Checkpoint checkpoint)
 		{
+			float newLength;
+
 			if (checkpoint.position == lastCheckpoint + 1)
 			{
-				float newLength = 0;
+				
 
 				if (checkpoint.position != checkpoints.Count - 1)
 				{
@@ -177,11 +198,19 @@ namespace IsaacFagg.Race
 			}
 			else if (checkpoint.position == lastCheckpoint)
 			{
-				Debug.Log("Same checkpoint");
+				//Debug.Log("Same checkpoint");
 			}
-			else if (checkpoints.Count == passedCheck.Count)
+			else if (checkpoints.Count - 1 == passedCheck.Count && checkpoint.finishLine)
 			{
+				newLength = Vector2.Distance(trackGen.checkpointLocations[checkpoint.position], trackGen.checkpointLocations[0]);
+
+				PassCheckpoint(newLength);
 				PassFinish();
+
+				if (lapCount >= maxLaps)
+				{
+					FinishRace();
+				}
 			}
 			else if (checkpoint.position != lastCheckpoint + 1 && checkpoint.position < lastCheckpoint)
 			{
@@ -196,26 +225,41 @@ namespace IsaacFagg.Race
 
 		public void PassCheckpoint(float lengthBetweenCheckpoints)
 		{
-
 			lastCheckpoint++;
 
-			currentLap.EndSplit(0, distanceAtLastCheckpoint, car.distanceTravelled, lengthBetweenCheckpoints);
+			float time = totalTime - timeAtLastCheckpoint;
+			float distance = car.distanceTravelled - distanceAtLastCheckpoint;
+
+			currentLap.EndSplit(time, distance, lengthBetweenCheckpoints);
 
 			distanceAtLastCheckpoint = car.distanceTravelled;
+			timeAtLastCheckpoint = totalTime;
+
+			//Debug.Log(currentLap.distance);
 
 		}
 
 		public void PassFinish()
 		{
+			race.EndLap(currentLap);
+
 			lastCheckpoint = 0;
 			lapCount++;
 
+
+			currentLap = new Lap();
 			passedCheck.Clear();
 
+			currentLapTime = 0;
 
-			Debug.Log("newLap");
+			raceUI.UpdateLap(lapCount, maxLaps);
 		}
 
+		private void FinishRace()
+		{
+			isRaceFinished = true;
+			car.carState = CarState.Auto;
+		}
 
 
 
@@ -226,12 +270,6 @@ namespace IsaacFagg.Race
 		#endregion
 
 		#region Utility
-
-		
-
-
-
-
 
 		#endregion
 
@@ -288,16 +326,9 @@ namespace IsaacFagg.Race
 			}
 		}
 
-		public void EndLap()
+		public void EndLap(Lap lap)
 		{
-			Lap lap = new Lap
-			{
-				position = laps.Count
-			};
-
 			laps.Add(lap);
-
-			Debug.Log(averageSpeed);
 		}
 
 
@@ -356,14 +387,14 @@ namespace IsaacFagg.Race
 			}
 		}
 
-		public void EndSplit(float time, float startDis, float endDis, float length)
+		public void EndSplit(float time, float dis, float length)
 		{
 			Split split = new Split();
 
 			split.position = splits.Count;
 			split.time = time;
 
-			split.distance = endDis - startDis;
+			split.distance = dis;
 			split.length = length;
 
 			splits.Add(split);

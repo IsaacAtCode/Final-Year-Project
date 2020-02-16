@@ -10,8 +10,8 @@ namespace IsaacFagg.Mobile
     {
         public int direction = 0;
 
-        bool leftTurn = true;
-        bool rightTurn = false;
+        public bool leftTurn = false;
+        public bool rightTurn = false;
 
         public void UpdateDirection()
         {
