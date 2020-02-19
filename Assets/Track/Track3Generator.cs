@@ -56,12 +56,7 @@ namespace IsaacFagg.Track3
 
 				generateNewTrack = false;
 
-
-
 				GenerateFromTrack();
-
-
-
 			}
 		}
 

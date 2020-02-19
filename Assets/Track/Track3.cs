@@ -26,7 +26,6 @@ namespace IsaacFagg.Track3
 
 		public List<Vector2> points;
 		public Path path;
-		private List<float> distanceBetweenPoints;
 		public Rotation rotation;
 
 		public Vector2 centre = Vector2.zero;
@@ -77,17 +76,6 @@ namespace IsaacFagg.Track3
 				//Get Player file
 			}
 			//}
-
-
-			//Measurements
-			GetCentre();
-			GetLength();
-			GetTrackSize();
-			GetStraights();
-			GetCorners();
-
-
-			//Checks
 		}
 
 
@@ -245,6 +233,7 @@ namespace IsaacFagg.Track3
 			{
 				length += Vector2.Distance(points[i], points[i + 1]);
 			}
+
 			length += Vector2.Distance(points[points.Count-1], points[0]);
 		}
 
@@ -308,12 +297,6 @@ namespace IsaacFagg.Track3
 		}
 
 		#endregion
-
-
-
-
-
-
 	}
 
 	public enum Rotation

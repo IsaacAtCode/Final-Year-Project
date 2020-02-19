@@ -11,19 +11,38 @@ namespace IsaacFagg.Paths
 		[SerializeField, HideInInspector]
 		public List<Vector2> points;
 		[SerializeField, HideInInspector]
-		bool isClosed;
+		bool isClosed = true;
 		[SerializeField, HideInInspector]
-		bool autoSetControlPoints;
+		bool autoSetControlPoints = true;
 
 		public Path(Vector2 centre)
 		{
 			points = new List<Vector2>
-		{
-			centre+Vector2.left,
+			{
+			centre+Vector2.left, //Initial point
 			centre+(Vector2.left+Vector2.up)*.5f,
 			centre + (Vector2.right+Vector2.down)*.5f,
-			centre + Vector2.right
-		};
+			centre + Vector2.right // Second Point
+			};
+		}
+
+		public Path(List<Vector2> newPoints)
+		{
+			Path path = new Path(Vector2.zero);
+			path.points[0] = newPoints[0];
+			path.points[3] = newPoints[1];
+
+			AutoSetAllControlPoints();
+
+			for (int i = 2; i < newPoints.Count; i++)
+			{
+				AddSegment(newPoints[i]);
+			}
+
+			IsClosed = true;
+			autoSetControlPoints = true;
+
+			AutoSetAllControlPoints();
 		}
 
 		public Vector2 this[int i]
@@ -67,7 +86,6 @@ namespace IsaacFagg.Paths
 				}
 			}
 		}
-
 
 		public bool AutoSetControlPoints
 		{
@@ -238,6 +256,7 @@ namespace IsaacFagg.Paths
 
 			return evenlySpacedPoints;
 		}
+
 
 
 		void AutoSetAllAffectedControlPoints(int updatedAnchorIndex)
