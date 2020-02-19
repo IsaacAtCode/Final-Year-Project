@@ -1,17 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using IsaacFagg.Utility;
 
 namespace IsaacFagg.Paths
 {
 	[System.Serializable]
 	public class Path
 	{
-
 		[SerializeField, HideInInspector]
 		public List<Vector2> points;
 		[SerializeField, HideInInspector]
-		bool isClosed = true;
+		bool isClosed = false;
 		[SerializeField, HideInInspector]
 		bool autoSetControlPoints = true;
 
@@ -19,30 +19,41 @@ namespace IsaacFagg.Paths
 		{
 			points = new List<Vector2>
 			{
-			centre+Vector2.left, //Initial point
-			centre+(Vector2.left+Vector2.up)*.5f,
-			centre + (Vector2.right+Vector2.down)*.5f,
-			centre + Vector2.right // Second Point
+				centre + Vector2.left, //Initial point
+				centre + (Vector2.left+Vector2.up)*.5f,
+				centre + (Vector2.right+Vector2.down)*.5f,
+				centre + Vector2.right // Second Point
 			};
 		}
 
 		public Path(List<Vector2> newPoints)
 		{
-			Path path = new Path(Vector2.zero);
-			path.points[0] = newPoints[0];
-			path.points[3] = newPoints[1];
+			Vector2 centre = TrackUtility.GetCentre(newPoints);
 
-			AutoSetAllControlPoints();
-
-			for (int i = 2; i < newPoints.Count; i++)
+			points = new List<Vector2>
 			{
-				AddSegment(newPoints[i]);
+				centre + Vector2.left, //Initial point
+				centre + (Vector2.left+Vector2.up)*.5f,
+				centre + (Vector2.right+Vector2.down)*.5f,
+				centre + Vector2.right // Second Point
+			};
+
+			if (newPoints.Count > 1)
+			{
+				MovePoint(0, newPoints[0]);
+
+				MovePoint(3, newPoints[1]);
+
+				for (int i = 2; i < newPoints.Count; i++)
+				{
+					//Vector2 anchorPos = new Vector2(allPoints[i + 2].x, allPoints[i + 2].y);
+
+					AddSegment(newPoints[i]);
+				}
 			}
 
 			IsClosed = true;
-			autoSetControlPoints = true;
-
-			AutoSetAllControlPoints();
+			AutoSetControlPoints = true;
 		}
 
 		public Vector2 this[int i]
@@ -147,7 +158,6 @@ namespace IsaacFagg.Paths
 				AutoSetAnchorControlPoints(segmentIndex * 3 + 3);
 			}
 		}
-
 
 		public void DeleteSegment(int anchorIndex)
 		{
@@ -257,7 +267,42 @@ namespace IsaacFagg.Paths
 			return evenlySpacedPoints;
 		}
 
+		public List<Vector2> CalculateNumberOfPoints(float count)
+		{
+			//float length = EstimatedLength();
+			//float divisions = length / count;
 
+			float divisions = (NumSegments * 10) / count;
+			Debug.Log("Segments: " + NumSegments);
+			Debug.Log("Count: " + count);
+			Debug.Log("Divisions: " + divisions);
+
+			if (divisions != 0)
+			{
+				return CalculateEvenlySpacedPoints(divisions);
+			}
+			else
+			{
+				Debug.Log("Broken");
+				return null;
+			}
+		}
+
+		public float EstimatedLength()
+		{
+			float length = 0;
+
+
+			for (int segmentIndex = 0; segmentIndex < NumSegments; segmentIndex++)
+			{
+				Vector2[] p = GetPointsInSegment(segmentIndex);
+				float controlNetLength = Vector2.Distance(p[0], p[1]) + Vector2.Distance(p[1], p[2]) + Vector2.Distance(p[2], p[3]);
+				float estimatedCurveLength = Vector2.Distance(p[0], p[3]) + controlNetLength / 2f;
+
+				length += estimatedCurveLength;
+			}
+			return length;
+		}
 
 		void AutoSetAllAffectedControlPoints(int updatedAnchorIndex)
 		{

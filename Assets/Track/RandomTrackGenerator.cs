@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using IsaacFagg.Utility;
 
 namespace IsaacFagg.Track
 { 
@@ -16,19 +17,15 @@ namespace IsaacFagg.Track
 
 		public TrackData GenerateRandomTrack()
         {
-			TrackData track = new TrackData();
-
-
-
             float randomHeight = Random.Range(minHW, maxHW);
             float randomWidth = Random.Range(minHW, maxHW);
 
             float randheight = randomHeight;
             float randwidth = randomWidth;
 
-            track.initialPoints = GenerateMidpoints(GenerateConvexHull(GenerateRandomPoints(Random.Range(minPoints, maxPoints), randheight, randwidth)), 1);
+			List<Vector2> points = GenerateMidpoints(GenerateConvexHull(GenerateRandomPoints(Random.Range(minPoints, maxPoints), randheight, randwidth)), 1);
 
-			track.rotation = TrackUtility.RandomRotation();
+			TrackData track = new TrackData(points, TrackUtility.RandomRotation());
 
 			return track;
         }

@@ -114,11 +114,11 @@ namespace IsaacFagg.Track3
 
 				newPath.MovePoint(3, track.points[1]);
 
-				for (int i = 0; i < track.points.Count - 2; i++)
+				for (int i = 2; i < track.points.Count - 2; i++)
 				{
 					//Vector2 anchorPos = new Vector2(allPoints[i + 2].x, allPoints[i + 2].y);
 
-					newPath.AddSegment(track.points[i + 2]);
+					newPath.AddSegment(track.points[i]);
 				}
 			}
 

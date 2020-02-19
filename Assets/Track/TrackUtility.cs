@@ -1,9 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using IsaacFagg.Track;
 using IsaacFagg.Paths;
 
-namespace IsaacFagg.Track
+namespace IsaacFagg.Utility
 {
     public static class TrackUtility
     {
@@ -48,16 +49,9 @@ namespace IsaacFagg.Track
 
         public static float GetLength(List<Vector2> points)
         {
-            float length = 0;
+            Path path = new Path(points);
 
-            for (int i = 0; i < points.Count - 1; i++)
-            {
-                length += Vector2.Distance(points[i], points[i + 1]);
-            }
-
-            length += Vector2.Distance(points[points.Count - 1], points[0]);
-
-            return length;
+            return path.EstimatedLength();
         }
 
         public static int GetStraights(List<Vector2> points)
@@ -109,14 +103,13 @@ namespace IsaacFagg.Track
 
         }
 
+        public static List<Vector2> GetEqualPoints(List<Vector2> points, int count)
+        {
+            Path path = new Path(TrackUtility.GetCentre(points));
 
+            return path.CalculateNumberOfPoints(count);
 
-
-        //public static List<Vector2> GetEqualPoints(List<Vector2> points, int count)
-        //{
-        //    Path path = new Path(points);
-
-        //}
+        }
 
         public static Rotation RandomRotation()
         {
