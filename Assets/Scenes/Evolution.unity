@@ -305,6 +305,7 @@ GameObject:
   - component: {fileID: 2109810345}
   - component: {fileID: 2109810344}
   - component: {fileID: 2109810342}
+  - component: {fileID: 2109810343}
   m_Layer: 0
   m_Name: Track Evolution
   m_TagString: Untagged
@@ -324,10 +325,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be2346fc12d81204ab74d2ee0cea1f79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  name: Tallahase Speedway
   validTrack: 0
   points: []
   rotation: 0
   isRotationSet: 0
+  obstacleCount: 0
+  powerCount: 0
+--- !u!114 &2109810343
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2109810341}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d146b15c40298a04496acbe3d99f9083, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Genes: {fileID: 0}
 --- !u!114 &2109810344
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -340,8 +357,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b5389f0f23d0bc43a6c24fcdb7760d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  track1: {fileID: 0}
-  track2: {fileID: 0}
+  Elitism: 0
+  MutationRate: 0
 --- !u!4 &2109810345
 Transform:
   m_ObjectHideFlags: 0

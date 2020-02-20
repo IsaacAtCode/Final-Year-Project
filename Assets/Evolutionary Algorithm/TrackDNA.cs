@@ -2,17 +2,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using Random = System.Random;
-
 using UnityEngine;
-
 using IsaacFagg.Track;
 
 
 namespace IsaacFagg.Genetics
 {
-    public class TrackDNA
+    public class TrackDNA : MonoBehaviour
     {
-        public TrackData Genes { get; private set; }
+        public TrackData Genes;
+        //{ get; private set; }
         public float Fitness { get; private set; }
 
         private Random random;
