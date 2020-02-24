@@ -242,7 +242,7 @@ namespace IsaacFagg.Paths
 				Vector2[] p = GetPointsInSegment(segmentIndex);
 				float controlNetLength = Vector2.Distance(p[0], p[1]) + Vector2.Distance(p[1], p[2]) + Vector2.Distance(p[2], p[3]);
 				float estimatedCurveLength = Vector2.Distance(p[0], p[3]) + controlNetLength / 2f;
-				int divisions = Mathf.CeilToInt(estimatedCurveLength * resolution * 10);
+				int divisions = Mathf.CeilToInt(estimatedCurveLength * 10);
 				float t = 0;
 				while (t <= 1)
 				{
@@ -270,17 +270,13 @@ namespace IsaacFagg.Paths
 		public List<Vector2> CalculateNumberOfPoints(float count)
 		{
 			float length = EstimatedLength();
-			//float divisions = length / count;
+			float distance = (length / count);
 
-			float divisions = (NumSegments * 10) / length;
+			Debug.Log("Length: " + length + " Distance: " + distance);
 
-			Debug.Log("Count: " + length + " Segments: " + NumSegments + " = Divisions: " + divisions);
-
-
-
-			if (divisions != 0)
+			if (distance != 0)
 			{
-				return CalculateEvenlySpacedPoints(divisions);
+				return CalculateEvenlySpacedPoints(distance);
 			}
 			else
 			{
@@ -292,7 +288,6 @@ namespace IsaacFagg.Paths
 		public float EstimatedLength()
 		{
 			float length = 0;
-
 
 			for (int segmentIndex = 0; segmentIndex < NumSegments; segmentIndex++)
 			{

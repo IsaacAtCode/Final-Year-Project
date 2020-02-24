@@ -107,12 +107,6 @@ namespace IsaacFagg.Utility
             return distance;
         }
 
-        public static float GetAngleFromCentre(List<Vector2> points, int positions)
-        {
-            float angle = Vector2.Angle(GetCentre(points), points[0]);
-            return angle;
-        }
-
         public static List<Vector2> GetEqualPoints(List<Vector2> points, int count)
         {
             Path path = new Path(TrackUtility.GetCentre(points));

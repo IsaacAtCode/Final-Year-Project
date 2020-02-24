@@ -5,17 +5,15 @@ using IsaacFagg.Utility;
 
 namespace IsaacFagg.Track
 { 
-    public class RandomTrackGenerator : MonoBehaviour
+    public static class RandomTrackGenerator
     {
-		public int minPoints;
-		public int maxPoints;
-		public float minDistance = 50f;
-		public float minHW;
-		public float maxHW;
+		public static int minPoints = 5;
+		public static int maxPoints = 40;
+		public static float minDistance = 50f;
+		public static float minHW = 250f;
+		public static float maxHW = 1250f;
 
-
-
-		public TrackData GenerateRandomTrack()
+		public static TrackData GenerateRandomTrack()
         {
             float randomHeight = Random.Range(minHW, maxHW);
             float randomWidth = Random.Range(minHW, maxHW);
@@ -30,7 +28,7 @@ namespace IsaacFagg.Track
 			return track;
         }
 
-        private List<Vector2> GenerateRandomPoints(int count, float height, float width)
+        private static List<Vector2> GenerateRandomPoints(int count, float height, float width)
         {
             List<Vector2> points = new List<Vector2>(count);
 
@@ -47,7 +45,7 @@ namespace IsaacFagg.Track
             return points;
         }
 
-		private List<Vector2> GenerateConvexHull(List<Vector2> inputPoints)
+		private static List<Vector2> GenerateConvexHull(List<Vector2> inputPoints)
 		{
 			List<Vector2> outputPoints = new List<Vector2>();
 
@@ -103,7 +101,7 @@ namespace IsaacFagg.Track
 			return outputPoints;
 		}
 
-		private List<Vector2> GenerateMidpoints(List<Vector2> inputPoints, float difficulty)
+		private static List<Vector2> GenerateMidpoints(List<Vector2> inputPoints, float difficulty)
 		{
 			List<Vector2> outputPoints = new List<Vector2>();
 
@@ -136,7 +134,7 @@ namespace IsaacFagg.Track
 			return outputPoints;
 		}
 
-		private float Midpoint(float x, float y)
+		private static float Midpoint(float x, float y)
 		{
 			return (x + y) / 2;
 		}

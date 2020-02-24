@@ -93,43 +93,116 @@ namespace IsaacFagg.Track
             obstacleCount = obstacle;
             powerCount = powerups;
         }
-        
+
         #endregion
 
-        //Properies
-        public float height
+        //Properties
+        private float height = 0;
+        private bool isHeightSet = false;
+        public float Height
         {
             get
             {
-                return TrackUtility.GetHeight(points);
+                if (isHeightSet)
+                {
+                    return height;
+                }
+                else
+                {
+                    return TrackUtility.GetHeight(points);
+                }
+            }
+            set
+            {
+                height = value;
+                isHeightSet = true;
             }
         }
-        public float width
+
+
+        private float width = 0;
+        private bool isWidthSet = false;
+        public float Width
         {
             get
             {
-                return TrackUtility.GetWidth(points);
+                if (isWidthSet)
+                {
+                    return width;
+                }
+                else
+                {
+                    return TrackUtility.GetWidth(points);
+                }
+            }
+            set
+            {
+                width = value;
+                isWidthSet = true;
             }
         }
-        public float length
+        private float length = 0;
+        private bool isLengthSet = false;
+        public float Length
         {
             get
             {
-                return TrackUtility.GetLength(points);
+                if (isLengthSet)
+                {
+                    return length;
+                }
+                else
+                {
+                    return TrackUtility.GetLength(points);
+                }
+            }
+            set
+            {
+                length = value;
+                isLengthSet = true;
             }
         }
-        public int straightCount
+
+        private int straightCount = 0;
+        private bool isStraightsSet = false;
+        public int StraightCount
         {
             get
             {
+                if (isStraightsSet)
+                {
+                    return straightCount;
+                }
+                else
+                {
                     return TrackUtility.GetStraights(points);
+                }
+            }
+            set
+            {
+                straightCount = value;
+                isStraightsSet = true;
             }
         }
-        public int curveCount
+        private int curveCount = 0;
+        private bool isCurvesSet = false;
+        public int CurveCount
         {
             get
             {
-                return TrackUtility.GetCurves(points);
+                if (isCurvesSet)
+                {
+                    return curveCount;
+                }
+                else
+                {
+                    return TrackUtility.GetCurves(points);
+                }
+            }
+            set
+            {
+                curveCount = value;
+                isCurvesSet = true;
             }
         }
 
