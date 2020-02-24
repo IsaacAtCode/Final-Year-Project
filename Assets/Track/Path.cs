@@ -269,13 +269,14 @@ namespace IsaacFagg.Paths
 
 		public List<Vector2> CalculateNumberOfPoints(float count)
 		{
-			//float length = EstimatedLength();
+			float length = EstimatedLength();
 			//float divisions = length / count;
 
-			float divisions = (NumSegments * 10) / count;
-			Debug.Log("Segments: " + NumSegments);
-			Debug.Log("Count: " + count);
-			Debug.Log("Divisions: " + divisions);
+			float divisions = (NumSegments * 10) / length;
+
+			Debug.Log("Count: " + length + " Segments: " + NumSegments + " = Divisions: " + divisions);
+
+
 
 			if (divisions != 0)
 			{

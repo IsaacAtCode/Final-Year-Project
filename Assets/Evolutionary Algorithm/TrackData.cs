@@ -144,7 +144,6 @@ namespace IsaacFagg.Track
 
             return scaledPoints;
         }
-
     }
 
 }

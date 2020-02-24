@@ -98,9 +98,19 @@ namespace IsaacFagg.Utility
                 Vector2 newPoint = new Vector2(point.x - centre.x, point.y - centre.y);
                 newPoints.Add(newPoint);
             }
-
             return newPoints;
+        }
 
+        public static float GetDistanceFromCentre(List<Vector2> points, int position)
+        {
+            float distance = Vector2.Distance(points[position], GetCentre(points));
+            return distance;
+        }
+
+        public static float GetAngleFromCentre(List<Vector2> points, int positions)
+        {
+            float angle = Vector2.Angle(GetCentre(points), points[0]);
+            return angle;
         }
 
         public static List<Vector2> GetEqualPoints(List<Vector2> points, int count)
