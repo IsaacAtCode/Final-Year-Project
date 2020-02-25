@@ -230,59 +230,80 @@ namespace IsaacFagg.Paths
 			}
 		}
 
-		public List<Vector2> CalculateEvenlySpacedPoints(float spacing, float resolution = 1)
+		public List<Vector2> CalculateEvenlySpacedPoints(float spacing, float accuracy = 1)
 		{
 			List<Vector2> evenlySpacedPoints = new List<Vector2>();
 			evenlySpacedPoints.Add(points[0]);
+
 			Vector2 previousPoint = points[0];
+			Vector2 lastAddedPoint = points[0];
+
+			float currentPathLength = 0;
 			float distSinceLastEvenPoint = 0;
 
 			for (int segmentIndex = 0; segmentIndex < NumSegments; segmentIndex++)
 			{
 				Vector2[] p = GetPointsInSegment(segmentIndex);
-				float controlNetLength = Vector2.Distance(p[0], p[1]) + Vector2.Distance(p[1], p[2]) + Vector2.Distance(p[2], p[3]);
-				float estimatedCurveLength = Vector2.Distance(p[0], p[3]) + controlNetLength / 2f;
-				int divisions = Mathf.CeilToInt(estimatedCurveLength * 10);
-				float t = 0;
-				while (t <= 1)
-				{
-					t += 1f/divisions;
-					Vector2 pointOnCurve = Bezier.EvaluateCubic(p[0], p[1], p[2], p[3], t);
-					distSinceLastEvenPoint += Vector2.Distance(previousPoint, pointOnCurve);
+				float controlNetLength = (p[0] - p[1]).magnitude + (p[1] - p[2]).magnitude + (p[2] - p[3]).magnitude;
+				float estimatedSegmentLength = (p[0] - p[3]).magnitude + controlNetLength / 2f;
 
-					while (distSinceLastEvenPoint >= spacing)
+				int divisions = Mathf.CeilToInt(estimatedSegmentLength * accuracy);
+				float increment = 1f / divisions;
+
+				for (float t = increment; t <= 1; t += increment)
+				{
+					bool isLastPointOnPath = (t + increment > 1 && segmentIndex == NumSegments - 1);
+					if (isLastPointOnPath)
+					{
+						t = 1;
+					}
+
+					Vector2 pointOnCurve = Bezier.EvaluateCubic(p, t);
+					distSinceLastEvenPoint += (pointOnCurve - previousPoint).magnitude;
+
+					if (distSinceLastEvenPoint > spacing)
 					{
 						float overshootDist = distSinceLastEvenPoint - spacing;
-						Vector2 newEvenlySpacedPoint = pointOnCurve + (previousPoint - pointOnCurve).normalized * overshootDist;
-						evenlySpacedPoints.Add(newEvenlySpacedPoint);
-						distSinceLastEvenPoint = overshootDist;
+						pointOnCurve += (previousPoint - pointOnCurve).normalized * overshootDist;
+						t -= increment;
+					}
 
-						previousPoint = newEvenlySpacedPoint;
+					if (distSinceLastEvenPoint >= spacing || isLastPointOnPath)
+					{
+						currentPathLength += (lastAddedPoint - pointOnCurve).magnitude;
+						evenlySpacedPoints.Add(pointOnCurve);
+						distSinceLastEvenPoint = 0;
+						lastAddedPoint = pointOnCurve;
 					}
 
 					previousPoint = pointOnCurve;
 				}
 			}
-
 			return evenlySpacedPoints;
 		}
 
-		public List<Vector2> CalculateNumberOfPoints(float count)
+		public List<Vector2> CalculateNumberOfPoints(float desiredCount)
 		{
-			float length = EstimatedLength();
-			float distance = (length / count);
+			Path path = new Path(points);
+			float spacing = path.EstimatedLength() / 5;
 
-			Debug.Log("Length: " + length + " Distance: " + distance);
+			List<Vector2> testingScaledPoints = path.CalculateEvenlySpacedPoints(spacing);
 
-			if (distance != 0)
+
+			for (float t = spacing; t >= desiredCount; t -= 1f)
 			{
-				return CalculateEvenlySpacedPoints(distance);
+				testingScaledPoints = path.CalculateEvenlySpacedPoints(t);
+
+				if (testingScaledPoints.Count == desiredCount)
+				{
+					Debug.Log("Got here");
+					spacing = t;
+					break;
+				}
 			}
-			else
-			{
-				Debug.Log("Broken");
-				return null;
-			}
+
+			return path.CalculateEvenlySpacedPoints(spacing);
+
 		}
 
 		public float EstimatedLength()
@@ -292,11 +313,12 @@ namespace IsaacFagg.Paths
 			for (int segmentIndex = 0; segmentIndex < NumSegments; segmentIndex++)
 			{
 				Vector2[] p = GetPointsInSegment(segmentIndex);
-				float controlNetLength = Vector2.Distance(p[0], p[1]) + Vector2.Distance(p[1], p[2]) + Vector2.Distance(p[2], p[3]);
-				float estimatedCurveLength = Vector2.Distance(p[0], p[3]) + controlNetLength / 2f;
+				float controlNetLength = (p[0] - p[1]).magnitude + (p[1] - p[2]).magnitude + (p[2] - p[3]).magnitude;
+				float estimatedCurveLength = (p[0] - p[3]).magnitude + controlNetLength / 2f;
 
 				length += estimatedCurveLength;
 			}
+
 			return length;
 		}
 
@@ -368,10 +390,5 @@ namespace IsaacFagg.Paths
 		{
 			return (i + points.Count) % points.Count;
 		}
-
-		
-
-
-
 	}
 }

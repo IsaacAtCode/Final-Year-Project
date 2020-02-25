@@ -11,10 +11,18 @@ public static class Bezier
 		return Vector2.Lerp(p0, p1, t);
 	}
 
+	public static Vector2 EvaluateCubic(Vector2[] points, float t)
+	{
+		return EvaluateCubic(points[0], points[1], points[2], points[3], t);
+	}
+
 	public static Vector2 EvaluateCubic(Vector2 a, Vector2 b, Vector2 c, Vector2 d, float t)
 	{
+		t = Mathf.Clamp01(t);
 		Vector2 p0 = EvaluateQuadratic(a, b, c, t);
 		Vector2 p1 = EvaluateQuadratic(b, c, d, t);
 		return Vector2.Lerp(p0, p1, t);
 	}
 }
+
+

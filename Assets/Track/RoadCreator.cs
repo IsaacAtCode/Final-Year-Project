@@ -18,7 +18,7 @@ public class RoadCreator : MonoBehaviour
 	public void UpdateRoad()
 	{
 		Path path = GetComponent<PathCreator>().path;
-		List<Vector2> points = path.CalculateEvenlySpacedPoints(spacing);
+		List<Vector2> points = path.CalculateEvenlySpacedPoints(spacing, 1);
 		GetComponent<MeshFilter>().mesh = CreateRoadMesh(points, path.IsClosed);
 
 		int textureRepeat = Mathf.RoundToInt(tiling * points.Count * spacing * .05f);
