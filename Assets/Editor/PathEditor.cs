@@ -116,7 +116,7 @@ namespace IsaacFagg.Paths
 
 				for (int i = 0; i < path.NumSegments; i++)
 				{
-					Vector2[] points = path.GetPointsInSegment(i);
+					List<Vector2> points = path.GetPointsInSegment(i);
 					float dist = HandleUtility.DistancePointBezier(mousePos, points[0], points[3], points[1], points[2]);
 					if (dist < minDistToSegment)
 					{
@@ -141,7 +141,7 @@ namespace IsaacFagg.Paths
 
 			for (int i = 0; i < path.NumSegments; i++)
 			{
-				Vector2[] points = path.GetPointsInSegment(i);
+				List<Vector2> points = path.GetPointsInSegment(i);
 				if (creator.displayControlPoints)
 				{
 					Handles.color = Color.black;

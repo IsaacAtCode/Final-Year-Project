@@ -149,6 +149,7 @@ namespace IsaacFagg.Paths
 		public void SplitSegment(Vector2 anchorPos, int segmentIndex)
 		{
 			points.InsertRange(segmentIndex * 3 + 2, new Vector2[] { Vector2.zero, anchorPos, Vector2.zero });
+
 			if (autoSetControlPoints)
 			{
 				AutoSetAllAffectedControlPoints(segmentIndex * 3 + 3);
@@ -182,9 +183,9 @@ namespace IsaacFagg.Paths
 			}
 		}
 
-		public Vector2[] GetPointsInSegment(int i)
+		public List<Vector2> GetPointsInSegment(int i)
 		{
-			return new Vector2[] { points[i * 3], points[i * 3 + 1], points[i * 3 + 2], points[LoopIndex(i * 3 + 3)] };
+			return new List<Vector2> { points[i * 3], points[i * 3 + 1], points[i * 3 + 2], points[LoopIndex(i * 3 + 3)] };
 		}
 
 		public void MovePoint(int i, Vector2 pos)
@@ -243,7 +244,7 @@ namespace IsaacFagg.Paths
 
 			for (int segmentIndex = 0; segmentIndex < NumSegments; segmentIndex++)
 			{
-				Vector2[] p = GetPointsInSegment(segmentIndex);
+				List<Vector2> p = GetPointsInSegment(segmentIndex);
 				float controlNetLength = (p[0] - p[1]).magnitude + (p[1] - p[2]).magnitude + (p[2] - p[3]).magnitude;
 				float estimatedSegmentLength = (p[0] - p[3]).magnitude + controlNetLength / 2f;
 
@@ -287,16 +288,12 @@ namespace IsaacFagg.Paths
 			Path path = new Path(points);
 			float spacing = path.EstimatedLength() / 5;
 
-			List<Vector2> testingScaledPoints = path.CalculateEvenlySpacedPoints(spacing);
-
-
 			for (float t = spacing; t >= desiredCount; t -= 1f)
 			{
-				testingScaledPoints = path.CalculateEvenlySpacedPoints(t);
+				List<Vector2>  testingScaledPoints = path.CalculateEvenlySpacedPoints(t);
 
 				if (testingScaledPoints.Count == desiredCount)
 				{
-					Debug.Log("Got here");
 					spacing = t;
 					break;
 				}
@@ -312,7 +309,7 @@ namespace IsaacFagg.Paths
 
 			for (int segmentIndex = 0; segmentIndex < NumSegments; segmentIndex++)
 			{
-				Vector2[] p = GetPointsInSegment(segmentIndex);
+				List<Vector2> p = GetPointsInSegment(segmentIndex);
 				float controlNetLength = (p[0] - p[1]).magnitude + (p[1] - p[2]).magnitude + (p[2] - p[3]).magnitude;
 				float estimatedCurveLength = (p[0] - p[3]).magnitude + controlNetLength / 2f;
 

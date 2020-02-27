@@ -211,118 +211,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
---- !u!1 &243497449
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 243497453}
-  - component: {fileID: 243497452}
-  - component: {fileID: 243497451}
-  - component: {fileID: 243497450}
-  m_Layer: 0
-  m_Name: GameObject
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &243497450
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 243497449}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24b2681530a6b944f945d9c6d890e4fe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  points:
-  - {x: 15, y: 358}
-  - {x: -15, y: 489}
-  - {x: 136, y: 581}
-  - {x: 170, y: 562}
-  - {x: 199, y: 554}
-  - {x: 159, y: 410}
-  - {x: 168, y: 420}
-  - {x: 196, y: 382}
-  originPC: {fileID: 243497452}
-  count: 15
-  scaledPC: {fileID: 243497451}
-  scaledPoints: []
---- !u!114 &243497451
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 243497449}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1bafd216d9f9af84ab0520b4d67800fc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  path:
-    points:
-    - {x: -1, y: 0}
-    - {x: -0.19134173, y: 0.46193975}
-    - {x: 0.40432912, y: 0.23096988}
-    - {x: 1, y: 0}
-    isClosed: 0
-    autoSetControlPoints: 1
-  anchorColor: {r: 1, g: 0, b: 0, a: 1}
-  controlColor: {r: 1, g: 1, b: 1, a: 1}
-  segmentColor: {r: 0, g: 0.19600534, b: 1, a: 1}
-  selectedSegmentColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  anchorDiameter: 5
-  controlDiameter: 2
-  displayControlPoints: 0
---- !u!114 &243497452
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 243497449}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1bafd216d9f9af84ab0520b4d67800fc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  path:
-    points:
-    - {x: -1, y: 0}
-    - {x: -0.5, y: 0.5}
-    - {x: 0.5, y: -0.5}
-    - {x: 1, y: 0}
-    isClosed: 0
-    autoSetControlPoints: 0
-  anchorColor: {r: 1, g: 0, b: 0, a: 1}
-  controlColor: {r: 1, g: 1, b: 1, a: 1}
-  segmentColor: {r: 0, g: 1, b: 0, a: 1}
-  selectedSegmentColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  anchorDiameter: 5
-  controlDiameter: 2
-  displayControlPoints: 0
---- !u!4 &243497453
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 243497449}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1779477226
 GameObject:
   m_ObjectHideFlags: 0
@@ -422,7 +310,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &2109810344
 MonoBehaviour:
   m_ObjectHideFlags: 0

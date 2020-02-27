@@ -84,29 +84,26 @@ namespace IsaacFagg.Genetics
             track2Scaled.name = "Track 2 Scaled";
             track2Scaled.points = track2ScaledPoints;
 
-            //for (int i = 0; i < scale - 1; i++)
-            //{
-            //    float firstAngle = 0;
-            //    float secondAngle = 0;
+            for (int i = 0; i < scale; i++)
+            {
+                float firstAngle = 0;
+                float secondAngle = 0;
 
-            //    if (i == scale - 1)
-            //    {
-            //        firstAngle = EvolutionUtility.GetAngleToNextPoint(TrackUtility.CentreOnZero(track1ScaledPoints)[i], TrackUtility.CentreOnZero(track1ScaledPoints)[0]);
-            //        secondAngle = EvolutionUtility.GetAngleToNextPoint(TrackUtility.CentreOnZero(track2ScaledPoints)[i], TrackUtility.CentreOnZero(track2ScaledPoints)[0]);
-            //        Debug.Log("Got to zero");
-            //    }
-            //    else
-            //    {
-            //        firstAngle = EvolutionUtility.GetAngleToNextPoint(TrackUtility.CentreOnZero(track1ScaledPoints)[i], TrackUtility.CentreOnZero(track1ScaledPoints)[i + 1]);
-            //        secondAngle = EvolutionUtility.GetAngleToNextPoint(TrackUtility.CentreOnZero(track2ScaledPoints)[i], TrackUtility.CentreOnZero(track2ScaledPoints)[i + 1]);
-                    
-            //    }
+                if (i == scale - 1)
+                {
+                    firstAngle = EvolutionUtility.GetAngleToNextPoint(TrackUtility.CentreOnZero(track1ScaledPoints)[i], TrackUtility.CentreOnZero(track1ScaledPoints)[0]);
+                    secondAngle = EvolutionUtility.GetAngleToNextPoint(TrackUtility.CentreOnZero(track2ScaledPoints)[i], TrackUtility.CentreOnZero(track2ScaledPoints)[0]);
+                }
+                else
+                {
+                    firstAngle = EvolutionUtility.GetAngleToNextPoint(TrackUtility.CentreOnZero(track1ScaledPoints)[i], TrackUtility.CentreOnZero(track1ScaledPoints)[i + 1]);
+                    secondAngle = EvolutionUtility.GetAngleToNextPoint(TrackUtility.CentreOnZero(track2ScaledPoints)[i], TrackUtility.CentreOnZero(track2ScaledPoints)[i + 1]);
 
-            //    //Debug.Log(firstAngle + "  " + secondAngle);
-            //}
+                }
+            }
 
 
-            
+
             //New Tracks Statistics
             //int straight1 = TrackUtility.GetStraights(track1ScaledPoints);
             //int straight2 = TrackUtility.GetStraights(track2ScaledPoints);

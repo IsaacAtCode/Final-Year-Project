@@ -99,7 +99,14 @@ namespace IsaacFagg.Track
 
         //Properties
         private float height = 0;
-        private bool isHeightSet = false;
+        private float width = 0;
+        private float length = 0;
+        private int straightCount = 0;
+        private int curveCount = 0;
+        public int obstacleCount = 0;
+        public int powerCount = 0;
+
+        #region Properties Get/Set
         public float Height
         {
             get
@@ -119,10 +126,7 @@ namespace IsaacFagg.Track
                 isHeightSet = true;
             }
         }
-
-
-        private float width = 0;
-        private bool isWidthSet = false;
+        private bool isHeightSet = false;
         public float Width
         {
             get
@@ -142,8 +146,7 @@ namespace IsaacFagg.Track
                 isWidthSet = true;
             }
         }
-        private float length = 0;
-        private bool isLengthSet = false;
+        private bool isWidthSet = false;
         public float Length
         {
             get
@@ -163,9 +166,7 @@ namespace IsaacFagg.Track
                 isLengthSet = true;
             }
         }
-
-        private int straightCount = 0;
-        private bool isStraightsSet = false;
+        private bool isLengthSet = false;
         public int StraightCount
         {
             get
@@ -185,8 +186,7 @@ namespace IsaacFagg.Track
                 isStraightsSet = true;
             }
         }
-        private int curveCount = 0;
-        private bool isCurvesSet = false;
+        private bool isStraightsSet = false;
         public int CurveCount
         {
             get
@@ -206,9 +206,9 @@ namespace IsaacFagg.Track
                 isCurvesSet = true;
             }
         }
+        private bool isCurvesSet = false;
+        #endregion
 
-        public int obstacleCount = 0;
-        public int powerCount = 0;
 
         public List<Vector2> ScaledPoints(int count)
         {
@@ -218,6 +218,31 @@ namespace IsaacFagg.Track
 
             return scaledPoints;
         }
+
+        private void Start()
+        {
+            Color background = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f),Random.Range(0f, 1f));
+
+            GameObject go = new GameObject(name);
+
+            PathCreator pc = go.AddComponent<PathCreator>();
+
+            pc.path = new Path(points);
+            pc.segmentColor = background;
+            pc.displayControlPoints = false;
+
+            if (TrackCheck.IntersectCheck(this))
+            {
+                Debug.Log(name + " is intersecting");
+            }
+
+
+
+
+        }
+
+
+
     }
 
 }
