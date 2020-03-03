@@ -85,41 +85,43 @@ namespace IsaacFagg.Utility
 
 		public static bool BezierIntersect(List<Vector2> bezier1, List<Vector2> bezier2 )
 		{
-			Bounds boundingBox1 = Bezier.CalculateSegmentBounds(bezier1);
-			Bounds boundingBox2 = Bezier.CalculateSegmentBounds(bezier2);
+			//Bounds boundingBox1 = Bezier.CalculateSegmentBounds(bezier1);
+			//Bounds boundingBox2 = Bezier.CalculateSegmentBounds(bezier2);
 
-			if (!boundingBox1.Intersects(boundingBox2))
-			{
-				return false;
-			}
+			//if (!boundingBox1.Intersects(boundingBox2))
+			//{
+			//	return false;
+			//}
 
-			Vector2 middle1 = Vector2.zero;
-			Vector2 middle2 = Vector2.zero;
+			//Vector2 middle1 = Vector2.zero;
+			//Vector2 middle2 = Vector2.zero;
 
-			//How to turn a 3 point bevier into a 4 point one
-
-
-			middle1 = Bezier.EvaluateCubic(bezier1, 0.5f);
-
-			if (bezier2.Count == 3)
-			{
-				middle2 = Bezier.EvaluateQuadratic(bezier2, 0.5f);
-
-			}
-			else if (bezier2.Count == 4)
-			{
-				middle2 = Bezier.EvaluateCubic(bezier2, 0.5f);
-			}
+			////How to turn a 3 point bevier into a 4 point one
 
 
-			List<Vector2> b1a = new List<Vector2> { bezier1[0], bezier1[1], middle1 };
-			List<Vector2> b1b = new List<Vector2> { middle1, bezier1[2], bezier1[3] };
+			//middle1 = Bezier.EvaluateCubic(bezier1, 0.5f);
+
+			//if (bezier2.Count == 3)
+			//{
+			//	middle2 = Bezier.EvaluateQuadratic(bezier2, 0.5f);
+
+			//}
+			//else if (bezier2.Count == 4)
+			//{
+			//	middle2 = Bezier.EvaluateCubic(bezier2, 0.5f);
+			//}
 
 
-			List<Vector2> b2a = new List<Vector2> { bezier2[0], bezier2[1], middle2 };
-			List<Vector2> b2b = new List<Vector2> { middle2, bezier2[2], bezier2[3] };
+			//List<Vector2> b1a = new List<Vector2> { bezier1[0], bezier1[1], middle1 };
+			//List<Vector2> b1b = new List<Vector2> { middle1, bezier1[2], bezier1[3] };
 
-			return (BezierIntersect(b1a, b2a) || BezierIntersect(b1a, b2b) || BezierIntersect(b1b, b2a) || BezierIntersect(b1b, b2b));
+
+			//List<Vector2> b2a = new List<Vector2> { bezier2[0], bezier2[1], middle2 };
+			//List<Vector2> b2b = new List<Vector2> { middle2, bezier2[2], bezier2[3] };
+
+			//return (BezierIntersect(b1a, b2a) || BezierIntersect(b1a, b2b) || BezierIntersect(b1b, b2a) || BezierIntersect(b1b, b2b));
+
+			return true;
 		}
 
 		public static float BoundsArea2D(Bounds bound)

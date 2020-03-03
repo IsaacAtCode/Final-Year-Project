@@ -44,14 +44,18 @@ namespace IsaacFagg.Genetics
             track2.name = "Track 2";
             track2.points = RandomTrackGenerator.GenerateRandomTrack().points;
 
-            testPopulation = GetComponents<TrackData>();
 
-            List<Vector2> testPoints = CombineTrackData(testPopulation[0], testPopulation[1]).points;
+            TrackData babyTrack = gameObject.AddComponent<TrackData>();
+            babyTrack.name = "Baby Outside Track";
+            babyTrack.points = CombineTrackData(track1, track2);
+
+
 
         }
 
+        //public TrackData CombineTrackData(TrackData track1, TrackData track2)
 
-        public TrackData CombineTrackData(TrackData track1, TrackData track2)
+        public List<Vector2> CombineTrackData(TrackData track1, TrackData track2)
         {
             int scale = Mathf.Clamp(Random.Range(track1.points.Count, track2.points.Count), minPoints, maxPoints);
 
@@ -84,47 +88,54 @@ namespace IsaacFagg.Genetics
             track2Scaled.name = "Track 2 Scaled";
             track2Scaled.points = track2ScaledPoints;
 
-            for (int i = 0; i < scale; i++)
-            {
-                float firstAngle = 0;
-                float secondAngle = 0;
-
-                if (i == scale - 1)
-                {
-                    firstAngle = EvolutionUtility.GetAngleToNextPoint(TrackUtility.CentreOnZero(track1ScaledPoints)[i], TrackUtility.CentreOnZero(track1ScaledPoints)[0]);
-                    secondAngle = EvolutionUtility.GetAngleToNextPoint(TrackUtility.CentreOnZero(track2ScaledPoints)[i], TrackUtility.CentreOnZero(track2ScaledPoints)[0]);
-                }
-                else
-                {
-                    firstAngle = EvolutionUtility.GetAngleToNextPoint(TrackUtility.CentreOnZero(track1ScaledPoints)[i], TrackUtility.CentreOnZero(track1ScaledPoints)[i + 1]);
-                    secondAngle = EvolutionUtility.GetAngleToNextPoint(TrackUtility.CentreOnZero(track2ScaledPoints)[i], TrackUtility.CentreOnZero(track2ScaledPoints)[i + 1]);
-
-                }
-            }
+            //Determine what stats the track should have
+            float startDistance = Random.Range(track1.DistanceFromCentre, track2.DistanceFromCentre);
+            float startRotation = Random.Range(-179.9f, 180);
 
 
+            int straights = Random.Range(track1.StraightCount, track2.StraightCount);
+            int curves = scale - straights;
+            float minDistance = Mathf.Min(track1.MinDistance, track2.MinDistance);
+            float maxDistance = Mathf.Max(track1.MaxDistance, track2.MaxDistance);
+            float minAngle = Mathf.Min(track1.MinAngle, track2.MinAngle);
+            float maxAngle = Mathf.Max(track1.MaxAngle, track2.MaxAngle);
 
-            //New Tracks Statistics
-            //int straight1 = TrackUtility.GetStraights(track1ScaledPoints);
-            //int straight2 = TrackUtility.GetStraights(track2ScaledPoints);
-            //int wantedStraights = Random.Range(Mathf.Min(straight1, straight2), Mathf.Max(straight1, straight2));
+            float angleTotal = (scale - 2) * 180;
+            //SUm of exterior angles = 360
 
-            //int curve1 = TrackUtility.GetCurves(track1ScaledPoints);
-            //int curve2 = TrackUtility.GetCurves(track2ScaledPoints);
-            //int wantedCurves = scale - wantedStraights;
-
-
-
-
+            //ADD CONSTARINTS
 
 
             List<Vector2> newTrackPoints = new List<Vector2>();
 
+            newTrackPoints.Add(NextPoint(Vector2.zero, startDistance, startRotation));
 
+            for (int i = 0; i < scale; i++)
+            {
+                float testDist = Random.Range(minDistance, maxDistance);
+                float testRot = Random.Range(minAngle, maxAngle);
 
-            TrackData newTrack = new TrackData(newTrackPoints);
-            return newTrack;
+                newTrackPoints.Add(NextPoint(newTrackPoints[i], testDist, testRot));
+            }
+
+            return newTrackPoints;
+
+            //TrackData newTrack = new TrackData(newTrackPoints);
+            //return newTrack;
         }
+
+        private Vector2 NextPoint(Vector2 prev, float distance, float rotation)
+        {
+            float x = prev.x + (distance * Mathf.Cos(rotation));
+            float y = prev.y + (distance * Mathf.Sin(rotation));
+
+            return new Vector2(x, y);
+        }
+
+
+
+
+
 
     }
 }

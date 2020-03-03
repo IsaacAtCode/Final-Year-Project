@@ -77,11 +77,18 @@ namespace IsaacFagg.Utility
         public static Vector2 GetCentre(List<Vector2> points)
         {
             Vector2 centre = Vector2.zero;
-
-            foreach (Vector2 item in points)
+            if (points.Count == 0)
             {
-                centre += item;
+                return Vector2.zero;
             }
+            else
+            {
+                foreach (Vector2 item in points)
+                {
+                    centre += item;
+                }
+            }
+
 
             centre /= points.Count;
 
