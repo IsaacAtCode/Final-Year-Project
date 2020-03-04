@@ -304,6 +304,7 @@ namespace IsaacFagg.Track
             for (int i = 0; i < points.Count; i++)
             {
                 float angle;
+
                 if (i == points.Count - 1)
                 {
                     angle = EvolutionUtility.GetAngleToNextPoint(TrackUtility.CentreOnZero(points)[i], TrackUtility.CentreOnZero(points)[0]);
@@ -357,7 +358,7 @@ namespace IsaacFagg.Track
 
             if (TrackCheck.IntersectCheck(this))
             {
-                Debug.Log(name + " is intersecting");
+                //Debug.Log(name + " is intersecting");
             }
 
 

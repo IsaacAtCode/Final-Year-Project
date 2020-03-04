@@ -26,12 +26,16 @@ namespace IsaacFagg.Genetics
         //private Func<Vector2> getRandomGene;
         //private Func<int, float> fitnessFunction;
 
-        public int minPoints = 5;
-        public int maxPoints = 40;
-        public float maxLength = 6000f;
-        public int minStraights = 1;
-        public float minHW = 250f;
-        public float maxHW = 1500f;
+        private int minPoints = 5;
+        private int maxPoints = 40;
+        private float maxLength = 6000f;
+        private int minStraights = 1;
+        private float minHW = 250f;
+        private float maxHW = 1500f;
+
+        public List<float> desiredAngles;
+
+
 
         private void Start()
         {
@@ -55,38 +59,17 @@ namespace IsaacFagg.Genetics
 
         //public TrackData CombineTrackData(TrackData track1, TrackData track2)
 
-        public List<Vector2> CombineTrackData(TrackData track1, TrackData track2)
+        public List<Vector2> CombineTrackData(TrackData parent1, TrackData parent2)
         {
-            int scale = Mathf.Clamp(Random.Range(track1.points.Count, track2.points.Count), minPoints, maxPoints);
+            int scale = Mathf.Clamp(Random.Range(parent1.points.Count, parent2.points.Count), minPoints, maxPoints);
 
-            //Changes for new track
-            List<Vector2> track1ScaledPoints = new List<Vector2>();
-            List<Vector2> track2ScaledPoints = new List<Vector2>();
+            TrackData track1 = gameObject.AddComponent<TrackData>();
+            track1.name = "Track 1 Scaled";
+            track1.points = GetScaledParent(parent1, scale);
 
-            if (track1.points.Count == scale)
-            {
-                track1ScaledPoints = track1.points;
-            }
-            else
-            {
-                track1ScaledPoints = track1.ScaledPoints(scale);
-            }
-            if (track2.points.Count == scale)
-            {
-                track2ScaledPoints = track2.points;
-            }
-            else
-            {
-                track2ScaledPoints = track2.ScaledPoints(scale);
-            }
-
-            TrackData track1Scaled = gameObject.AddComponent<TrackData>();
-            track1Scaled.name = "Track 1 Scaled";
-            track1Scaled.points = track1ScaledPoints;
-
-            TrackData track2Scaled = gameObject.AddComponent<TrackData>();
-            track2Scaled.name = "Track 2 Scaled";
-            track2Scaled.points = track2ScaledPoints;
+            TrackData track2 = gameObject.AddComponent<TrackData>();
+            track2.name = "Track 2 Scaled";
+            track2.points = GetScaledParent(parent2, scale);
 
             //Determine what stats the track should have
             float startDistance = Random.Range(track1.DistanceFromCentre, track2.DistanceFromCentre);
@@ -97,11 +80,20 @@ namespace IsaacFagg.Genetics
             int curves = scale - straights;
             float minDistance = Mathf.Min(track1.MinDistance, track2.MinDistance);
             float maxDistance = Mathf.Max(track1.MaxDistance, track2.MaxDistance);
-            float minAngle = Mathf.Min(track1.MinAngle, track2.MinAngle);
-            float maxAngle = Mathf.Max(track1.MaxAngle, track2.MaxAngle);
+            float minAngle = Mathf.Clamp(Mathf.Min(track1.MinAngle, track2.MinAngle), 0, 360);
+            float maxAngle = Mathf.Clamp(Mathf.Max(track1.MaxAngle, track2.MaxAngle), 0, 360);
+
+            Debug.Log("Distance: " + minDistance + "   " + maxDistance);
+
+            Debug.Log("Angles: " + track1.MinAngle + "   " + track2.MinAngle);
+
 
             float angleTotal = (scale - 2) * 180;
             //SUm of exterior angles = 360
+
+            desiredAngles = GetAngles(track1.Angles, track2.Angles);
+
+
 
             //ADD CONSTARINTS
 
@@ -110,10 +102,11 @@ namespace IsaacFagg.Genetics
 
             newTrackPoints.Add(NextPoint(Vector2.zero, startDistance, startRotation));
 
-            for (int i = 0; i < scale; i++)
+            for (int i = 0; i < scale - 1; i++)
             {
                 float testDist = Random.Range(minDistance, maxDistance);
-                float testRot = Random.Range(minAngle, maxAngle);
+                //float testRot = Random.Range(minAngle, maxAngle);
+                float testRot = desiredAngles[i];
 
                 newTrackPoints.Add(NextPoint(newTrackPoints[i], testDist, testRot));
             }
@@ -124,6 +117,51 @@ namespace IsaacFagg.Genetics
             //return newTrack;
         }
 
+        private List<float> GetAngles(List<float> parent1, List<float> parent2)
+        {
+            float maxAngles = (Mathf.Min(parent1.Count, parent2.Count) - 2) * 180;
+
+
+            List<float> angles = new List<float>();
+
+            for (int i = 0; i < parent1.Count - 1; i++)
+            {
+                float min = Mathf.Clamp(Mathf.Min(parent1[i], parent2[i]), 0, 360);
+                float max = Mathf.Clamp(Mathf.Max(parent1[i], parent2[i]), 0, 360);
+
+                //float newAngle = Random.Range(min, max);
+                float newAngle = max;
+
+
+                angles.Add(newAngle);
+            }
+
+            float lastAngle = (maxAngles - GetTotalAngles(angles)) % 360;
+
+
+            angles.Add(lastAngle);
+
+
+
+
+            return angles;
+        }
+
+        float GetTotalAngles(List<float> angles)
+        {
+            float total = 0f;
+
+            foreach (float angle in angles)
+            {
+                total += angle;
+            }
+
+            return total;
+        }
+
+
+
+
         private Vector2 NextPoint(Vector2 prev, float distance, float rotation)
         {
             float x = prev.x + (distance * Mathf.Cos(rotation));
@@ -132,7 +170,17 @@ namespace IsaacFagg.Genetics
             return new Vector2(x, y);
         }
 
-
+        private List<Vector2> GetScaledParent(TrackData parent, int desiredCount)
+        {
+            if (parent.points.Count == desiredCount)
+            {
+                return parent.points;
+            }
+            else
+            {
+                return parent.ScaledPoints(desiredCount);
+            }
+        }
 
 
 
