@@ -218,13 +218,20 @@ namespace IsaacFagg.Track
             }
         }
 
+        public List<SegmentType> SegmentTypes
+        {
+            get
+            {
+                return GetSegmentTypes();
+            }
+        }
 
         //Angles
         public List<float> Angles
         {
             get
             {
-                return AnglesFromPoints(points);
+                return AnglesFromPoints();
             }
         }
         public float MaxAngle
@@ -254,7 +261,7 @@ namespace IsaacFagg.Track
         {
             get
             {
-                return DistancesFromPoints(points);
+                return DistancesFromPoints();
             }
         }
         public float MaxDistance
@@ -278,7 +285,6 @@ namespace IsaacFagg.Track
                 return Distances.Average();
             }
         }
-
         public float DistanceFromCentre
         {
             get
@@ -287,17 +293,40 @@ namespace IsaacFagg.Track
             }
         }
 
+        //public List<Vector2> ScaledPoints(int count)
+        //{
+        //    Path path = new Path(points);
 
-        public List<Vector2> ScaledPoints(int count)
-        {
-            Path path = new Path(points);
+        //    List<Vector2> scaledPoints = path.CalculateNumberOfPoints(count);
 
-            List<Vector2> scaledPoints = path.CalculateNumberOfPoints(count);
+        //    return scaledPoints;
+        //}
 
-            return scaledPoints;
-        }
+        //public List<Vector2> MirroredPoints()
+        //{
+        //    List<Vector2> mPoints = new List<Vector2>(points);
 
-        private List<float> AnglesFromPoints(List<Vector2> points)
+        //    mPoints.Reverse();
+
+        //    return mPoints;
+        //}
+
+        //public List<Vector2> CentredPoints()
+        //{
+        //    List<Vector2> cPoints = new List<Vector2>();
+
+        //    Vector2 oldCentre = Centre;
+
+        //    foreach (Vector2 point in points)
+        //    {
+        //        Vector2 newPoint = new Vector2(point.x - oldCentre.x, point.y - oldCentre.y);
+        //        cPoints.Add(newPoint);
+        //    }
+
+        //    return cPoints;
+        //}
+
+        private List<float> AnglesFromPoints()
         {
             List<float> angles = new List<float>();
 
@@ -319,7 +348,19 @@ namespace IsaacFagg.Track
             return angles;
         }
 
-        public List<float> DistancesFromPoints(List<Vector2> points)
+        private List<float> SlopesFromPoints()
+        {
+            List<float> slopes = new List<float>();
+
+            for (int i = 0; i < points.Count; i++)
+            {
+                slopes.Add(EvolutionUtility.GetSlopeForPoint(points[i]));
+            }
+
+            return slopes;
+        }
+
+        public List<float> DistancesFromPoints()
         {
             List<float> distances = new List<float>();
 
@@ -343,6 +384,21 @@ namespace IsaacFagg.Track
             return distances;
         }
 
+        public List<SegmentType> GetSegmentTypes()
+        {
+            List<SegmentType> types = new List<SegmentType>();
+
+
+
+
+             
+
+
+            return types;
+        }
+
+
+
         //Delete once testing finished
         private void Start()
         {
@@ -360,15 +416,6 @@ namespace IsaacFagg.Track
             {
                 //Debug.Log(name + " is intersecting");
             }
-
-
-
-
         }
-
-
-
-
     }
-
 }

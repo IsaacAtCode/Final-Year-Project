@@ -127,10 +127,67 @@ namespace IsaacFagg.Utility
             return (Rotation)Random.Range(0, 2);
         }
 
+        public static Rotation GetRotation(List<Vector2> points)
+        {
+            Vector2 centre = GetCentre(points);
+
+            if (((points[0].x - centre.x) * (points[points.Count - 1].y - centre.y) - (points[0].y - centre.y) * (points[points.Count - 1].x - centre.x)) > 0)
+            {
+                return Rotation.Clockwise;
+            }
+            else
+            {
+                return Rotation.Anticlockwise;
+            }
+        }
+
+
+
+        public static List<Vector2> ScaledPoints(List<Vector2> points, int count)
+        {
+            Path path = new Path(points);
+
+            List<Vector2> scaledPoints = path.CalculateNumberOfPoints(count);
+
+            return scaledPoints;
+        }
+
+        public static List<Vector2> ReversePoints(List<Vector2> points)
+        {
+            List<Vector2> mPoints = new List<Vector2>(points);
+
+            mPoints.Reverse();
+
+            return mPoints;
+        }
+
+        public static List<Vector2> CentredPoints(List<Vector2> points)
+        {
+            List<Vector2> cPoints = new List<Vector2>();
+
+            Vector2 oldCentre = GetCentre(points);
+
+            foreach (Vector2 point in points)
+            {
+                Vector2 newPoint = new Vector2(point.x - oldCentre.x, point.y - oldCentre.y);
+                cPoints.Add(newPoint);
+            }
+
+            return cPoints;
+        }
     }
+
     public enum Rotation
     {
         Clockwise,
         Anticlockwise,
     }
+
+    public enum SegmentType
+    {
+        Straight,
+        Left,
+        Right
+    }
+
 }

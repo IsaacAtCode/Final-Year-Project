@@ -56,6 +56,20 @@ namespace IsaacFagg.Utility
             return angle;
         }
 
+        public static float GetSlopeForPoint(Vector2 point)
+        {
+            float angle = Vector2.Angle(Vector2.up, point) * Mathf.Deg2Rad; //Y Axis
+            //float angle = Vector2.Angle(Vector2.right, point) * Mathf.Deg2Rad; //X Axis
+            float distance = Vector2.Angle(point, Vector2.zero);
+
+            float perpSlope = 1 / Mathf.Tan(angle);
+
+            float slope = -(Mathf.Cos(angle)/Mathf.Sin(angle));
+
+
+
+            return slope;
+        }
 
 
 

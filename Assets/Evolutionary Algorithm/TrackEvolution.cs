@@ -27,7 +27,7 @@ namespace IsaacFagg.Genetics
         //private Func<int, float> fitnessFunction;
 
         private int minPoints = 5;
-        private int maxPoints = 40;
+        private int maxPoints = 25;
         private float maxLength = 6000f;
         private int minStraights = 1;
         private float minHW = 250f;
@@ -50,7 +50,7 @@ namespace IsaacFagg.Genetics
 
 
             TrackData babyTrack = gameObject.AddComponent<TrackData>();
-            babyTrack.name = "Baby Outside Track";
+            babyTrack.name = "Baby Track";
             babyTrack.points = CombineTrackData(track1, track2);
 
 
@@ -61,15 +61,28 @@ namespace IsaacFagg.Genetics
 
         public List<Vector2> CombineTrackData(TrackData parent1, TrackData parent2)
         {
+            //Get New Point Count
             int scale = Mathf.Clamp(Random.Range(parent1.points.Count, parent2.points.Count), minPoints, maxPoints);
+            
+            //Get Rotation From Parents
+            Rotation rot;
+            if (parent1.rotation == parent2.rotation)
+            {
+                rot = parent1.rotation;
+            }
+            else
+            {
+                rot = TrackUtility.RandomRotation();
+            }
+
 
             TrackData track1 = gameObject.AddComponent<TrackData>();
             track1.name = "Track 1 Scaled";
-            track1.points = GetScaledParent(parent1, scale);
+            track1.points = NormaliseParent(parent1, scale, rot);
 
             TrackData track2 = gameObject.AddComponent<TrackData>();
             track2.name = "Track 2 Scaled";
-            track2.points = GetScaledParent(parent2, scale);
+            track2.points = NormaliseParent(parent2, scale, rot);
 
             //Determine what stats the track should have
             float startDistance = Random.Range(track1.DistanceFromCentre, track2.DistanceFromCentre);
@@ -83,11 +96,6 @@ namespace IsaacFagg.Genetics
             float minAngle = Mathf.Clamp(Mathf.Min(track1.MinAngle, track2.MinAngle), 0, 360);
             float maxAngle = Mathf.Clamp(Mathf.Max(track1.MaxAngle, track2.MaxAngle), 0, 360);
 
-            Debug.Log("Distance: " + minDistance + "   " + maxDistance);
-
-            Debug.Log("Angles: " + track1.MinAngle + "   " + track2.MinAngle);
-
-
             float angleTotal = (scale - 2) * 180;
             //SUm of exterior angles = 360
 
@@ -98,9 +106,10 @@ namespace IsaacFagg.Genetics
             //ADD CONSTARINTS
 
 
-            List<Vector2> newTrackPoints = new List<Vector2>();
+            List<Vector2> radTrack = new List<Vector2>();
 
-            newTrackPoints.Add(NextPoint(Vector2.zero, startDistance, startRotation));
+            radTrack.Add(NextPoint(Vector2.zero, startDistance, startRotation* Mathf.Deg2Rad));
+
 
             for (int i = 0; i < scale - 1; i++)
             {
@@ -108,10 +117,10 @@ namespace IsaacFagg.Genetics
                 //float testRot = Random.Range(minAngle, maxAngle);
                 float testRot = desiredAngles[i];
 
-                newTrackPoints.Add(NextPoint(newTrackPoints[i], testDist, testRot));
+                radTrack.Add(NextPoint(radTrack[i], testDist, testRot * Mathf.Deg2Rad));
             }
 
-            return newTrackPoints;
+            return radTrack;
 
             //TrackData newTrack = new TrackData(newTrackPoints);
             //return newTrack;
@@ -159,7 +168,7 @@ namespace IsaacFagg.Genetics
             return total;
         }
 
-
+        
 
 
         private Vector2 NextPoint(Vector2 prev, float distance, float rotation)
@@ -170,17 +179,89 @@ namespace IsaacFagg.Genetics
             return new Vector2(x, y);
         }
 
-        private List<Vector2> GetScaledParent(TrackData parent, int desiredCount)
+        private List<Vector2> NormaliseParent(TrackData parent, int scale, Rotation rot)
         {
-            if (parent.points.Count == desiredCount)
+            List<Vector2> tempParent = new List<Vector2>(parent.points);
+
+            tempParent = GetScaledParent(tempParent, scale);
+            tempParent = GetCentredParent(tempParent);
+            tempParent = GetReversedParent(tempParent, rot);
+
+            return tempParent;
+        }
+
+        private List<Vector2> GetScaledParent(List<Vector2> parent, int newCount)
+        {
+            if (parent.Count != newCount)
             {
-                return parent.points;
+                return TrackUtility.ScaledPoints(parent, newCount);
             }
             else
             {
-                return parent.ScaledPoints(desiredCount);
+                return parent;
             }
         }
+
+        private List<Vector2> GetReversedParent(List<Vector2> parent, Rotation rot)
+        {
+            if (TrackUtility.GetRotation(parent) != rot)
+            {
+                return TrackUtility.ReversePoints(parent);
+            }
+            else
+            {
+                return parent;
+            }
+        }
+
+        private List<Vector2> GetCentredParent(List<Vector2> parent)
+        {
+            if (TrackUtility.GetCentre(parent) != Vector2.zero)
+            {
+                return TrackUtility.CentredPoints(parent);
+            }
+            else
+            {
+                return parent;
+            }
+        }
+
+        //private List<Vector2> GetScaledParent(TrackData parent, int newCount)
+        //{
+        //    if (parent.points.Count != newCount)
+        //    {
+        //        return TrackUtility.ScaledPoints(parent.points, newCount);
+        //    }
+        //    else
+        //    {
+        //        return parent.points;
+
+        //    }
+        //}
+
+        //private List<Vector2> GetReversedParents(TrackData parent, Rotation rot)
+        //{
+        //    if (parent.rotation != rot)
+        //    {
+        //        return TrackUtility.ReversePoints(parent.points);
+        //    }
+        //    else
+        //    {
+        //        return parent.points;
+        //    }
+        //}
+
+        //private List<Vector2> GetCentredParent(TrackData parent)
+        //{
+        //    if (parent.Centre != Vector2.zero)
+        //    {
+        //        return TrackUtility.CentredPoints(parent.points);
+        //    }
+        //    else
+        //    {
+        //        return parent.points;
+        //    }
+        //}
 
 
 

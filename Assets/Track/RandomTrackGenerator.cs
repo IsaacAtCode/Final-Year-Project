@@ -34,8 +34,8 @@ namespace IsaacFagg.Track
 
             for (int i = 0; i < count; i++)
             {
-                float x = Random.Range(0.0f, width * 0.75f);
-                float y = Random.Range(0.0f, height * 0.75f);
+                float x = Random.Range(-width * 0.35f, width * 0.35f);
+                float y = Random.Range(-height * 0.35f, height * 0.35f);
 
                 Vector2 vector = new Vector2(x, y);
 
