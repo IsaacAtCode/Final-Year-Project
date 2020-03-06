@@ -50,6 +50,38 @@ namespace IsaacFagg.Utility
 			return a + aB * t;
 		}
 
+		public static float CrossProduct(Vector2 start, Vector2 end)
+		{
+			return (start.x * end.y) - (start.y * end.x);
+		}
+
+		public static Vector2 PointsToVector(Vector2 p1, Vector2 p2)
+		{
+			Vector2 combo = new Vector2(p2.x - p1.x, p2.y - p1.y);
+			return combo;
+		}
+
+		public static float Direction(Vector2 p1, Vector2 p2, Vector2 p3)
+		{
+			return CrossProduct(PointsToVector(p1, p3), PointsToVector(p1, p2));
+		}
+
+		public static bool Left(Vector2 p1, Vector2 p2, Vector2 p3)
+		{
+			return Direction(p1, p2, p3) < 0;
+		}
+
+		public static bool Right(Vector2 p1, Vector2 p2, Vector2 p3)
+		{
+			return Direction(p1, p2, p3) > 0;
+		}
+
+		public static bool Collinear(Vector2 p1, Vector2 p2, Vector2 p3)
+		{
+			return Direction(p1, p2, p3) == 0;
+		}
+
+
 		public static bool PointsAreClockwise(List<Vector2> points)
 		{
 			float signedArea = 0;

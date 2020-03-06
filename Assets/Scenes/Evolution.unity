@@ -325,12 +325,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   testPopulation: []
   testPoints: []
-  minPoints: 5
-  maxPoints: 40
-  maxLength: 4000
-  minStraights: 1
-  minHW: 250
-  maxHW: 1500
+  segmentTypes: 
 --- !u!4 &2109810345
 Transform:
   m_ObjectHideFlags: 0
@@ -340,7 +335,7 @@ Transform:
   m_GameObject: {fileID: 2109810341}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 0.9187499, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 2

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System.Linq;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -38,38 +39,158 @@ namespace IsaacFagg.Utility
         }
         public static float GetAngleToNextPoint(Vector2 initialPoint, Vector2 nextPoint)
         {
-            float distToInitial = Vector2.Distance(Vector2.zero, initialPoint);
-            float distBetween = Vector2.Distance(initialPoint, nextPoint);
-            float distToNext = Vector2.Distance(Vector2.zero, nextPoint);
+            float x = nextPoint.x - initialPoint.x;
+            float y = nextPoint.y - initialPoint.y;
+            Vector2 slopePoint = new Vector2(x, y);
 
-            float angle = Mathf.Acos((Mathf.Pow(distToInitial, 2) + Mathf.Pow(distBetween, 2) - Mathf.Pow(distToNext, 2)) / (2 * distToInitial * distBetween)) * Mathf.Rad2Deg;
+            //return Vector2.Angle(Vector2.up, slopePoint);
+            return Vector2.SignedAngle(Vector2.up, slopePoint);
 
-            //float angleBetween = Mathf.Acos((Mathf.Pow(distToInitial,2) + Mathf.Pow(distToNext, 2) - Mathf.Pow(distBetween, 2)) / (2 * distToInitial * distToNext)) * Mathf.Rad2Deg;
-            //float otherAngle = Mathf.Acos((Mathf.Pow(distToNext, 2) + Mathf.Pow(distBetween, 2) - Mathf.Pow(distToInitial, 2)) / (2 * distToNext * distBetween)) * Mathf.Rad2Deg;
-            //float total = angleBetween + angle + otherAngle;
+        }
 
+        public static float GetSlopeForPoint(Vector2 point, Vector2 centre)
+        {
+            Vector2 perpSlope = Vector2.Perpendicular(point);
 
-            //Debug.Log("DistInitial: " + distToInitial + " DistBetn: " + distBetween + " DistNext: " + distToNext);
-            //Debug.Log("Angle: " + angle + " Other:  " + otherAngle + "  Opposite:  " + angleBetween);
-            //Debug.Log("Total: " + total);
+            float px = perpSlope.x - centre.x;
+            float py = perpSlope.y - centre.y;
+            float perpAngle = py / px;
+
+            //Debug.Log(point + " " + perpSlope);
+           // Debug.Log(" " + perpAngle);
+
+            float angle = Vector2.SignedAngle(Vector2.up, perpSlope);
+
 
             return angle;
         }
 
-        public static float GetSlopeForPoint(Vector2 point)
+        public static Rotation CompareRotation(Rotation p1, Rotation p2)
         {
-            float angle = Vector2.Angle(Vector2.up, point) * Mathf.Deg2Rad; //Y Axis
-            //float angle = Vector2.Angle(Vector2.right, point) * Mathf.Deg2Rad; //X Axis
-            float distance = Vector2.Angle(point, Vector2.zero);
-
-            float perpSlope = 1 / Mathf.Tan(angle);
-
-            float slope = -(Mathf.Cos(angle)/Mathf.Sin(angle));
-
-
-
-            return slope;
+            if (p1 == p2)
+            {
+               return p1;
+            }
+            else
+            {
+                return TrackUtility.RandomRotation();
+            }
         }
+
+
+        public static SegmentType RandomSegment()
+        {
+            return (SegmentType)Random.Range(0, 3);
+        }
+
+        public static SegmentType RandomSegment(bool onlyTurns)
+        {
+            if (onlyTurns)
+            {
+                return (SegmentType)Random.Range(1, 3);
+            }
+            else
+            {
+                return (SegmentType)Random.Range(0, 3);
+            }
+        }
+
+        public static SegmentType WeightedRandomSegment(float sCount, float lCount, float rCount)
+        {
+            List<SegmentType> sTypes = new List<SegmentType>();
+
+            float maxCount = sCount + lCount + rCount;
+            float scale = 100 / maxCount;
+
+            int scaledStraightCount = Mathf.CeilToInt(sCount* scale);
+            int scaledLeftCount = Mathf.CeilToInt(lCount * scale);
+            int scaledRightCount = Mathf.CeilToInt(rCount * scale);
+
+            sTypes.AddRange(Enumerable.Repeat(SegmentType.Straight, scaledStraightCount));
+            sTypes.AddRange(Enumerable.Repeat(SegmentType.Left, scaledLeftCount));
+            sTypes.AddRange(Enumerable.Repeat(SegmentType.Right, scaledRightCount));
+
+            return sTypes[Random.Range(0, sTypes.Count - 1)];
+        }
+
+        public static SegmentType CompareSegments(SegmentType s1, SegmentType s2)
+        {
+            if (s1 == s2)
+            {
+                //Debug.Log("Same " + s1.ToString());
+
+                return s1;
+            }
+            else if (s1 == SegmentType.Straight || s2 == SegmentType.Straight)
+            {
+                if (s1 == SegmentType.Left || s2 == SegmentType.Left)
+                {
+                    //Debug.Log("S1: " + s1 + " S2: " + s2 + " Result: Left");
+                    return SegmentType.Left;
+                }
+                else if (s1 == SegmentType.Right || s2 == SegmentType.Right)
+                {
+                    //Debug.Log("S1: " + s1 + " S2: " + s2 + " Result: Right");
+                    return SegmentType.Right;
+                }
+                else
+                {
+                    //Debug.Log("S1: " + s1 + " S2: " + s2 + " Result: Straight");
+                    return SegmentType.Straight;
+                }
+            }
+            else
+            {
+                //Debug.Log("S1: " + s1 + " S2: " + s2 + " Result: Random");
+                return RandomSegment();
+            }
+        }
+
+        public static SegmentType CompareWeightedSegments(SegmentType s1, float w1, SegmentType s2, float w2)
+        {
+            if (s1 == s2)
+            {
+                return s1;
+            }
+            else if (s1 == SegmentType.Straight || s2 == SegmentType.Straight)
+            {
+                if (s1 == SegmentType.Left)
+                {
+                    return WeightedRandomSegment(w2, w1, 0);
+                }
+                else if (s2 == SegmentType.Left)
+                {
+                    return WeightedRandomSegment(w1, w2, 0);
+                }
+                else if (s1 == SegmentType.Right)
+                {
+                    return WeightedRandomSegment(w2, 0, w1);
+                }
+                else if (s2 == SegmentType.Right)
+                {
+                    return WeightedRandomSegment(w1, 0, w2);
+                }
+                else
+                {
+                    return SegmentType.Straight;
+                }
+            }
+            else
+            {
+                return SegmentType.Straight;
+            }
+        }
+
+        public static int SegmentTypeCount(List<SegmentType> list, SegmentType type)
+        {
+            return list.Count(st => st == type);
+        }
+
+
+
+
+
+
 
 
 

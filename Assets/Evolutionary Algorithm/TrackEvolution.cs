@@ -33,9 +33,7 @@ namespace IsaacFagg.Genetics
         private float minHW = 250f;
         private float maxHW = 1500f;
 
-        public List<float> desiredAngles;
-
-
+        public List<SegmentType> segmentTypes;
 
         private void Start()
         {
@@ -65,16 +63,7 @@ namespace IsaacFagg.Genetics
             int scale = Mathf.Clamp(Random.Range(parent1.points.Count, parent2.points.Count), minPoints, maxPoints);
             
             //Get Rotation From Parents
-            Rotation rot;
-            if (parent1.rotation == parent2.rotation)
-            {
-                rot = parent1.rotation;
-            }
-            else
-            {
-                rot = TrackUtility.RandomRotation();
-            }
-
+            Rotation rot = EvolutionUtility.CompareRotation(parent1.rotation, parent2.rotation);
 
             TrackData track1 = gameObject.AddComponent<TrackData>();
             track1.name = "Track 1 Scaled";
@@ -84,49 +73,72 @@ namespace IsaacFagg.Genetics
             track2.name = "Track 2 Scaled";
             track2.points = NormaliseParent(parent2, scale, rot);
 
+
+
+
+
             //Determine what stats the track should have
             float startDistance = Random.Range(track1.DistanceFromCentre, track2.DistanceFromCentre);
-            float startRotation = Random.Range(-179.9f, 180);
+            float startRotation = 0f;
+
+            if (rot == Rotation.Clockwise)
+            {
+                startRotation = Random.Range(-180, -15);
+            }
+            else
+            {
+                startRotation = Random.Range(15, 180);
+            }
 
 
             int straights = Random.Range(track1.StraightCount, track2.StraightCount);
             int curves = scale - straights;
-            float minDistance = Mathf.Min(track1.MinDistance, track2.MinDistance);
-            float maxDistance = Mathf.Max(track1.MaxDistance, track2.MaxDistance);
+            float dist = Random.Range(track1.AverageDistance, track2.AverageDistance);
+
             float minAngle = Mathf.Clamp(Mathf.Min(track1.MinAngle, track2.MinAngle), 0, 360);
             float maxAngle = Mathf.Clamp(Mathf.Max(track1.MaxAngle, track2.MaxAngle), 0, 360);
 
             float angleTotal = (scale - 2) * 180;
             //SUm of exterior angles = 360
 
-            desiredAngles = GetAngles(track1.Angles, track2.Angles);
 
 
+            //Get segments from Each Parent
+            segmentTypes = SegmentChildFromParents(track1, track2);
+
+            Debug.Log("Straights: " + EvolutionUtility.SegmentTypeCount(segmentTypes, SegmentType.Straight));
+            Debug.Log("Lefts: " + EvolutionUtility.SegmentTypeCount(segmentTypes, SegmentType.Left));
+            Debug.Log("Rights: " + EvolutionUtility.SegmentTypeCount(segmentTypes, SegmentType.Right));
 
             //ADD CONSTARINTS
 
 
-            List<Vector2> radTrack = new List<Vector2>();
+            List<Vector2> childTrack = new List<Vector2>();
 
-            radTrack.Add(NextPoint(Vector2.zero, startDistance, startRotation* Mathf.Deg2Rad));
+            childTrack.Add(NextPoint(Vector2.zero, startDistance, startRotation * Mathf.Deg2Rad));
 
 
             for (int i = 0; i < scale - 1; i++)
             {
-                float testDist = Random.Range(minDistance, maxDistance);
                 //float testRot = Random.Range(minAngle, maxAngle);
-                float testRot = desiredAngles[i];
+                //float testRot = desiredAngles[i];
 
-                radTrack.Add(NextPoint(radTrack[i], testDist, testRot * Mathf.Deg2Rad));
+                //childTrack.Add(NextPoint(childTrack[i], dist, testRot * Mathf.Deg2Rad));
             }
 
-            return radTrack;
+            return childTrack;
 
-            //TrackData newTrack = new TrackData(newTrackPoints);
-            //return newTrack;
         }
 
-        private List<float> GetAngles(List<float> parent1, List<float> parent2)
+        private Vector2 NextPoint(Vector2 prev, float distance, float rotation)
+        {
+            float x = prev.x + (distance * Mathf.Cos(rotation));
+            float y = prev.y + (distance * Mathf.Sin(rotation));
+
+            return new Vector2(x, y);
+        }
+
+        private List<float> GetParentsAngles(List<float> parent1, List<float> parent2)
         {
             float maxAngles = (Mathf.Min(parent1.Count, parent2.Count) - 2) * 180;
 
@@ -156,7 +168,66 @@ namespace IsaacFagg.Genetics
             return angles;
         }
 
-        float GetTotalAngles(List<float> angles)
+        private List<SegmentType> SegmentChildFromParents(TrackData parent1, TrackData parent2)
+        {
+            List<SegmentType> segments = new List<SegmentType>();
+            bool atLeastOneStraight = false;
+            float currentPercent = 0;
+
+            for (int i = 0; i < parent1.SegmentTypes.Count; i++)
+            {
+                if (EvolutionUtility.SegmentTypeCount(segments, SegmentType.Straight) > 0)
+                {
+                    atLeastOneStraight = true;
+                }
+
+                if (!atLeastOneStraight)
+                {
+                    float stepsLeft = parent1.SegmentTypes.Count - i;
+                    float step = (100 - currentPercent) / stepsLeft;
+                    currentPercent += step;
+                    currentPercent = Mathf.Clamp(currentPercent, 0, 100);
+
+                    if (Random.Range(0f, 1f) <= currentPercent / 100)
+                    {
+                        segments.Add(SegmentType.Straight);
+                        atLeastOneStraight = true;
+                        currentPercent = 0f;
+
+                        Debug.Log(i);
+
+                        continue;
+                    }
+                }
+
+                if (i != 0 && segments[i - 1] == SegmentType.Straight && EvolutionUtility.SegmentTypeCount(segments, SegmentType.Straight) <= 2)
+                {
+                    if (Random.Range(0f, 1f) <=  0.65)
+                    {
+                        segments.Add(SegmentType.Straight);
+
+                        Debug.Log("Second straight");
+
+                        continue;
+                    }
+                }
+
+                int rand = Random.Range(0, 100);
+
+                if (rand > 25 && rand < 40)
+                {
+                    segments.Add(EvolutionUtility.RandomSegment(true));
+                    Debug.Log("Random segment");
+                }
+                else
+                {
+                    segments.Add(EvolutionUtility.CompareSegments(parent1.SegmentTypes[i], parent1.SegmentTypes[i]));
+                }
+            }
+            return segments;
+        }
+
+        private float GetTotalAngles(List<float> angles)
         {
             float total = 0f;
 
@@ -166,17 +237,6 @@ namespace IsaacFagg.Genetics
             }
 
             return total;
-        }
-
-        
-
-
-        private Vector2 NextPoint(Vector2 prev, float distance, float rotation)
-        {
-            float x = prev.x + (distance * Mathf.Cos(rotation));
-            float y = prev.y + (distance * Mathf.Sin(rotation));
-
-            return new Vector2(x, y);
         }
 
         private List<Vector2> NormaliseParent(TrackData parent, int scale, Rotation rot)
@@ -225,46 +285,5 @@ namespace IsaacFagg.Genetics
                 return parent;
             }
         }
-
-        //private List<Vector2> GetScaledParent(TrackData parent, int newCount)
-        //{
-        //    if (parent.points.Count != newCount)
-        //    {
-        //        return TrackUtility.ScaledPoints(parent.points, newCount);
-        //    }
-        //    else
-        //    {
-        //        return parent.points;
-
-        //    }
-        //}
-
-        //private List<Vector2> GetReversedParents(TrackData parent, Rotation rot)
-        //{
-        //    if (parent.rotation != rot)
-        //    {
-        //        return TrackUtility.ReversePoints(parent.points);
-        //    }
-        //    else
-        //    {
-        //        return parent.points;
-        //    }
-        //}
-
-        //private List<Vector2> GetCentredParent(TrackData parent)
-        //{
-        //    if (parent.Centre != Vector2.zero)
-        //    {
-        //        return TrackUtility.CentredPoints(parent.points);
-        //    }
-        //    else
-        //    {
-        //        return parent.points;
-        //    }
-        //}
-
-
-
-
     }
 }

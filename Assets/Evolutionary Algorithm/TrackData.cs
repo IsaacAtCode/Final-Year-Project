@@ -17,6 +17,7 @@ namespace IsaacFagg.Track
         //Points
         public List<Vector2> points;
 
+        [HideInInspector]
         public Rotation rotation;
         [HideInInspector]
         public bool isRotationSet = false;
@@ -104,7 +105,9 @@ namespace IsaacFagg.Track
         private float length = 0;
         private int straightCount = 0;
         private int curveCount = 0;
+        [HideInInspector]
         public int obstacleCount = 0;
+        [HideInInspector]
         public int powerCount = 0;
 
         #region Properties Get/Set
@@ -256,6 +259,15 @@ namespace IsaacFagg.Track
             }
         }
 
+        public List<float> Slopes
+        {
+            get
+            {
+                return SlopesFromPoints();
+            }
+        }
+
+
         //Distances
         public List<float> Distances
         {
@@ -330,21 +342,43 @@ namespace IsaacFagg.Track
         {
             List<float> angles = new List<float>();
 
+            List<Vector2> cPoints = TrackUtility.CentreOnZero(points);
+
+
+
             for (int i = 0; i < points.Count; i++)
             {
                 float angle;
+                Vector2 point;
+                Vector2 next;
 
                 if (i == points.Count - 1)
                 {
-                    angle = EvolutionUtility.GetAngleToNextPoint(TrackUtility.CentreOnZero(points)[i], TrackUtility.CentreOnZero(points)[0]);
+                    point = cPoints[i];
+                    next = cPoints[0];
+
+                    //angle = EvolutionUtility.GetAngleToNextPoint(cPoints[i], cPoints[0]);
+              
+                    //Debug.Log("p1: " + cPoints[i] + " p2 " + cPoints[0] + angle);
                 }
                 else
                 {
-                    angle = EvolutionUtility.GetAngleToNextPoint(TrackUtility.CentreOnZero(points)[i], TrackUtility.CentreOnZero(points)[i + 1]);
+                    point = cPoints[i];
+                    next = cPoints[i+1];
+
+                    //angle = EvolutionUtility.GetAngleToNextPoint(cPoints[i], cPoints[i + 1]);
                 }
+
+                angle = EvolutionUtility.GetAngleToNextPoint(point, next);
 
                 angles.Add(angle);
             }
+
+
+
+
+
+
             return angles;
         }
 
@@ -354,7 +388,7 @@ namespace IsaacFagg.Track
 
             for (int i = 0; i < points.Count; i++)
             {
-                slopes.Add(EvolutionUtility.GetSlopeForPoint(points[i]));
+                slopes.Add(EvolutionUtility.GetSlopeForPoint(points[i], Centre));
             }
 
             return slopes;
@@ -388,6 +422,26 @@ namespace IsaacFagg.Track
         {
             List<SegmentType> types = new List<SegmentType>();
 
+            for (int i = 0; i < points.Count; i++)
+            {
+                int prevPoint;
+
+                if (i == 0)
+                {
+                    prevPoint = points.Count - 1;
+                }
+                else
+                {
+                    prevPoint = i - 1;
+                }
+
+                int nextPoint = (i + 1) % points.Count;
+
+                types.Add(DetermineSegmentType(points[prevPoint], points[i], points[nextPoint]));
+
+
+                //Debug.Log(prevPoint + " " + i + " " + nextPoint);
+            }
 
 
 
@@ -395,6 +449,22 @@ namespace IsaacFagg.Track
 
 
             return types;
+        }
+
+        private SegmentType DetermineSegmentType(Vector2 p1, Vector2 p2, Vector2 p3)
+        {
+            if (MathsUtility.Left(p1, p2, p3))
+            {
+                return SegmentType.Left;
+            }
+            else if (MathsUtility.Right(p1, p2, p3))
+            {
+                return SegmentType.Right;
+            }
+            else
+            {
+                return SegmentType.Straight;
+            }
         }
 
 
@@ -418,4 +488,5 @@ namespace IsaacFagg.Track
             }
         }
     }
+
 }
