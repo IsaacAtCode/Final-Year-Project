@@ -65,6 +65,9 @@ namespace IsaacFagg.Genetics
             //Get Rotation From Parents
             Rotation rot = EvolutionUtility.CompareRotation(parent1.rotation, parent2.rotation);
 
+
+
+            //Parents Created
             TrackData track1 = gameObject.AddComponent<TrackData>();
             track1.name = "Track 1 Scaled";
             track1.points = NormaliseParent(parent1, scale, rot);
@@ -73,9 +76,29 @@ namespace IsaacFagg.Genetics
             track2.name = "Track 2 Scaled";
             track2.points = NormaliseParent(parent2, scale, rot);
 
+            //Get segments from Each Parent
+            segmentTypes = SegmentChildFromParents(track1, track2);
+
+            Debug.Log("Straights: " + EvolutionUtility.SegmentTypeCount(segmentTypes, SegmentType.Straight));
+            Debug.Log("Lefts: " + EvolutionUtility.SegmentTypeCount(segmentTypes, SegmentType.Left));
+            Debug.Log("Rights: " + EvolutionUtility.SegmentTypeCount(segmentTypes, SegmentType.Right));
 
 
+            //Adding possible angles 
+            //List<float> p1Left = GetAnglesFromSegmentType(parent1, SegmentType.Left);
+            //List<float> p1Right = GetAnglesFromSegmentType(parent1, SegmentType.Right);
 
+            //List<float> p2Left = GetAnglesFromSegmentType(parent2, SegmentType.Left);
+            //List<float> p2Right = GetAnglesFromSegmentType(parent2, SegmentType.Right);
+
+            //List<float> possLeft = new List<float>();
+            //List<float> possRight = new List<float>();
+
+            //possLeft.AddRange(p1Left);
+            //possLeft.AddRange(p2Left);
+
+            //possRight.AddRange(p1Right);
+            //possRight.AddRange(p2Right);
 
             //Determine what stats the track should have
             float startDistance = Random.Range(track1.DistanceFromCentre, track2.DistanceFromCentre);
@@ -90,40 +113,53 @@ namespace IsaacFagg.Genetics
                 startRotation = Random.Range(15, 180);
             }
 
-
-            int straights = Random.Range(track1.StraightCount, track2.StraightCount);
-            int curves = scale - straights;
             float dist = Random.Range(track1.AverageDistance, track2.AverageDistance);
+            float length = dist * scale * 0.5f;
 
             float minAngle = Mathf.Clamp(Mathf.Min(track1.MinAngle, track2.MinAngle), 0, 360);
             float maxAngle = Mathf.Clamp(Mathf.Max(track1.MaxAngle, track2.MaxAngle), 0, 360);
 
             float angleTotal = (scale - 2) * 180;
-            //SUm of exterior angles = 360
-
-
-
-            //Get segments from Each Parent
-            segmentTypes = SegmentChildFromParents(track1, track2);
-
-            Debug.Log("Straights: " + EvolutionUtility.SegmentTypeCount(segmentTypes, SegmentType.Straight));
-            Debug.Log("Lefts: " + EvolutionUtility.SegmentTypeCount(segmentTypes, SegmentType.Left));
-            Debug.Log("Rights: " + EvolutionUtility.SegmentTypeCount(segmentTypes, SegmentType.Right));
-
-            //ADD CONSTARINTS
-
 
             List<Vector2> childTrack = new List<Vector2>();
 
-            childTrack.Add(NextPoint(Vector2.zero, startDistance, startRotation * Mathf.Deg2Rad));
+            //First 3 Points
 
 
-            for (int i = 0; i < scale - 1; i++)
+
+
+            childTrack.AddRange(GenerateStartingPoints(startDistance, startRotation, segmentTypes[0], segmentTypes[1]));
+
+            for (int i = 2; i < segmentTypes.Count; i++)
             {
-                //float testRot = Random.Range(minAngle, maxAngle);
-                //float testRot = desiredAngles[i];
+                float prevAngle = EvolutionUtility.GetAngleToNextPoint(childTrack[i - 2], childTrack[i - 1]);
+                float testAngle = EvolutionUtility.GetAngleToNextPoint(childTrack[i - 1], childTrack[i - 2]);
 
-                //childTrack.Add(NextPoint(childTrack[i], dist, testRot * Mathf.Deg2Rad));
+                Debug.Log(prevAngle + "  " + testAngle);
+
+
+                Vector2 point;
+
+
+                if (segmentTypes[i] == SegmentType.Straight)
+                {
+                    point = GenerateStraight(childTrack[i], dist, prevAngle); 
+                }
+                else if (segmentTypes[i] == SegmentType.Left)
+                {
+                    point = GenerateLeft(childTrack[i], dist, prevAngle);
+                }
+                else if (segmentTypes[i] == SegmentType.Right)
+                {
+                    point = GenerateRight(childTrack[i], dist, prevAngle);
+                }
+                else
+                {
+                    Debug.Log("Shouldnt be getting here");
+                    point = GenerateStraight(childTrack[i], dist, 0);
+                }
+
+                childTrack.Add(point);
             }
 
             return childTrack;
@@ -137,6 +173,77 @@ namespace IsaacFagg.Genetics
 
             return new Vector2(x, y);
         }
+
+        private Vector2 GenerateStraight(Vector2 prev, float distance, float prevAngle)
+        {
+            float angle = prevAngle + Random.Range(-10, 10);
+            return NextPoint(prev, distance, angle);
+        }
+
+        private Vector2 GenerateLeft(Vector2 prev, float distance, float prevAngle)
+        {
+            float angle = prevAngle + Random.Range(-160, -10);
+            return NextPoint(prev, distance, angle);
+        }
+
+        private Vector2 GenerateRight(Vector2 prev, float distance, float prevAngle)
+        {
+            float angle = prevAngle + Random.Range(10, 160);
+            return NextPoint(prev, distance, angle);
+        }
+
+        private List<Vector2> GenerateStartingPoints(float dist, float angle, SegmentType firstST, SegmentType secondST)
+        {
+            Vector2 startPoint = NextPoint(Vector2.zero, dist, angle * Mathf.Deg2Rad);
+
+            Vector2 secondPoint;
+
+            if (firstST == SegmentType.Straight)
+            {
+                secondPoint = GenerateStraight(startPoint, dist, angle);
+            }
+            else if (firstST == SegmentType.Left)
+            {
+                secondPoint = GenerateLeft(startPoint, dist, angle);
+            }
+            else if (firstST == SegmentType.Right)
+            {
+                secondPoint = GenerateRight(startPoint, dist, angle);
+            }
+            else
+            {
+                secondPoint = GenerateStraight(startPoint, dist, angle);
+            }
+
+            Vector2 thirdPoint;
+            float otherAngle = EvolutionUtility.GetAngleToNextPoint(startPoint, secondPoint);
+
+            if (secondST == SegmentType.Straight)
+            {
+                thirdPoint = GenerateStraight(secondPoint, dist, otherAngle);
+            }
+            else if (secondST == SegmentType.Left)
+            {
+                thirdPoint = GenerateLeft(secondPoint, dist, otherAngle);
+            }
+            else if (secondST == SegmentType.Right)
+            {
+                thirdPoint = GenerateRight(secondPoint, dist, otherAngle);
+            }
+            else
+            {
+                thirdPoint = GenerateStraight(secondPoint, dist, otherAngle);
+            }
+
+
+
+            List<Vector2> points = new List<Vector2> { startPoint, secondPoint, thirdPoint };
+
+            return points;
+
+        }
+
+
 
         private List<float> GetParentsAngles(List<float> parent1, List<float> parent2)
         {
@@ -162,11 +269,25 @@ namespace IsaacFagg.Genetics
 
             angles.Add(lastAngle);
 
+            return angles;
+        }
 
+        private List<float> GetAnglesFromSegmentType(TrackData parent, SegmentType type)
+        {
+            List<float> angles = new List<float>();
 
+            for (int i = 0; i < parent.SegmentTypes.Count; i++)
+            {
+                if (parent.SegmentTypes[i] == type)
+                {
+                    angles.Add(parent.Angles[i]);
+                }
+            }
 
             return angles;
         }
+
+
 
         private List<SegmentType> SegmentChildFromParents(TrackData parent1, TrackData parent2)
         {
@@ -206,7 +327,7 @@ namespace IsaacFagg.Genetics
                     {
                         segments.Add(SegmentType.Straight);
 
-                        Debug.Log("Second straight");
+                        //Debug.Log("Second straight");
 
                         continue;
                     }
@@ -217,11 +338,11 @@ namespace IsaacFagg.Genetics
                 if (rand > 25 && rand < 40)
                 {
                     segments.Add(EvolutionUtility.RandomSegment(true));
-                    Debug.Log("Random segment");
+                    //Debug.Log("Random segment");
                 }
                 else
                 {
-                    segments.Add(EvolutionUtility.CompareSegments(parent1.SegmentTypes[i], parent1.SegmentTypes[i]));
+                    segments.Add(EvolutionUtility.CompareSegments(parent1.SegmentTypes[i], parent2.SegmentTypes[i]));
                 }
             }
             return segments;
