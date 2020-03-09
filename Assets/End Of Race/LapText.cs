@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class LapTemplate : MonoBehaviour
+public class LapText : MonoBehaviour
 {
 	public int lapNumber;
 	public float lapTime;

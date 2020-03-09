@@ -166,6 +166,11 @@ namespace IsaacFagg.Genetics
 
         }
 
+
+
+
+
+
         private Vector2 NextPoint(Vector2 prev, float distance, float rotation)
         {
             float x = prev.x + (distance * Mathf.Cos(rotation));

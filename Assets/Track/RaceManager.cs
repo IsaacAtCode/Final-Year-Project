@@ -3,16 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using IsaacFagg.Player;
-using IsaacFagg.Track3;
 using IsaacFagg.Utility;
 using IsaacFagg.Cars;
+using IsaacFagg.Track;
 
 namespace IsaacFagg.Race
 {
 	public class RaceManager : MonoBehaviour
 	{
 		[Header("Race Properties")]
-		Track3Generator trackGen;
+		TrackGenerator trackGen;
 		private Car car;
 		public GameObject carPrefab;
 		RaceUI raceUI;
@@ -37,9 +37,10 @@ namespace IsaacFagg.Race
 		public float countdown = 0;
 
 
-		//Laps
-		float distanceAtLastCheckpoint = 0f;
+		[Header("Laps")]
 		public int lapCount = 0;
+		float distanceAtLastCheckpoint = 0f;
+
 		public Lap lastLap
 		{
 			get
@@ -60,6 +61,21 @@ namespace IsaacFagg.Race
 		}
 		public Lap currentLap;
 
+		private List<Lap> laps;
+
+		public List<Lap> Laps
+		{
+			get
+			{
+				return laps;
+			}
+		}
+
+
+
+
+
+
 		//Time
 		public float totalTime;
 		public float currentLapTime;
@@ -71,7 +87,7 @@ namespace IsaacFagg.Race
 		private void Awake()
 		{
 			car = GameObject.FindGameObjectWithTag("Player").GetComponent<Car>();
-			trackGen = GameObject.FindGameObjectWithTag("Track").GetComponent<Track3Generator>();
+			trackGen = GameObject.FindGameObjectWithTag("Track").GetComponent<TrackGenerator>();
 			raceUI = GetComponent<RaceUI>();
 		}
 
@@ -86,6 +102,10 @@ namespace IsaacFagg.Race
 			car.carState = CarState.Off;
 
 			raceUI.UpdateLap(lapCount, maxLaps);
+
+			laps = new List<Lap>();
+
+
 		}
 
 		private void Update()
@@ -242,6 +262,9 @@ namespace IsaacFagg.Race
 		public void PassFinish()
 		{
 			race.EndLap(currentLap);
+
+			laps.Add(currentLap);
+
 
 			lastCheckpoint = 0;
 			lapCount++;

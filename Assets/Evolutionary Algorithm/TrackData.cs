@@ -438,16 +438,7 @@ namespace IsaacFagg.Track
                 int nextPoint = (i + 1) % points.Count;
 
                 types.Add(DetermineSegmentType(points[prevPoint], points[i], points[nextPoint]));
-
-
-                //Debug.Log(prevPoint + " " + i + " " + nextPoint);
             }
-
-
-
-             
-
-
             return types;
         }
 

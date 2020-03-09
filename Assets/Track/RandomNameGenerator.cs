@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace IsaacFagg.Track3
+namespace IsaacFagg.Utility
 {
     public class RandomNameGenerator : MonoBehaviour
     {
