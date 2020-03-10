@@ -687,7 +687,7 @@ PrefabInstance:
     - target: {fileID: 2616296270719812903, guid: 1e79a36c8914a8d469e7e1ef28ee6de0,
         type: 3}
       propertyPath: m_Name
-      value: Post Race
+      value: Post Race Canvas
       objectReference: {fileID: 0}
     - target: {fileID: 2616296270719812903, guid: 1e79a36c8914a8d469e7e1ef28ee6de0,
         type: 3}
@@ -12251,8 +12251,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 467c44ca4a7dc1c4295e24698a21741a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mm: {fileID: 0}
-  mb: {fileID: 0}
+  mm: {fileID: 1582342316}
+  mb: {fileID: 209810499}
 --- !u!4 &6246123561117418932
 Transform:
   m_ObjectHideFlags: 0

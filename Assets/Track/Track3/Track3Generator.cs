@@ -17,7 +17,6 @@ namespace IsaacFagg.Track3
 
 		[Header("Components")]
 		public Track3 track;
-		public RandomNameGenerator randomNameGenerator;
 
 		[Header("Checkpoints")]
 		public List<Checkpoint> checkpoints;
@@ -37,10 +36,6 @@ namespace IsaacFagg.Track3
 			{
 				track = GetComponent<Track3>();
 			}
-			if (!randomNameGenerator)
-			{
-				randomNameGenerator = GetComponent<RandomNameGenerator>();
-			}
 		}
 
 		private void Update()
@@ -48,11 +43,6 @@ namespace IsaacFagg.Track3
 			if (generateNewTrack)
 			{
 				track.GenerateTrack();
-
-				if (track.type == TrackType.Random)
-				{
-					track.name = randomNameGenerator.GenerateName();
-				}
 
 				generateNewTrack = false;
 

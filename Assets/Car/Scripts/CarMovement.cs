@@ -43,7 +43,7 @@ namespace IsaacFagg.Cars
         public float gravelFriction = 3f;
         public float oilSlipTime = 3f;
 
-        Vector2 com = new Vector2(0, 0.5f);
+        Vector2 centreOfMass = new Vector2(0, 0.5f);
 
 
         private void Awake()
@@ -52,7 +52,7 @@ namespace IsaacFagg.Cars
             cm = GetComponent<CarModel>();
             rb = GetComponent<Rigidbody2D>();
 
-            rb.centerOfMass = com;
+            rb.centerOfMass = centreOfMass;
         }
 
         private void Update()
@@ -187,10 +187,6 @@ namespace IsaacFagg.Cars
         {
             m_CurrentMaxEnginePower = 1f;
         }
-
-
-
-
 
         Vector2 ForwardVelocity()
         {

@@ -6,6 +6,7 @@ using IsaacFagg.Player;
 using IsaacFagg.Utility;
 using IsaacFagg.Cars;
 using IsaacFagg.Track;
+using IsaacFagg.Track3;
 
 namespace IsaacFagg.Race
 {
@@ -13,6 +14,7 @@ namespace IsaacFagg.Race
 	{
 		[Header("Race Properties")]
 		TrackGenerator trackGen;
+		//Track3Generator trackGen;
 		private Car car;
 		public GameObject carPrefab;
 		RaceUI raceUI;
@@ -88,6 +90,8 @@ namespace IsaacFagg.Race
 		{
 			car = GameObject.FindGameObjectWithTag("Player").GetComponent<Car>();
 			trackGen = GameObject.FindGameObjectWithTag("Track").GetComponent<TrackGenerator>();
+			//trackGen = GameObject.FindGameObjectWithTag("Track").GetComponent<Track3Generator>();
+
 			raceUI = GetComponent<RaceUI>();
 		}
 

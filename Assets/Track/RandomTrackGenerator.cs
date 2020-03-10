@@ -5,8 +5,8 @@ using IsaacFagg.Utility;
 
 namespace IsaacFagg.Track
 { 
-    public static class RandomTrackGenerator
-    {
+	public static class RandomTrackGenerator
+	{
 		public static int minPoints = 5;
 		public static int maxPoints = 40;
 		public static float minDistance = 50f;
@@ -14,12 +14,12 @@ namespace IsaacFagg.Track
 		public static float maxHW = 1250f;
 
 		public static TrackData GenerateRandomTrack()
-        {
-            float randomHeight = Random.Range(minHW, maxHW);
-            float randomWidth = Random.Range(minHW, maxHW);
+		{
+			float randomHeight = Random.Range(minHW, maxHW);
+			float randomWidth = Random.Range(minHW, maxHW);
 
-            float randheight = randomHeight;
-            float randwidth = randomWidth;
+			float randheight = randomHeight;
+			float randwidth = randomWidth;
 
 			List<Vector2> randomPoints = GenerateMidpoints(GenerateConvexHull(GenerateRandomPoints(Random.Range(minPoints, maxPoints), randheight, randwidth)), 1);
 
@@ -27,25 +27,28 @@ namespace IsaacFagg.Track
 
 			TrackData track = new TrackData(points, TrackUtility.RandomRotation());
 
+			track.name = RandomName();
+
+
 			return track;
-        }
+		}
 
-        private static List<Vector2> GenerateRandomPoints(int count, float height, float width)
-        {
-            List<Vector2> points = new List<Vector2>(count);
+		private static List<Vector2> GenerateRandomPoints(int count, float height, float width)
+		{
+			List<Vector2> points = new List<Vector2>(count);
 
-            for (int i = 0; i < count; i++)
-            {
-                float x = Random.Range(-width * 0.35f, width * 0.35f);
-                float y = Random.Range(-height * 0.35f, height * 0.35f);
+			for (int i = 0; i < count; i++)
+			{
+				float x = Random.Range(-width * 0.35f, width * 0.35f);
+				float y = Random.Range(-height * 0.35f, height * 0.35f);
 
-                Vector2 vector = new Vector2(x, y);
+				Vector2 vector = new Vector2(x, y);
 
-                points.Add(vector);
-            }
+				points.Add(vector);
+			}
 
-            return points;
-        }
+			return points;
+		}
 
 		private static List<Vector2> GenerateConvexHull(List<Vector2> inputPoints)
 		{
@@ -140,5 +143,41 @@ namespace IsaacFagg.Track
 		{
 			return (x + y) / 2;
 		}
+
+		private static string RandomName()
+		{
+			List<string> locationNames = new List<string>
+			{
+				"Kings", 
+				"Queens", 
+				"Kilcrest", 
+				"Bluewater", 
+				"Bridgeburgh", 
+				"White Barrow", 
+				"Silvermore",
+				"Quickfrost",
+				"Dawnmond",
+				"Mutebury"
+			};
+			List<string> roadNames = new List<string> 
+			{
+				"Course",
+				"Highway",
+				"Motorway",
+				"Circuit",
+				"Speedway",
+				"Track"
+			};
+
+
+			string firstName = locationNames[Random.Range(0, locationNames.Count)];
+			string lastName = roadNames[Random.Range(0, roadNames.Count)];
+
+			return "The " + firstName + " " + lastName;
+		}
+
+
+
+
 	}
 }

@@ -17,6 +17,10 @@ public class Mesh2DColliderMaker : MonoBehaviour
 	{
 		filter = GetComponent<MeshFilter>();
 		polyCollider = GetComponent<PolygonCollider2D>();
+
+		CreatePolygon2DColliderPoints();
+
+
 	}
 
 #if UNITY_EDITOR

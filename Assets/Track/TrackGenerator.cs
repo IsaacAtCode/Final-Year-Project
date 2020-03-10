@@ -11,8 +11,6 @@ namespace IsaacFagg.Track
 	{
 		public TrackData trackData;
 
-		public RandomNameGenerator randomNameGenerator;
-
 		[Header("Checkpoints")]
 		public List<Checkpoint> checkpoints;
 		public List<Vector2> checkpointLocations;
@@ -27,15 +25,10 @@ namespace IsaacFagg.Track
 
 		private void Start()
 		{
-			randomNameGenerator = GetComponent<RandomNameGenerator>();
-
-
 			if (!trackData)
 			{
 				trackData = RandomTrackGenerator.GenerateRandomTrack();
 			}
-
-
 			GenerateTrackMesh(trackData);
 		}
 
@@ -132,7 +125,7 @@ namespace IsaacFagg.Track
 			checkpoints.Clear();
 
 			//Invisible Checkpoints
-			checkpointLocations = path.CalculateEvenlySpacedPoints(trackData.Length / checkpointCount, 1);
+			checkpointLocations = path.CalculateEvenlySpacedPoints(path.EstimatedLength() / checkpointCount);
 
 			GameObject checkpointParent = new GameObject("Checkpoints");
 			checkpointParent.transform.position = Vector2.zero;

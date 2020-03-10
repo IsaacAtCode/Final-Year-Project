@@ -23,6 +23,8 @@ public class RoadCreator : MonoBehaviour
 
 		int textureRepeat = Mathf.RoundToInt(tiling * points.Count * spacing * .05f);
 		GetComponent<MeshRenderer>().sharedMaterial.mainTextureScale = new Vector2(1, textureRepeat);
+
+
 	}
 
 	Mesh CreateRoadMesh(List<Vector2> points, bool isClosed)
