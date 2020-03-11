@@ -28,7 +28,7 @@ namespace IsaacFagg.Track
 			TrackData track = new TrackData(points, TrackUtility.RandomRotation());
 
 			track.name = RandomName();
-
+			track.type = TrackType.Random;
 
 			return track;
 		}

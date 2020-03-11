@@ -15,6 +15,9 @@ namespace IsaacFagg.Track
 
         public Texture2D icon;
 
+        public TrackType type = TrackType.Random;
+
+
         [HideInInspector]
         public bool validTrack = false;
         //Points
@@ -451,6 +454,13 @@ namespace IsaacFagg.Track
                 //Debug.Log(name + " is intersecting");
             }
         }
+    }
+
+    public enum TrackType
+    { 
+        Human, 
+        Algorithm, 
+        Random 
     }
 
 }
