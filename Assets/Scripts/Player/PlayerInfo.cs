@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace IsaacFagg.Player
 {
-    public class Player : MonoBehaviour
+    public class PlayerInfo : MonoBehaviour
     {
         public string nick;
         public Gender gender;

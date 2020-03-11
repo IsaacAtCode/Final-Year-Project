@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
+using UnityEngine.UI;
 using IsaacFagg.Paths;
 using IsaacFagg.Utility;
 
@@ -11,6 +11,8 @@ namespace IsaacFagg.Track
     public class TrackData : MonoBehaviour
     {
         public new string name;
+
+        private Texture2D minimap;
 
         [HideInInspector]
         public bool validTrack = false;
@@ -111,6 +113,31 @@ namespace IsaacFagg.Track
         public int powerCount = 0;
 
         #region Properties Get/Set
+
+        public Texture2D Minimap
+        {
+            get
+            {
+                if (minimap = null)
+                {
+                    //Get minimap
+
+                    return minimap;
+                }
+                else
+                {
+                    return minimap;
+                }
+            }
+            set
+            {
+                minimap = value;
+            }
+        }
+
+
+
+
         public float Height
         {
             get
@@ -213,6 +240,14 @@ namespace IsaacFagg.Track
         private bool isCurvesSet = false;
         #endregion
 
+
+        public void PopulateTrackData(TrackData newTrack)
+        {
+            name = newTrack.name;
+            points = newTrack.points;
+
+        }
+
         public Vector2 Centre
         {
             get
@@ -305,39 +340,6 @@ namespace IsaacFagg.Track
             }
         }
 
-        //public List<Vector2> ScaledPoints(int count)
-        //{
-        //    Path path = new Path(points);
-
-        //    List<Vector2> scaledPoints = path.CalculateNumberOfPoints(count);
-
-        //    return scaledPoints;
-        //}
-
-        //public List<Vector2> MirroredPoints()
-        //{
-        //    List<Vector2> mPoints = new List<Vector2>(points);
-
-        //    mPoints.Reverse();
-
-        //    return mPoints;
-        //}
-
-        //public List<Vector2> CentredPoints()
-        //{
-        //    List<Vector2> cPoints = new List<Vector2>();
-
-        //    Vector2 oldCentre = Centre;
-
-        //    foreach (Vector2 point in points)
-        //    {
-        //        Vector2 newPoint = new Vector2(point.x - oldCentre.x, point.y - oldCentre.y);
-        //        cPoints.Add(newPoint);
-        //    }
-
-        //    return cPoints;
-        //}
-
         private List<float> AnglesFromPoints()
         {
             List<float> angles = new List<float>();
@@ -357,27 +359,17 @@ namespace IsaacFagg.Track
                     point = cPoints[i];
                     next = cPoints[0];
 
-                    //angle = EvolutionUtility.GetAngleToNextPoint(cPoints[i], cPoints[0]);
-              
-                    //Debug.Log("p1: " + cPoints[i] + " p2 " + cPoints[0] + angle);
                 }
                 else
                 {
                     point = cPoints[i];
                     next = cPoints[i+1];
-
-                    //angle = EvolutionUtility.GetAngleToNextPoint(cPoints[i], cPoints[i + 1]);
                 }
 
                 angle = EvolutionUtility.GetAngleToNextPoint(point, next);
 
                 angles.Add(angle);
             }
-
-
-
-
-
 
             return angles;
         }

@@ -4,23 +4,14 @@ using UnityEngine;
 
 namespace IsaacFagg.Player
 {
-
     //Database for all the data kept from the player
 
-    [RequireComponent(typeof(Player))]
+    [RequireComponent(typeof(PlayerInfo))]
     public class PlayerData : MonoBehaviour
     {
-
-       
-        private Player player;
-
 
         [Header("Ratings")]
         public float meanRate;
 
-        private void Awake()
-        {
-            player = GetComponent<Player>();
-        }
     }
 }

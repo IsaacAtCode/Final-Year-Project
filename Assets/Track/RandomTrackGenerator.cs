@@ -21,9 +21,9 @@ namespace IsaacFagg.Track
 			float randheight = randomHeight;
 			float randwidth = randomWidth;
 
-			List<Vector2> randomPoints = GenerateMidpoints(GenerateConvexHull(GenerateRandomPoints(Random.Range(minPoints, maxPoints), randheight, randwidth)), 1);
+			//List<Vector2> points = TrackUtility.CombineClosePoints(GenerateMidpoints(GenerateConvexHull(GenerateRandomPoints(Random.Range(minPoints, maxPoints), randheight, randwidth)), 1));
 
-			List<Vector2> points =  TrackUtility.ScaledPoints(randomPoints, randomPoints.Count);
+			List<Vector2> points = GenerateMidpoints(GenerateConvexHull(GenerateRandomPoints(Random.Range(minPoints, maxPoints), randheight, randwidth)), 1);
 
 			TrackData track = new TrackData(points, TrackUtility.RandomRotation());
 
@@ -138,6 +138,14 @@ namespace IsaacFagg.Track
 
 			return outputPoints;
 		}
+
+
+
+
+
+
+
+
 
 		private static float Midpoint(float x, float y)
 		{

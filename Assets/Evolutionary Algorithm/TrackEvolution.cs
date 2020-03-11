@@ -380,7 +380,7 @@ namespace IsaacFagg.Genetics
         {
             if (parent.Count != newCount)
             {
-                return TrackUtility.ScaledPoints(parent, newCount);
+                return TrackUtility.EqualPoints(parent, newCount);
             }
             else
             {

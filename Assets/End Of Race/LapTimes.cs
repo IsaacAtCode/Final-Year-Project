@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace IsaacFagg.Player
+namespace IsaacFagg.UI
 {
 	public class LapTimes : MonoBehaviour
 	{

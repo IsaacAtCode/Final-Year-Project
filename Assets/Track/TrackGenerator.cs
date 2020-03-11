@@ -20,7 +20,6 @@ namespace IsaacFagg.Track
 		[Header("Road")]
 		public Material roadMat;
 		public Material gravelMat;
-		public Material minimapMat;
 		public Sprite background;
 
 		private void Start()
@@ -28,7 +27,12 @@ namespace IsaacFagg.Track
 			if (!trackData)
 			{
 				trackData = RandomTrackGenerator.GenerateRandomTrack();
+
+				TrackData tdGO = gameObject.AddComponent<TrackData>();
+
+				tdGO.PopulateTrackData(trackData);
 			}
+
 			GenerateTrackMesh(trackData);
 		}
 
@@ -37,44 +41,32 @@ namespace IsaacFagg.Track
 		{
 			GameObject trackGO = new GameObject(data.name);
 			GameObject gravelGO = new GameObject("Gravel");
-			GameObject minimapGO = new GameObject("Minimap Track");
-
 			//Parents
 			trackGO.transform.parent = this.gameObject.transform;
 			gravelGO.transform.parent = trackGO.transform;
-			minimapGO.transform.parent = trackGO.transform;
-
 			//Tags
 			trackGO.tag = "CurrentTrack";
 			gravelGO.tag = "Gravel";
-			minimapGO.tag = "MinimapTrack";
-
 			//Layers
 			trackGO.layer = 10;
 			gravelGO.layer = 10;
-			minimapGO.layer = 11;
-
 
 			PathCreator tPC = trackGO.AddComponent<PathCreator>();
 			PathCreator gPC = gravelGO.AddComponent<PathCreator>();
-			PathCreator mPC = minimapGO.AddComponent<PathCreator>();
 
 			Path path = GenerateBevierPath(data);
 
 			tPC.path = path;
 			gPC.path = path;
-			mPC.path = path;
-
 			AddMesh(trackGO, roadMat, 20f);
 			AddMesh(gravelGO, gravelMat, 50f);
-			AddMesh(minimapGO, minimapMat, 50f);
 
 			//AddBackground(background);
 
 			GenerateCheckpoints(tPC.path, trackGO);
 		}
 
-		public Path GenerateBevierPath(TrackData trackData)
+		private Path GenerateBevierPath(TrackData trackData)
 		{
 			Path newPath = new Path(trackData.Centre);
 
@@ -99,7 +91,7 @@ namespace IsaacFagg.Track
 			return newPath;
 		}
 
-		public void AddMesh(GameObject go, Material mat, float width)
+		private void AddMesh(GameObject go, Material mat, float width)
 		{
 			RoadCreator rc = go.AddComponent<RoadCreator>();
 			MeshRenderer mr = go.GetComponent<MeshRenderer>();

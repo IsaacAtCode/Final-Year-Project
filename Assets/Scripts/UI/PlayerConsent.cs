@@ -5,10 +5,10 @@ using UnityEngine.UI;
 
 namespace IsaacFagg.Player
 {
-    public class Consenting : MonoBehaviour
+    public class PlayerConsent : MonoBehaviour
     {
         [Header("Player")]
-        public Player player;
+        public PlayerInfo player;
         PlayerData pd;
 
         [Header("Age Check")]
@@ -22,7 +22,7 @@ namespace IsaacFagg.Player
 
         private void Awake()
         {
-            player = Object.FindObjectOfType<Player>();
+            player = Object.FindObjectOfType<PlayerInfo>();
         }
 
 

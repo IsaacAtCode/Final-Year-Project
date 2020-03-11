@@ -2,15 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using IsaacFagg.Settings;
+using UnityEngine.Analytics;
 
 namespace IsaacFagg.Player
 {
-	[RequireComponent(typeof(Player))]
+	[RequireComponent(typeof(PlayerInfo))]
 	public class PlayerSettings : MonoBehaviour
 	{
-
-		private Player player;
-
 		[Header("Display")]
 		public int fpsLimiter;
 		public bool cameraShake;
@@ -39,12 +37,6 @@ namespace IsaacFagg.Player
 		public bool notifOn = true;
 
 		//Stuff to save the settings
-
-		private void Awake()
-		{
-			player = GetComponent<Player>();
-		}
-
 
 	}
 

@@ -96,6 +96,7 @@ LightmapSettings:
     m_PVRFilteringAtrousPositionSigmaAO: 1
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
+    m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
   m_UseShadowmask: 1
 --- !u!196 &4
@@ -135,7 +136,6 @@ GameObject:
   - component: {fileID: 1169167158}
   - component: {fileID: 1169167160}
   - component: {fileID: 1169167162}
-  - component: {fileID: 1169167163}
   m_Layer: 0
   m_Name: _app
   m_TagString: Untagged
@@ -194,8 +194,7 @@ MonoBehaviour:
   sfxVolume: 0
   engineVolume: 0
   controlType: 0
-  touchSensitivity: 0
-  tiltSensitivity: 0
+  sensitivity: 0
   notifOn: 1
 --- !u!114 &1169167159
 MonoBehaviour:
@@ -231,7 +230,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1169167155}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cddb44985334e7247992191aa26d96c3, type: 3}
+  m_Script: {fileID: 11500000, guid: 0e06d1bdb28c0bb499a9f2fc31d1248c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   nick: 
@@ -255,24 +254,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a55ae89ac4a1b74e95d0c208f179ec9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Openness: 0
-  Conscientiousness: 0
-  Extraversion: 0
-  Agreeableness: 0
-  Neuroticism: 0
---- !u!114 &1169167163
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1169167155}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f08dbdedf2480c49a602096a50471e2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  model: {fileID: 0}
-  color: {r: 0.12454414, g: 1, b: 0, a: 0}
-  defaultModel: {fileID: 0}
-  defaultColor: {r: 0, g: 0.39215687, b: 1, a: 0}
