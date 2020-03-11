@@ -4,31 +4,28 @@ using UnityEngine;
 using UnityEngine.UI;
 using IsaacFagg.Track;
 
-namespace IsaacFagg.UI
+namespace IsaacFagg.Icons
 {
     [RequireComponent(typeof(IconGenerator))]
     public class IconCreator : MonoBehaviour
     {
-
-        //private void Start()
-        //{
-        //    image.texture = CreateMinimap(RandomTrackGenerator.GenerateRandomTrack().points);
-        //}
-
-
-        public Texture2D CreateMinimap(List<Vector2> points)
+        public Texture2D CreateIcon(List<Vector2> points)
         {
-            Camera minimapCam = GetComponentInChildren<Camera>();
-
+            //Camera iconCam = GetComponentInChildren<Camera>();
+            Camera iconCam = new GameObject("Icon Camera").AddComponent<Camera>();
+            iconCam.transform.parent = this.transform;
 
             IconGenerator mg = GetComponent<IconGenerator>();
             mg.GenerateTrackMesh(points);
 
             Bounds bounds = GetComponent<Renderer>().bounds;
 
-            FocusCameraOnBounds(minimapCam, bounds);
+            FocusCameraOnBounds(iconCam, bounds);
 
-            Texture2D texture = RenderToTexture(minimapCam);
+            Texture2D texture = RenderToTexture(iconCam);
+
+            Destroy(iconCam.gameObject  );
+
 
             return texture;
         }

@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using IsaacFagg.Paths;
 using IsaacFagg.Utility;
+using IsaacFagg.Icons;
 
 namespace IsaacFagg.Track
 {
@@ -12,7 +13,7 @@ namespace IsaacFagg.Track
     {
         public new string name;
 
-        private Texture2D minimap;
+        public Texture2D icon;
 
         [HideInInspector]
         public bool validTrack = false;
@@ -113,30 +114,6 @@ namespace IsaacFagg.Track
         public int powerCount = 0;
 
         #region Properties Get/Set
-
-        public Texture2D Minimap
-        {
-            get
-            {
-                if (minimap = null)
-                {
-                    //Get minimap
-
-                    return minimap;
-                }
-                else
-                {
-                    return minimap;
-                }
-            }
-            set
-            {
-                minimap = value;
-            }
-        }
-
-
-
 
         public float Height
         {
@@ -245,8 +222,8 @@ namespace IsaacFagg.Track
         {
             name = newTrack.name;
             points = newTrack.points;
-
         }
+
 
         public Vector2 Centre
         {
@@ -256,15 +233,10 @@ namespace IsaacFagg.Track
             }
         }
 
-        public List<SegmentType> SegmentTypes
-        {
-            get
-            {
-                return GetSegmentTypes();
-            }
-        }
 
-        //Angles
+
+        #region Angles
+
         public List<float> Angles
         {
             get
@@ -293,7 +265,6 @@ namespace IsaacFagg.Track
                 return Angles.Average();
             }
         }
-
         public List<float> Slopes
         {
             get
@@ -301,9 +272,53 @@ namespace IsaacFagg.Track
                 return SlopesFromPoints();
             }
         }
+        private List<float> AnglesFromPoints()
+        {
+            List<float> angles = new List<float>();
 
+            List<Vector2> cPoints = TrackUtility.CentreOnZero(points);
 
-        //Distances
+            for (int i = 0; i < points.Count; i++)
+            {
+                float angle;
+                Vector2 point;
+                Vector2 next;
+
+                if (i == points.Count - 1)
+                {
+                    point = cPoints[i];
+                    next = cPoints[0];
+
+                }
+                else
+                {
+                    point = cPoints[i];
+                    next = cPoints[i + 1];
+                }
+
+                angle = EvolutionUtility.GetAngleToNextPoint(point, next);
+
+                angles.Add(angle);
+            }
+
+            return angles;
+        }
+        private List<float> SlopesFromPoints()
+        {
+            List<float> slopes = new List<float>();
+
+            for (int i = 0; i < points.Count; i++)
+            {
+                slopes.Add(EvolutionUtility.GetSlopeForPoint(points[i], Centre));
+            }
+
+            return slopes;
+        }
+
+        #endregion
+
+        #region Distances
+
         public List<float> Distances
         {
             get
@@ -340,52 +355,6 @@ namespace IsaacFagg.Track
             }
         }
 
-        private List<float> AnglesFromPoints()
-        {
-            List<float> angles = new List<float>();
-
-            List<Vector2> cPoints = TrackUtility.CentreOnZero(points);
-
-
-
-            for (int i = 0; i < points.Count; i++)
-            {
-                float angle;
-                Vector2 point;
-                Vector2 next;
-
-                if (i == points.Count - 1)
-                {
-                    point = cPoints[i];
-                    next = cPoints[0];
-
-                }
-                else
-                {
-                    point = cPoints[i];
-                    next = cPoints[i+1];
-                }
-
-                angle = EvolutionUtility.GetAngleToNextPoint(point, next);
-
-                angles.Add(angle);
-            }
-
-            return angles;
-        }
-
-        private List<float> SlopesFromPoints()
-        {
-            List<float> slopes = new List<float>();
-
-            for (int i = 0; i < points.Count; i++)
-            {
-                slopes.Add(EvolutionUtility.GetSlopeForPoint(points[i], Centre));
-            }
-
-            return slopes;
-        }
-
         public List<float> DistancesFromPoints()
         {
             List<float> distances = new List<float>();
@@ -408,6 +377,18 @@ namespace IsaacFagg.Track
             }
 
             return distances;
+        }
+
+        #endregion
+
+        #region Segments
+
+        public List<SegmentType> SegmentTypes
+        {
+            get
+            {
+                return GetSegmentTypes();
+            }
         }
 
         public List<SegmentType> GetSegmentTypes()
@@ -450,7 +431,7 @@ namespace IsaacFagg.Track
             }
         }
 
-
+        #endregion
 
         //Delete once testing finished
         private void Start()

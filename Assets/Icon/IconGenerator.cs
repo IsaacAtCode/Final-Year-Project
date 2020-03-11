@@ -5,7 +5,7 @@ using IsaacFagg.Paths;
 using IsaacFagg.Track;
 using IsaacFagg.Utility;
 
-namespace IsaacFagg.UI
+namespace IsaacFagg.Icons
 {
 	[RequireComponent(typeof(PathCreator))]
     public class IconGenerator : MonoBehaviour

@@ -193,56 +193,13 @@ namespace IsaacFagg.Utility
 
             for (int i = 0; i < scaled.Count; i++)
             {
-                //Debug.Log(i + " Before: " + scaled[i]);
                 scaled[i] = Vector2.Scale(scaled[i], vScale);
-               // Debug.Log(i + " After: " + scaled[i]);
             }
 
             return scaled;
 
         }
 
-        //public static List<Vector2> CombineClosePoints(List<Vector2> points)
-        //{
-        //    List<Vector2> newPoints = new List<Vector2>(points);
-
-
-        //    for (int i = 0; i < points.Count; i++)
-        //    {
-        //        if (i == points.Count-1 )
-        //        {
-        //            if (ArePointsTooClose(points[i], points[0]))
-        //            {
-        //                Vector2 point = CombinePoints(points[i], points[0]);
-        //                points.Remove(points[i]);
-        //                points.Remove(points[0]);
-
-        //                newPoints.Insert(i - 1, point);
-
-        //                Debug.Log("Combined points");
-        //            }
-        //        }
-        //        else
-        //        {
-        //            if (ArePointsTooClose(points[i], points[i + 1]))
-        //            {
-        //                Vector2 point = CombinePoints(points[i], points[i + 1]);
-        //                points.Remove(points[i]);
-        //                points.Remove(points[i + 1]);
-
-        //                newPoints.Insert(i - 1, point);
-        //                Debug.Log("Combined points");
-
-        //            }
-        //        }
-
-
-        //    }
-
-
-        //    return newPoints;
-
-        //}
 
         public static bool ArePointsTooClose(Vector2 a, Vector2 b)
         {
