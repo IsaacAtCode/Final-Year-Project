@@ -4,11 +4,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Audio;
 
-namespace IsaacFagg.Settings
+namespace IsaacFagg.UI.Main
 {
 	public class VolumeSlider : MonoBehaviour
 	{
-		public float defaultValue = 0.5f;
 		public float volume;
 
 		public Slider vSlider;

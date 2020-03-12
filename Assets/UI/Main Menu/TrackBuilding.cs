@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-namespace IsaacFagg.UI
+namespace IsaacFagg.UI.Main
 {
     public class TrackBuilding : MonoBehaviour
     {

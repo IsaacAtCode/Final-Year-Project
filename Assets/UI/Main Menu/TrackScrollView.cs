@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using IsaacFagg.Track;
 
-namespace IsaacFagg.UI
+namespace IsaacFagg.UI.Main
 {
     public class TrackScrollView : MonoBehaviour
     {

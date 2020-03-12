@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using IsaacFagg.Settings;
 using UnityEngine.Analytics;
 
 namespace IsaacFagg.Player

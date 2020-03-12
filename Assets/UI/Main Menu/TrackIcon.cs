@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using IsaacFagg.Track;
 using IsaacFagg.Icons;
 
-namespace IsaacFagg.UI
+namespace IsaacFagg.UI.Main
 {
     public class TrackIcon : MonoBehaviour
     {

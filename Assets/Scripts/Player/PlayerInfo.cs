@@ -7,7 +7,7 @@ namespace IsaacFagg.Player
     public class PlayerInfo : MonoBehaviour
     {
         public string nick;
-        public Gender gender;
+        public Gender gender = Gender.Other;
         public string UUID;
         public bool firstLoad = true;
 
@@ -20,6 +20,9 @@ namespace IsaacFagg.Player
         public bool infoConsent;
         public bool agreeConsent;
         public bool hasConsent;
+
+        [Header("Customise")]
+        public int avatarColour = 0;
 
         private void Awake()
         {
@@ -38,7 +41,7 @@ namespace IsaacFagg.Player
             nick = null;
             UUID = GetUUID();
             age = 0;
-            gender = Gender.Empty;
+            gender = Gender.Other;
             hasConsent = false;
 
             //Clears player info, can also be used later
@@ -86,7 +89,6 @@ namespace IsaacFagg.Player
         Male,
         Female,
         Other,
-        Empty,
     }
 
 }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace IsaacFagg.UI
+namespace IsaacFagg.UI.Main
 {
 	public class TrackMenu : MonoBehaviour
 	{
