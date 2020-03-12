@@ -13,12 +13,6 @@ namespace IsaacFagg.UI.Main
     {
         public PlayerInfo playerInfo;
 
-
-        private void Awake()
-        {
-            playerInfo = Object.FindObjectOfType<PlayerInfo>();
-        }
-
         private void OnEnable()
         {
             if (!playerInfo)
@@ -30,6 +24,7 @@ namespace IsaacFagg.UI.Main
 
             SetDropdown((int)playerInfo.gender);
 
+            ClosePassword();
         }
 
 
@@ -106,6 +101,45 @@ namespace IsaacFagg.UI.Main
 
         #endregion
 
+
+        #region Debug
+        [Header("Debug")]
+        public GameObject debugPanel;
+        public InputField debugInput;
+        private string adminPassword = "Jesus Christ";
+
+        public void OpenPassword()
+        {
+            debugPanel.SetActive(true);
+        }
+
+        public void ClosePassword()
+        {
+            debugPanel.SetActive(false);
+        }
+
+        public void TogglePassword()
+        {
+            if (debugPanel.activeInHierarchy == false)
+            {
+                OpenPassword();
+            }
+            else
+            {
+                ClosePassword();
+            }
+        }
+
+        public void CheckPassword(string attempt)
+        {
+            if (attempt == adminPassword)
+            {
+                Debug.Log("Youve passed");
+            }
+        }
+
+
+        #endregion
     }
 
 
