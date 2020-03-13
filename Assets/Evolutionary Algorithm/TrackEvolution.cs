@@ -40,19 +40,28 @@ namespace IsaacFagg.Genetics
             TrackData track1 = gameObject.AddComponent<TrackData>();
             track1.name = "Track 1";
             track1.points = RandomTrackGenerator.GenerateRandomTrack().points;
+            track1.type = TrackType.Random;
 
 
             TrackData track2 = gameObject.AddComponent<TrackData>();
             track2.name = "Track 2";
             track2.points = RandomTrackGenerator.GenerateRandomTrack().points;
+            track2.type = TrackType.Random;
 
 
-            TrackData babyTrack = gameObject.AddComponent<TrackData>();
-            babyTrack.name = "Baby Track";
-            babyTrack.points = CombineTrackData(track1, track2);
+            //TrackData babytrack = gameObject.AddComponent<TrackData>();
+            //babytrack.name = "Baby Track";
+            //babytrack.points = CombineTrackData(track1, track2);
 
+            TrackData mutatedTrack1 = gameObject.AddComponent<TrackData>();
+            mutatedTrack1.name = "Mutated Track 1";
+            mutatedTrack1.points = MutateTrackData(track1);
+            mutatedTrack1.type = TrackType.Algorithm;
 
-
+            TrackData mutatedTrack2 = gameObject.AddComponent<TrackData>();
+            mutatedTrack2.name = "Mutated Track 2";
+            mutatedTrack2.points = MutateTrackData(track2);
+            mutatedTrack2.type = TrackType.Algorithm;
         }
 
         //public TrackData CombineTrackData(TrackData track1, TrackData track2)
@@ -71,10 +80,12 @@ namespace IsaacFagg.Genetics
             TrackData track1 = gameObject.AddComponent<TrackData>();
             track1.name = "Track 1 Scaled";
             track1.points = NormaliseParent(parent1, scale, rot);
+            track1.type = TrackType.Algorithm;
 
             TrackData track2 = gameObject.AddComponent<TrackData>();
             track2.name = "Track 2 Scaled";
             track2.points = NormaliseParent(parent2, scale, rot);
+            track2.type = TrackType.Algorithm;
 
             //Get segments from Each Parent
             segmentTypes = SegmentChildFromParents(track1, track2);
@@ -137,9 +148,7 @@ namespace IsaacFagg.Genetics
 
                 Debug.Log(prevAngle + "  " + testAngle);
 
-
                 Vector2 point;
-
 
                 if (segmentTypes[i] == SegmentType.Straight)
                 {
@@ -162,11 +171,98 @@ namespace IsaacFagg.Genetics
                 childTrack.Add(point);
             }
 
-            return childTrack;
+            return TrackUtility.CentredPoints(childTrack);
 
         }
 
+        public List<Vector2> MutateTrackData(TrackData parent)
+        {
+            //Chance to Randomly Change Scale
+            int scale = MutationScale(parent.points.Count);
 
+            //Chance to mutate Rotation
+            Rotation rot = MutationRotation(parent.rotation);
+
+
+            TrackData parentScaled = new TrackData(NormaliseParent(parent, scale, rot));
+            parentScaled.type = TrackType.Algorithm;
+
+            List<Vector2> points = new List<Vector2>(parentScaled.points);
+
+            List<SegmentType> segmentTypes = new List<SegmentType>();
+
+            for (int i = 0; i < parentScaled.SegmentTypes.Count; i++)
+            {
+                SegmentType type = parentScaled.SegmentTypes[i];
+
+                int rand = Random.Range(0, 100);
+
+                if (rand < 10)
+                {
+                    type = MutateSegmentType(type);
+
+                    //Debug.Log("Mutated at: " + i);
+                }
+
+                segmentTypes.Add(type);
+            }
+
+            Vector2 testPoint = MathsUtility.RotateVectorAroundVector(points[0], points[1], 50, true);
+
+            Debug.Log("Before: " + points[1] + " Centre: " + points[0] + " Results: " + testPoint);
+
+            float distOC = Vector2.Distance(points[0], points[1]);
+            float distON = Vector2.Distance(points[1], testPoint);
+            float distCN = Vector2.Distance(points[0], testPoint);
+
+
+
+            return TrackUtility.CentredPoints(points);
+        }
+
+        private int MutationScale(int currentScale)
+        {
+            if (Random.Range(0, 100) > 90)
+            {
+                return Mathf.Clamp(Random.Range(currentScale - 2, currentScale + 2), 10, 40);
+            }
+            else
+            {
+                return currentScale;
+            }
+        }
+
+
+
+        private Rotation MutationRotation(Rotation rot)
+        {
+            if (Random.Range(0, 100) > 90)
+            {
+                return EvolutionUtility.OppositeRotation(rot);
+            }
+            else
+            {
+                return rot;
+            }
+        }
+
+
+
+
+
+
+        private SegmentType MutateSegmentType(SegmentType type)
+        {
+            SegmentType mutatedType = EvolutionUtility.RandomSegment();
+
+            while (mutatedType == type)
+            {
+                mutatedType = EvolutionUtility.RandomSegment();
+            }
+
+            return mutatedType;
+
+        }
 
 
 
@@ -390,7 +486,7 @@ namespace IsaacFagg.Genetics
 
         private List<Vector2> GetReversedParent(List<Vector2> parent, Rotation rot)
         {
-            if (TrackUtility.GetRotation(parent) != rot)
+            if (TrackUtility.GetTrackRotation(parent) != rot)
             {
                 return TrackUtility.ReversePoints(parent);
             }

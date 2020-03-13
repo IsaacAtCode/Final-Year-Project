@@ -94,6 +94,40 @@ namespace IsaacFagg.Utility
 			return signedArea >= 0;
 		}
 
+		public static Vector2 RotateVectorAroundVector(Vector2 centre, Vector2 point, float degrees, bool isRight)
+		{
+			float x = centre.x;
+			float y = centre.y;
+
+			Vector2 centeredPoint = new Vector2(point.x - x, point.y - y);
+
+			float radians;
+
+			if (isRight)
+			{
+				radians = -degrees * Mathf.Deg2Rad;
+			}
+			else
+			{
+				radians = degrees * Mathf.Deg2Rad;
+			}
+
+			float sin = Mathf.Sin(radians);
+			float cos = Mathf.Cos(radians);
+
+
+			Vector2 rotatedPoint = new Vector2((cos * centeredPoint.x - sin * centeredPoint.y) + x, (sin * centeredPoint.x + cos * centeredPoint.y) + y);
+
+
+
+			return rotatedPoint;
+
+		}
+
+
+
+
+
 		public static Quaternion LookAt(Vector3 pos, Vector3 targetPos)
 		{
 			Vector3 difference = targetPos - pos;

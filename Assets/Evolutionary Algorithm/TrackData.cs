@@ -11,6 +11,9 @@ namespace IsaacFagg.Track
 {
     public class TrackData : MonoBehaviour
     {
+        [HideInInspector]
+        public bool createdByScript = false;
+
         public new string name;
 
         public Texture2D icon;
@@ -236,8 +239,6 @@ namespace IsaacFagg.Track
             }
         }
 
-
-
         #region Angles
 
         public List<float> Angles
@@ -413,25 +414,10 @@ namespace IsaacFagg.Track
 
                 int nextPoint = (i + 1) % points.Count;
 
-                types.Add(DetermineSegmentType(points[prevPoint], points[i], points[nextPoint]));
+                types.Add(TrackUtility.DetermineSegmentType(points[prevPoint], points[i], points[nextPoint]));
             }
-            return types;
-        }
 
-        private SegmentType DetermineSegmentType(Vector2 p1, Vector2 p2, Vector2 p3)
-        {
-            if (MathsUtility.Left(p1, p2, p3))
-            {
-                return SegmentType.Left;
-            }
-            else if (MathsUtility.Right(p1, p2, p3))
-            {
-                return SegmentType.Right;
-            }
-            else
-            {
-                return SegmentType.Straight;
-            }
+            return types;
         }
 
         #endregion
@@ -439,9 +425,24 @@ namespace IsaacFagg.Track
         //Delete once testing finished
         private void Start()
         {
-            Color background = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f),Random.Range(0f, 1f));
+            if (!createdByScript)
+            {
+                CreateGameObject();
+            }
+
+        }
+
+        public void CreateGameObject()
+        {
+            Color background = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f));
 
             GameObject go = new GameObject(name);
+
+            TrackData newTD = go.AddComponent<TrackData>();
+            newTD.name = name;
+            newTD.points = points;
+            newTD.createdByScript = true;
+            newTD.type = type;
 
             PathCreator pc = go.AddComponent<PathCreator>();
 
@@ -453,14 +454,27 @@ namespace IsaacFagg.Track
             {
                 //Debug.Log(name + " is intersecting");
             }
+
+            Destroy(this);
         }
+
     }
 
+
+
     public enum TrackType
-    { 
+    {
+        Random,
         Human, 
         Algorithm, 
-        Random 
+        
+    }
+
+    public enum SegmentType
+    {
+        Straight,
+        Left,
+        Right
     }
 
 }

@@ -127,7 +127,7 @@ namespace IsaacFagg.Utility
             return (Rotation)Random.Range(0, 2);
         }
 
-        public static Rotation GetRotation(List<Vector2> points)
+        public static Rotation GetTrackRotation(List<Vector2> points)
         {
             Vector2 centre = GetCentre(points);
 
@@ -219,6 +219,37 @@ namespace IsaacFagg.Utility
             return midPoint;
         }
 
+        public static SegmentType DetermineSegmentType(Vector2 p1, Vector2 p2, Vector2 p3)
+        {
+            if (MathsUtility.Left(p1, p2, p3))
+            {
+                return SegmentType.Left;
+            }
+            else if (MathsUtility.Right(p1, p2, p3))
+            {
+                return SegmentType.Right;
+            }
+            else
+            {
+                return SegmentType.Straight;
+            }
+        }
+
+        public static SegmentType DetermineSegmentType(List<Vector2> points)
+        {
+            if (MathsUtility.Left(points[0], points[1], points[2]))
+            {
+                return SegmentType.Left;
+            }
+            else if (MathsUtility.Right(points[0], points[1], points[2]))
+            {
+                return SegmentType.Right;
+            }
+            else
+            {
+                return SegmentType.Straight;
+            }
+        }
 
 
     }
@@ -229,11 +260,6 @@ namespace IsaacFagg.Utility
         Anticlockwise,
     }
 
-    public enum SegmentType
-    {
-        Straight,
-        Left,
-        Right
-    }
+
 
 }

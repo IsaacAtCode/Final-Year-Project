@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using IsaacFagg.Track;
 
 namespace IsaacFagg.Utility
 {
@@ -64,6 +65,19 @@ namespace IsaacFagg.Utility
 
             return angle;
         }
+
+        public static Rotation OppositeRotation(Rotation rot)
+        {
+            if (rot == Rotation.Clockwise)
+            {
+                return Rotation.Anticlockwise;
+            }
+            else
+            {
+                return Rotation.Clockwise;
+            }
+        }
+
 
         public static Rotation CompareRotation(Rotation p1, Rotation p2)
         {
@@ -185,15 +199,6 @@ namespace IsaacFagg.Utility
         {
             return list.Count(st => st == type);
         }
-
-
-
-
-
-
-
-
-
     }
 
 

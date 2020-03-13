@@ -119,7 +119,7 @@ namespace IsaacFagg.Track
 
 					float newX = Midpoint(inputPoints[i].x, inputPoints[i + 1].x);
 					float newY = Midpoint(inputPoints[i].y, inputPoints[i + 1].y);
-
+		
 					float diffX = (inputPoints[i].x - inputPoints[i + 1].x) * difficulty;
 					float diffY = (inputPoints[i].y - inputPoints[i + 1].y) * difficulty;
 
