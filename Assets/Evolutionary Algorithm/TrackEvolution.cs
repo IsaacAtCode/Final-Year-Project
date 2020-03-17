@@ -8,6 +8,11 @@ namespace IsaacFagg.Genetics
 {
     public class TrackEvolution : MonoBehaviour
     {
+        public enum EvolutionType { Combine, Mutate, Segments}
+        public EvolutionType evoType;
+
+
+
         public TrackData[] testPopulation;
         public List<Vector2> testPoints = new List<Vector2>();
 
@@ -33,8 +38,6 @@ namespace IsaacFagg.Genetics
         private float minHW = 250f;
         private float maxHW = 1500f;
 
-        public List<SegmentType> segmentTypes;
-
         private void Start()
         {
             TrackData track1 = gameObject.AddComponent<TrackData>();
@@ -48,31 +51,42 @@ namespace IsaacFagg.Genetics
             track2.points = RandomTrackGenerator.GenerateRandomTrack().points;
             track2.type = TrackType.Random;
 
+            //TrackData[] tracks = GetComponents<TrackData>();
 
-            //TrackData babytrack = gameObject.AddComponent<TrackData>();
-            //babytrack.name = "Baby Track";
-            //babytrack.points = CombineTrackData(track1, track2);
+            if (evoType == EvolutionType.Combine)
+            {
+                TrackData babytrack = gameObject.AddComponent<TrackData>();
+                babytrack.name = "Baby Track";
+                babytrack.points = CombineTrackData(track1, track2);
+            }
+            else if (evoType == EvolutionType.Mutate)
+            {
+                TrackData mutatedTrack1 = gameObject.AddComponent<TrackData>();
+                mutatedTrack1.name = "Mutated Track 1";
+                mutatedTrack1.points = MutateTrackData(track1);
+                mutatedTrack1.type = TrackType.Algorithm;
 
-            TrackData mutatedTrack1 = gameObject.AddComponent<TrackData>();
-            mutatedTrack1.name = "Mutated Track 1";
-            mutatedTrack1.points = MutateTrackData(track1);
-            mutatedTrack1.type = TrackType.Algorithm;
+                TrackData mutatedTrack2 = gameObject.AddComponent<TrackData>();
+                mutatedTrack2.name = "Mutated Track 2";
+                mutatedTrack2.points = MutateTrackData(track2);
+                mutatedTrack2.type = TrackType.Algorithm;
+            }
+            else if (evoType == EvolutionType.Segments)
+            {
+                TrackData segmentedTrack = gameObject.AddComponent<TrackData>();
+                segmentedTrack.name = "Segment Track";
+                segmentedTrack.points = CombineSegments(track1, track2);
+                segmentedTrack.type = TrackType.Algorithm;
+            }
 
-            TrackData mutatedTrack2 = gameObject.AddComponent<TrackData>();
-            mutatedTrack2.name = "Mutated Track 2";
-            mutatedTrack2.points = MutateTrackData(track2);
-            mutatedTrack2.type = TrackType.Algorithm;
+
+
         }
-
-        //public TrackData CombineTrackData(TrackData track1, TrackData track2)
 
         public List<Vector2> CombineTrackData(TrackData parent1, TrackData parent2)
         {
-            //Get New Point Count
-            int scale = Mathf.Clamp(Random.Range(parent1.points.Count, parent2.points.Count), minPoints, maxPoints);
-            
-            //Get Rotation From Parents
-            Rotation rot = EvolutionUtility.CompareRotation(parent1.rotation, parent2.rotation);
+            int scale = Mathf.Clamp(MutationScale(Random.Range(parent1.points.Count, parent2.points.Count)), minPoints, maxPoints);
+            Rotation rot = MutationRotation(EvolutionUtility.CompareRotation(parent1.rotation, parent2.rotation));
 
 
 
@@ -88,7 +102,7 @@ namespace IsaacFagg.Genetics
             track2.type = TrackType.Algorithm;
 
             //Get segments from Each Parent
-            segmentTypes = SegmentChildFromParents(track1, track2);
+            List<SegmentType> segmentTypes = SegmentChildFromParents(track1, track2);
 
             Debug.Log("Straights: " + EvolutionUtility.SegmentTypeCount(segmentTypes, SegmentType.Straight));
             Debug.Log("Lefts: " + EvolutionUtility.SegmentTypeCount(segmentTypes, SegmentType.Left));
@@ -220,6 +234,54 @@ namespace IsaacFagg.Genetics
             return TrackUtility.CentredPoints(points);
         }
 
+        public List<Vector2> CombineSegments(TrackData parent1, TrackData parent2)
+        {
+            int scale = Mathf.Clamp(MutationScale(Random.Range(parent1.points.Count, parent2.points.Count)), minPoints, maxPoints);
+            Rotation rot = MutationRotation(EvolutionUtility.CompareRotation(parent1.rotation, parent2.rotation));
+
+            TrackData track1 = gameObject.AddComponent<TrackData>();
+            track1.name = "Track 1 Scaled";
+            track1.points = NormaliseParent(parent1, scale, rot);
+            track1.type = TrackType.Algorithm;
+
+            TrackData track2 = gameObject.AddComponent<TrackData>();
+            track2.name = "Track 2 Scaled";
+            track2.points = NormaliseParent(parent2, scale, rot);
+            track2.type = TrackType.Algorithm;
+
+            List<Segment> segments = new List<Segment>(track1.Segments);
+            segments.AddRange(track2.Segments);
+
+
+            List<SegmentType> types = SegmentChildFromParents(track1, track2);
+
+            Debug.Log("Straights: " + EvolutionUtility.SegmentTypeCount(types, SegmentType.Straight));
+            Debug.Log("Lefts: " + EvolutionUtility.SegmentTypeCount(types, SegmentType.Left));
+            Debug.Log("Rights: " + EvolutionUtility.SegmentTypeCount(types, SegmentType.Right));
+
+            int straights = EvolutionUtility.SegmentTypeCount(types, SegmentType.Straight);
+            int lefts = EvolutionUtility.SegmentTypeCount(types, SegmentType.Left);
+            int rights = EvolutionUtility.SegmentTypeCount(types, SegmentType.Right);
+
+            List<Segment> straightSegments = EvolutionUtility.FindSegments(segments, SegmentType.Straight);
+            List<Segment> leftSegments = EvolutionUtility.FindSegments(segments, SegmentType.Left);
+            List<Segment> rightSegments = EvolutionUtility.FindSegments(segments, SegmentType.Right);
+
+
+            float testAngle = segments[0].Angle;
+
+            List<Vector2> points = new List<Vector2> { Vector2.zero, Vector2.one, Vector2.up};
+
+
+
+
+            return TrackUtility.CentredPoints(points);
+        }
+
+
+
+        #region Mutations
+
         private int MutationScale(int currentScale)
         {
             if (Random.Range(0, 100) > 90)
@@ -246,11 +308,6 @@ namespace IsaacFagg.Genetics
             }
         }
 
-
-
-
-
-
         private SegmentType MutateSegmentType(SegmentType type)
         {
             SegmentType mutatedType = EvolutionUtility.RandomSegment();
@@ -264,7 +321,9 @@ namespace IsaacFagg.Genetics
 
         }
 
+        #endregion
 
+        #region Point Generation
 
 
         private Vector2 NextPoint(Vector2 prev, float distance, float rotation)
@@ -344,6 +403,9 @@ namespace IsaacFagg.Genetics
 
         }
 
+        #endregion
+
+        #region Angles
 
 
         private List<float> GetParentsAngles(List<float> parent1, List<float> parent2)
@@ -388,17 +450,31 @@ namespace IsaacFagg.Genetics
             return angles;
         }
 
+        private float GetTotalAngles(List<float> angles)
+        {
+            float total = 0f;
+
+            foreach (float angle in angles)
+            {
+                total += angle;
+            }
+
+            return total;
+        }
+
+        #endregion
 
 
+        #region Segments
         private List<SegmentType> SegmentChildFromParents(TrackData parent1, TrackData parent2)
         {
-            List<SegmentType> segments = new List<SegmentType>();
+            List<SegmentType> types = new List<SegmentType>();
             bool atLeastOneStraight = false;
             float currentPercent = 0;
 
             for (int i = 0; i < parent1.SegmentTypes.Count; i++)
             {
-                if (EvolutionUtility.SegmentTypeCount(segments, SegmentType.Straight) > 0)
+                if (EvolutionUtility.SegmentTypeCount(types, SegmentType.Straight) > 0)
                 {
                     atLeastOneStraight = true;
                 }
@@ -412,21 +488,19 @@ namespace IsaacFagg.Genetics
 
                     if (Random.Range(0f, 1f) <= currentPercent / 100)
                     {
-                        segments.Add(SegmentType.Straight);
+                        types.Add(SegmentType.Straight);
                         atLeastOneStraight = true;
                         currentPercent = 0f;
-
-                        Debug.Log(i);
 
                         continue;
                     }
                 }
 
-                if (i != 0 && segments[i - 1] == SegmentType.Straight && EvolutionUtility.SegmentTypeCount(segments, SegmentType.Straight) <= 2)
+                if (i != 0 && types[i - 1] == SegmentType.Straight && EvolutionUtility.SegmentTypeCount(types, SegmentType.Straight) <= 2)
                 {
                     if (Random.Range(0f, 1f) <=  0.65)
                     {
-                        segments.Add(SegmentType.Straight);
+                        types.Add(SegmentType.Straight);
 
                         //Debug.Log("Second straight");
 
@@ -438,28 +512,18 @@ namespace IsaacFagg.Genetics
 
                 if (rand > 25 && rand < 40)
                 {
-                    segments.Add(EvolutionUtility.RandomSegment(true));
+                    types.Add(EvolutionUtility.RandomSegment(true));
                     //Debug.Log("Random segment");
                 }
                 else
                 {
-                    segments.Add(EvolutionUtility.CompareSegments(parent1.SegmentTypes[i], parent2.SegmentTypes[i]));
+                    types.Add(EvolutionUtility.CompareSegments(parent1.Segments[i].Type, parent2.Segments[i].Type));
                 }
             }
-            return segments;
+            return types;
         }
+        #endregion
 
-        private float GetTotalAngles(List<float> angles)
-        {
-            float total = 0f;
-
-            foreach (float angle in angles)
-            {
-                total += angle;
-            }
-
-            return total;
-        }
 
         private List<Vector2> NormaliseParent(TrackData parent, int scale, Rotation rot)
         {

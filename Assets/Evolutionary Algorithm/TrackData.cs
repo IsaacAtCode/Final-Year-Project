@@ -387,6 +387,49 @@ namespace IsaacFagg.Track
 
         #region Segments
 
+        public List<Segment> Segments
+        {
+            get
+            {
+                return GetSegments();
+            }
+        }
+
+        public List<Segment> GetSegments()
+        {
+            List<Segment> segments = new List<Segment>();
+
+            for (int i = 1; i < points.Count; i++)
+            {
+                Segment newSegment;
+
+
+                if (i == points.Count - 2)
+                {
+                    newSegment = new Segment(points[i], points[i + 1], points[0]);
+
+                }
+                else if (i == points.Count - 1)
+                {
+                    newSegment = new Segment(points[i], points[0], points[1]);
+
+                }
+                else
+                {
+                    newSegment = new Segment(points[i], points[i + 1], points[i + 2]);
+
+                }
+
+                segments.Add(newSegment);
+            }
+
+
+            return segments;
+        }
+
+
+
+
         public List<SegmentType> SegmentTypes
         {
             get
@@ -399,22 +442,9 @@ namespace IsaacFagg.Track
         {
             List<SegmentType> types = new List<SegmentType>();
 
-            for (int i = 0; i < points.Count; i++)
+            foreach (Segment segment in Segments)
             {
-                int prevPoint;
-
-                if (i == 0)
-                {
-                    prevPoint = points.Count - 1;
-                }
-                else
-                {
-                    prevPoint = i - 1;
-                }
-
-                int nextPoint = (i + 1) % points.Count;
-
-                types.Add(TrackUtility.DetermineSegmentType(points[prevPoint], points[i], points[nextPoint]));
+                types.Add(segment.Type);
             }
 
             return types;
@@ -460,6 +490,77 @@ namespace IsaacFagg.Track
 
     }
 
+    public class Segment
+    {
+        public Vector2 point1;
+        public Vector2 point2;
+        public Vector2 point3;
+
+        public List<Vector2> Points
+        {
+            get
+            {
+                return new List<Vector2> { point1, point2, point3 };
+            }
+        }
+
+        public Segment (Vector2 p1, Vector2 p2, Vector2 p3)
+        {
+            point1 = p1;
+            point2 = p2;
+            point3 = p3;
+        }
+
+        public Segment(List<Vector2> points)
+        {
+            point1 = points[0];
+            point2 = points[1];
+            point3 = points[2];
+        }
+
+        public SegmentType Type
+        {
+            get
+            {
+                if (point1 != null && Angle < 20f)
+                {
+                    return SegmentType.Straight;
+                }
+                else if (Angle > 20f)
+                {
+                    return TrackUtility.DetermineSegmentType(Points);
+                }
+                else
+                {
+                    return SegmentType.Straight;
+                }
+
+            }
+        }    
+
+        public float Angle
+        {
+            get
+            {
+                return GetAngle();
+            }
+        }
+
+        private float GetAngle()
+        {
+            float distAB = Vector2.Distance(point1, point2);
+            float distBC = Vector2.Distance(point2, point3);
+            float distCA = Vector2.Distance(point1, point3);
+
+            float sqrAB = Mathf.Pow(distAB, 2);
+            float sqrBC = Mathf.Pow(distBC, 2);
+            float sqrCA = Mathf.Pow(distCA, 2);
+
+            return Mathf.Acos((sqrAB + sqrBC - sqrCA) / (2 * distAB * distBC)) * Mathf.Rad2Deg;
+        }
+
+
+    }
 
 
     public enum TrackType

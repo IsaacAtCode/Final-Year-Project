@@ -199,6 +199,22 @@ namespace IsaacFagg.Utility
         {
             return list.Count(st => st == type);
         }
+
+        public static List<Segment> FindSegments(List<Segment> segments, SegmentType type)
+        {
+            List<Segment> segmentsOfType = new List<Segment>();
+
+            foreach (Segment segment in segments)
+            {
+                if (segment.Type == type)
+                {
+                    segmentsOfType.Add(segment);
+                }
+            }
+
+            return segmentsOfType;
+        }
+
     }
 
 

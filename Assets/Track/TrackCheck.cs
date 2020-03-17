@@ -58,8 +58,7 @@ namespace IsaacFagg.Utility
 
 			for (int i = 0; i < segmentCount; i++)
 			{
-				Segment segment = new Segment();
-				segment.points = GetPointsInSegment(points, i);
+				Segment segment = new Segment(GetPointsInSegment(points, i));
 				segments.Add(segment);
 			}
 
@@ -72,7 +71,7 @@ namespace IsaacFagg.Utility
 				{
 					if (i != j)
 					{
-						if(BezierIntersect(segments[i].points, segments[j].points))
+						if(BezierIntersect(segments[i].Points, segments[j].Points))
 						{
 							isIntersecting = true;
 						}
@@ -153,12 +152,5 @@ namespace IsaacFagg.Utility
 			return rot;
 		}
 	}
-
-	public class Segment
-	{
-		public List<Vector2> points;
-	}
-
-
 }
 
