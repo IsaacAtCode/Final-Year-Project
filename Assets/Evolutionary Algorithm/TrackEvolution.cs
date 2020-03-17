@@ -267,9 +267,6 @@ namespace IsaacFagg.Genetics
             List<Segment> leftSegments = EvolutionUtility.FindSegments(segments, SegmentType.Left);
             List<Segment> rightSegments = EvolutionUtility.FindSegments(segments, SegmentType.Right);
 
-
-            float testAngle = segments[0].Angle;
-
             List<Vector2> points = new List<Vector2> { Vector2.zero, Vector2.one, Vector2.up};
 
 

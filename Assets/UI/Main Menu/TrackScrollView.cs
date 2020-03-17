@@ -11,21 +11,21 @@ namespace IsaacFagg.UI.Main
         private ScrollRect scrollView;
         public GameObject trackIconPrefab;
 
-        //private void Start()
-        //{
-        //    scrollView = GetComponentInChildren<ScrollRect>();
+        private void Start()
+        {
+            scrollView = GetComponentInChildren<ScrollRect>();
 
 
-        //    List<TrackData> randomTracks = new List<TrackData>
-        //    {
-        //        RandomTrackGenerator.GenerateRandomTrack(),
-        //        RandomTrackGenerator.GenerateRandomTrack(),
-        //        RandomTrackGenerator.GenerateRandomTrack(),
-        //        RandomTrackGenerator.GenerateRandomTrack()
-        //    };
+            List<TrackData> randomTracks = new List<TrackData>
+            {
+                RandomTrackGenerator.GenerateRandomTrack(),
+                RandomTrackGenerator.GenerateRandomTrack(),
+                RandomTrackGenerator.GenerateRandomTrack(),
+                RandomTrackGenerator.GenerateRandomTrack()
+            };
 
-        //    PopulateScrollView(randomTracks);
-        //}
+            PopulateScrollView(randomTracks);
+        }
 
         public void PopulateScrollView(List<TrackData> tracks)
         {

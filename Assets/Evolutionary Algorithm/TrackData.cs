@@ -245,7 +245,7 @@ namespace IsaacFagg.Track
         {
             get
             {
-                return AnglesFromPoints();
+                return GetAngles();
             }
         }
         public float MaxAngle
@@ -269,55 +269,17 @@ namespace IsaacFagg.Track
                 return Angles.Average();
             }
         }
-        public List<float> Slopes
-        {
-            get
-            {
-                return SlopesFromPoints();
-            }
-        }
-        private List<float> AnglesFromPoints()
+        private List<float> GetAngles()
         {
             List<float> angles = new List<float>();
 
-            List<Vector2> cPoints = TrackUtility.CentreOnZero(points);
-
-            for (int i = 0; i < points.Count; i++)
+            foreach (Segment segment in Segments)
             {
-                float angle;
-                Vector2 point;
-                Vector2 next;
-
-                if (i == points.Count - 1)
-                {
-                    point = cPoints[i];
-                    next = cPoints[0];
-
-                }
-                else
-                {
-                    point = cPoints[i];
-                    next = cPoints[i + 1];
-                }
-
-                angle = EvolutionUtility.GetAngleToNextPoint(point, next);
-
-                angles.Add(angle);
+                angles.Add(segment.Angle);
             }
-
             return angles;
         }
-        private List<float> SlopesFromPoints()
-        {
-            List<float> slopes = new List<float>();
 
-            for (int i = 0; i < points.Count; i++)
-            {
-                slopes.Add(EvolutionUtility.GetSlopeForPoint(points[i], Centre));
-            }
-
-            return slopes;
-        }
 
         #endregion
 

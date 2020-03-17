@@ -78,7 +78,6 @@ namespace IsaacFagg.Utility
             }
         }
 
-
         public static Rotation CompareRotation(Rotation p1, Rotation p2)
         {
             if (p1 == p2)
@@ -90,7 +89,6 @@ namespace IsaacFagg.Utility
                 return TrackUtility.RandomRotation();
             }
         }
-
 
         public static SegmentType RandomSegment()
         {
@@ -214,6 +212,24 @@ namespace IsaacFagg.Utility
 
             return segmentsOfType;
         }
+
+        //public static List<Vector2> CombineSegments(List<Segment> segments)
+        //{
+
+        //}
+
+        //private static Segment SucceddSegment(Segment seg, Segment segToMove)
+        //{
+        //    Vector2 lastPoint = seg.point3;
+
+
+        //}
+
+        //private static Segment MoveSegmentByVector(Segment segment, Vector2 movePoint )
+        //{
+        //    Vector2 translation = new Vector2(segment.point1.x - movePoint.x, segment.point1.y - movePoint.y);
+        //}
+
 
     }
 
