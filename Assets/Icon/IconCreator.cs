@@ -14,6 +14,8 @@ namespace IsaacFagg.Icons
             //Camera iconCam = GetComponentInChildren<Camera>();
             Camera iconCam = new GameObject("Icon Camera").AddComponent<Camera>();
             iconCam.transform.parent = this.transform;
+            iconCam.clearFlags = CameraClearFlags.Nothing;
+            iconCam.cullingMask = (1 << LayerMask.NameToLayer("Minimap Track"));
 
             IconGenerator mg = GetComponent<IconGenerator>();
             mg.GenerateTrackMesh(points);
@@ -24,7 +26,7 @@ namespace IsaacFagg.Icons
 
             Texture2D texture = RenderToTexture(iconCam);
 
-            Destroy(iconCam.gameObject  );
+            Destroy(iconCam.gameObject);
 
 
             return texture;

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+using IsaacFagg.UI;
 using IsaacFagg.Paths;
 using IsaacFagg.Utility;
 
@@ -20,6 +21,7 @@ namespace IsaacFagg.Track
 		[Header("Road")]
 		public Material roadMat;
 		public Material gravelMat;
+		public Material minimapMat;
 		public Sprite background;
 
 		private void Start()
@@ -41,29 +43,39 @@ namespace IsaacFagg.Track
 		{
 			GameObject trackGO = new GameObject(data.name);
 			GameObject gravelGO = new GameObject("Gravel");
+			GameObject minimapGO = new GameObject("Minimap Track");
 			//Parents
 			trackGO.transform.parent = this.gameObject.transform;
 			gravelGO.transform.parent = trackGO.transform;
+			minimapGO.transform.parent = trackGO.transform;
 			//Tags
 			trackGO.tag = "CurrentTrack";
 			gravelGO.tag = "Gravel";
+			minimapGO.tag = "MinimapTrack";
 			//Layers
 			trackGO.layer = 10;
 			gravelGO.layer = 10;
-
+			minimapGO.layer = 11;
+			//Path Creators
 			PathCreator tPC = trackGO.AddComponent<PathCreator>();
 			PathCreator gPC = gravelGO.AddComponent<PathCreator>();
-
+			PathCreator mPC = minimapGO.AddComponent<PathCreator>();
+			//Paths
 			Path path = GenerateBevierPath(data);
 
 			tPC.path = path;
 			gPC.path = path;
-			AddMesh(trackGO, roadMat, 20f);
-			AddMesh(gravelGO, gravelMat, 50f);
+			mPC.path = path;
+
+			AddMesh(trackGO, roadMat, 2f, false);
+			AddMesh(gravelGO, gravelMat, 5f,false);
+			AddMesh(minimapGO, minimapMat, 5f, true);
 
 			//AddBackground(background);
 
 			GenerateCheckpoints(tPC.path, trackGO);
+
+				
 		}
 
 		private Path GenerateBevierPath(TrackData trackData)
@@ -91,7 +103,7 @@ namespace IsaacFagg.Track
 			return newPath;
 		}
 
-		private void AddMesh(GameObject go, Material mat, float width)
+		private void AddMesh(GameObject go, Material mat, float width, bool isMinimap)
 		{
 			RoadCreator rc = go.AddComponent<RoadCreator>();
 			MeshRenderer mr = go.GetComponent<MeshRenderer>();
@@ -99,7 +111,10 @@ namespace IsaacFagg.Track
 			mr.sortingLayerName = "Track";
 			mr.sortingOrder = 0;
 
-			AddCollider(go);
+			if (!isMinimap)
+			{
+				AddCollider(go);
+			}
 
 			rc.roadWidth = width;
 			rc.UpdateRoad();
@@ -172,6 +187,7 @@ namespace IsaacFagg.Track
 
 			checkpoint.transform.rotation = MathsUtility.LookAt(newPos, targetPos);
 		}
+
 
 	}
 }

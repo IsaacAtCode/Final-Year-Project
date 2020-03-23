@@ -59,6 +59,8 @@ namespace IsaacFagg.Cars
         {
             UpdateEnginePower();
             cm.WheelTurn(m_SteeringDirection);
+
+            Debug.Log(RightVelocity().magnitude);
         }
 
         void UpdateEnginePower()
@@ -126,6 +128,9 @@ namespace IsaacFagg.Cars
             }
 
             rb.velocity = ForwardVelocity() + RightVelocity() * m_DriftingForce;
+
+
+
         }
 
         public void SetEnginePower(float power)

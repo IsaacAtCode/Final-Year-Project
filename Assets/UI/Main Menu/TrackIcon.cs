@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using IsaacFagg.Track;
 using IsaacFagg.Icons;
 
-namespace IsaacFagg.UI.Main
+namespace IsaacFagg.UI
 {
     public class TrackIcon : MonoBehaviour
     {
@@ -14,10 +14,10 @@ namespace IsaacFagg.UI.Main
 
         public TrackData data;
 
-        private void Start()
-        {
-            PopulateIcon(RandomTrackGenerator.GenerateRandomTrack());
-        }
+        //private void Start()
+        //{
+        //    PopulateIcon(RandomTrackGenerator.GenerateRandomTrack());
+        //}
 
         public void PopulateIcon(TrackData trackInfo)
         {
@@ -28,9 +28,7 @@ namespace IsaacFagg.UI.Main
             Texture2D texture = GameObject.Find("Icon Renderer").GetComponent<IconCreator>().CreateIcon(trackInfo.points);
 
             trackInfo.icon = texture;
-            icon.texture = texture;
-
-            
+            icon.texture = texture;            
         }
 
 

@@ -1,13 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using IsaacFagg.Track;
 
-namespace IsaacFagg.Track3
+namespace IsaacFagg.UI
 {
-	[ExecuteInEditMode]
 	public class Minimap : MonoBehaviour
 	{
-		public Track3 track;
+		public TrackData track;
 		public GameObject minimapTrack;
 		public float offset;
 
@@ -17,7 +18,7 @@ namespace IsaacFagg.Track3
 		{
 			if (!track)
 			{
-				track = GameObject.FindGameObjectWithTag("Track").GetComponent<Track3>();
+				track = GameObject.FindGameObjectWithTag("Track").GetComponent<TrackGenerator>().trackData;
 			}
 			if (!minimapTrack)
 			{
@@ -34,7 +35,7 @@ namespace IsaacFagg.Track3
 
 		private void CalculateOffset()
 		{
-			offset = ((track.width * 1.5f) / 2) / Mathf.Tan(trackCamera.fieldOfView);
+			offset = ((track.Width * 1.5f) / 2) / Mathf.Tan(trackCamera.fieldOfView);
 
 			trackCamera.farClipPlane = Mathf.Abs(offset * 1.1f);
 		}
@@ -43,7 +44,7 @@ namespace IsaacFagg.Track3
 
 		private void CentreCamera()
 		{
-			Vector3 trackPos = new Vector3(minimapTrack.transform.position.x + track.width / 2, minimapTrack.transform.position.y + track.height / 2, minimapTrack.transform.position.z + offset);
+			Vector3 trackPos = new Vector3(minimapTrack.transform.position.x + track.Width / 2, minimapTrack.transform.position.y + track.Height / 2, minimapTrack.transform.position.z + offset);
 
 
 
@@ -51,8 +52,6 @@ namespace IsaacFagg.Track3
 
 			transform.position = trackPos;
 		}
-
-
 
 
 	}

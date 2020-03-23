@@ -10,8 +10,8 @@ namespace IsaacFagg.Track
 		public static int minPoints = 5;
 		public static int maxPoints = 40;
 		public static float minDistance = 50f;
-		public static float minHW = 250f;
-		public static float maxHW = 1250f;
+		public static float minHW = 25f;
+		public static float maxHW = 125f;
 
 		public static TrackData GenerateRandomTrack()
 		{

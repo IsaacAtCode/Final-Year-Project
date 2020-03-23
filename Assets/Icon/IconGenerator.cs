@@ -8,8 +8,8 @@ using IsaacFagg.Utility;
 namespace IsaacFagg.Icons
 {
 	[RequireComponent(typeof(PathCreator))]
-    public class IconGenerator : MonoBehaviour
-    {
+	public class IconGenerator : MonoBehaviour
+	{
 		public Material mat;
 
 		public float minimapScale = 0.5f;

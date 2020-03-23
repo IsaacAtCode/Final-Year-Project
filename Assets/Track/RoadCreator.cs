@@ -13,7 +13,7 @@ public class RoadCreator : MonoBehaviour
 	public float spacing = 1;
 	public float roadWidth = 1;
 	public bool autoUpdate;
-	public float tiling = 1;
+	public float tiling = 10;
 
 	public void UpdateRoad()
 	{
@@ -23,8 +23,6 @@ public class RoadCreator : MonoBehaviour
 
 		int textureRepeat = Mathf.RoundToInt(tiling * points.Count * spacing * .05f);
 		GetComponent<MeshRenderer>().sharedMaterial.mainTextureScale = new Vector2(1, textureRepeat);
-
-
 	}
 
 	Mesh CreateRoadMesh(List<Vector2> points, bool isClosed)
