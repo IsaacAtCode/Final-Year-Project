@@ -647,7 +647,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3b6534436a9ece4893e04ef792d0acd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  track: {fileID: 0}
   minimapTrack: {fileID: 0}
   offset: 0
 --- !u!20 &253366640
@@ -678,10 +677,10 @@ Camera:
   field of view: 60
   orthographic: 1
   orthographic size: 5
-  m_Depth: -2.08
+  m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 8192
+    m_Bits: 10240
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 8400000, guid: 304fa11b59454a74abbb6e49c3adb46a, type: 2}
   m_TargetDisplay: 0
@@ -3709,20 +3708,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fab9ec69b50fee549a8ca4b4e59cd9fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxEngineForce: 50
+  maxEngineForce: 40
   maxReverseForce: 15
   reversePower: -0.2
-  acceleration: 3
+  acceleration: 2
   deceleration: 1
-  maxSteeringTorque: 75
-  driftFactorSticky: 0.085
-  driftFactorSlippy: 0.1
-  maxStickyVelocity: 10
+  maxSteeringTorque: 120
+  driftFactorSticky: 0.85
+  driftFactorSlippy: 1
+  maxStickyVelocity: 1.5
   minSlippyVelocity: 1.5
   m_DriftingForce: 0
   trackFriction: 1
   gravelFriction: 4
   oilSlipTime: 3
+  sideMag: 0
 --- !u!114 &6246123561117418893
 MonoBehaviour:
   m_ObjectHideFlags: 0

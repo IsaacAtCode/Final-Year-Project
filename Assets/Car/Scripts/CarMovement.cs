@@ -43,8 +43,9 @@ namespace IsaacFagg.Cars
         public float gravelFriction = 3f;
         public float oilSlipTime = 3f;
 
-        Vector2 centreOfMass = new Vector2(0, 0.5f);
+        //Vector2 centreOfMass = new Vector2(0, 0.5f);
 
+        public float sideMag = 0f;
 
         private void Awake()
         {
@@ -52,7 +53,7 @@ namespace IsaacFagg.Cars
             cm = GetComponent<CarModel>();
             rb = GetComponent<Rigidbody2D>();
 
-            rb.centerOfMass = centreOfMass;
+            //rb.centerOfMass = centreOfMass;
         }
 
         private void Update()
@@ -60,7 +61,7 @@ namespace IsaacFagg.Cars
             UpdateEnginePower();
             cm.WheelTurn(m_SteeringDirection);
 
-            Debug.Log(RightVelocity().magnitude);
+            sideMag = RightVelocity().magnitude;
         }
 
         void UpdateEnginePower()
@@ -102,12 +103,10 @@ namespace IsaacFagg.Cars
             Vector3 totalForce = transform.up * m_EnginePower * engineForce;
 
 
-            //rb.AddForce(totalForce, ForceMode2D.Force);
+            rb.AddForce(totalForce, ForceMode2D.Force);
 
-            rb.AddForceAtPosition(totalForce/2, cm.wheel_BL.transform.position, ForceMode2D.Force);
-            rb.AddForceAtPosition(totalForce/2, cm.wheel_BR.transform.position, ForceMode2D.Force);
-
-
+            //rb.AddForceAtPosition(totalForce/2, cm.wheel_BL.transform.position, ForceMode2D.Force);
+            //rb.AddForceAtPosition(totalForce/2, cm.wheel_BR.transform.position, ForceMode2D.Force);
         }
 
         private void ApplySteeringForce()
@@ -128,9 +127,6 @@ namespace IsaacFagg.Cars
             }
 
             rb.velocity = ForwardVelocity() + RightVelocity() * m_DriftingForce;
-
-
-
         }
 
         public void SetEnginePower(float power)

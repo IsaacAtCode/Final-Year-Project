@@ -9,9 +9,11 @@ namespace IsaacFagg.Track
 	{
 		public static int minPoints = 5;
 		public static int maxPoints = 40;
+		public static int randomPoints = 50;
+
 		public static float minDistance = 50f;
 		public static float minHW = 25f;
-		public static float maxHW = 125f;
+		public static float maxHW = 100f;
 
 		public static TrackData GenerateRandomTrack()
 		{
@@ -21,9 +23,7 @@ namespace IsaacFagg.Track
 			float randheight = randomHeight;
 			float randwidth = randomWidth;
 
-			//List<Vector2> points = TrackUtility.CombineClosePoints(GenerateMidpoints(GenerateConvexHull(GenerateRandomPoints(Random.Range(minPoints, maxPoints), randheight, randwidth)), 1));
-
-			List<Vector2> points = GenerateMidpoints(GenerateConvexHull(GenerateRandomPoints(Random.Range(minPoints, maxPoints), randheight, randwidth)), 1);
+			List<Vector2> points = GenerateMidpoints(GenerateConvexHull(GenerateRandomPoints(randheight, randwidth)), 1);
 
 			TrackData track = new TrackData(points, TrackUtility.RandomRotation());
 
@@ -33,14 +33,14 @@ namespace IsaacFagg.Track
 			return track;
 		}
 
-		private static List<Vector2> GenerateRandomPoints(int count, float height, float width)
+		private static List<Vector2> GenerateRandomPoints(float height, float width)
 		{
-			List<Vector2> points = new List<Vector2>(count);
+			List<Vector2> points = new List<Vector2>(randomPoints);
 
-			for (int i = 0; i < count; i++)
+			for (int i = 0; i < randomPoints; i++)
 			{
-				float x = Random.Range(-width * 0.35f, width * 0.35f);
-				float y = Random.Range(-height * 0.35f, height * 0.35f);
+				float x = Random.Range(-width * 1.35f, width * 1.35f);
+				float y = Random.Range(-height * 1.35f, height * 1.35f);
 
 				Vector2 vector = new Vector2(x, y);
 

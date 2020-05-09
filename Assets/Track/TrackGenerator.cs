@@ -67,9 +67,9 @@ namespace IsaacFagg.Track
 			gPC.path = path;
 			mPC.path = path;
 
-			AddMesh(trackGO, roadMat, 2f, false);
-			AddMesh(gravelGO, gravelMat, 5f,false);
-			AddMesh(minimapGO, minimapMat, 5f, true);
+			AddMesh(trackGO, roadMat, 3f, false);
+			AddMesh(gravelGO, gravelMat, 6f,false);
+			AddMesh(minimapGO, minimapMat, 6f, true);
 
 			//AddBackground(background);
 
