@@ -114,10 +114,6 @@ namespace IsaacFagg.Track
         private float length = 0;
         private int straightCount = 0;
         private int curveCount = 0;
-        [HideInInspector]
-        public int obstacleCount = 0;
-        [HideInInspector]
-        public int powerCount = 0;
 
         #region Properties Get/Set
 
