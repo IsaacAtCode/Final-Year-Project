@@ -517,6 +517,41 @@ namespace IsaacFagg.Track
             return Mathf.Acos((sqrAB + sqrBC - sqrCA) / (2 * distAB * distBC)) * Mathf.Rad2Deg;
         }
 
+        public Vector2 Size
+        {
+            get
+            {
+                return GetSize();
+            }
+        }
+
+        private float GetSize()
+        {
+            MinMax2d size = new MinMax2D();
+
+            size.AddValue(point1);
+            size.AddValue(point2);
+            size.AddValue(point3);
+
+            float x = size.Max.x - size.Min.x;
+            float y = size.Max.y - size.Min.y;
+            Vector2 totalSize = new Vector2(x, y);
+
+            return totalSize;
+        }
+
+        public float Area
+        {
+            get
+            {
+                return GetArea();
+            }
+        }
+
+        private float GetArea()
+        {
+            return Size.x * Size.y;
+        }
 
     }
 

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace IsaacFagg
+namespace IsaacFagg.Utility
 {
     public class MinMax2D
     {
