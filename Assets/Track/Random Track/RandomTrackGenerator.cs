@@ -9,11 +9,11 @@ namespace IsaacFagg.Track
 	{
 		public static int minPoints = 5;
 		public static int maxPoints = 40;
-		public static int randomPoints = 50;
+		public static int randomPoints = 30;
 
 		public static float minDistance = 50f;
-		public static float minHW = 25f;
-		public static float maxHW = 100f;
+		public static float minHW = 50f;
+		public static float maxHW = 150f;
 
 		public static TrackData GenerateRandomTrack()
 		{
@@ -39,8 +39,8 @@ namespace IsaacFagg.Track
 
 			for (int i = 0; i < randomPoints; i++)
 			{
-				float x = Random.Range(-width * 1.35f, width * 1.35f);
-				float y = Random.Range(-height * 1.35f, height * 1.35f);
+				float x = Random.Range(-width, width);
+				float y = Random.Range(-height, height);
 
 				Vector2 vector = new Vector2(x, y);
 
