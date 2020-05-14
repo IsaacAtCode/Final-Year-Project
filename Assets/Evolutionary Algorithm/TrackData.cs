@@ -43,18 +43,7 @@ namespace IsaacFagg.Track
                 isRotationSet = true;
             }
         }
-        public TrackData(List<Vector2> newPoints, int obstacle, int powerups)
-        {
-            points = newPoints;
-            obstacleCount = obstacle;
-            powerCount = powerups;
 
-            if (!isRotationSet)
-            {
-                rotation = TrackUtility.RandomRotation();
-                isRotationSet = true;
-            }
-        }
         public TrackData(List<Vector2> newPoints, string newName)
         {
             name = newName;
@@ -66,19 +55,7 @@ namespace IsaacFagg.Track
                 isRotationSet = true;
             }
         }
-        public TrackData(List<Vector2> newPoints, string newName, int obstacle, int powerups)
-        {
-            name = newName;
-            points = newPoints;
-            obstacleCount = obstacle;
-            powerCount = powerups;
 
-            if (!isRotationSet)
-            {
-                rotation = TrackUtility.RandomRotation();
-                isRotationSet = true;
-            }
-        }
         public TrackData(List<Vector2> newPoints, Rotation rot)
         {
             points = newPoints;
@@ -94,17 +71,7 @@ namespace IsaacFagg.Track
             rotation = rot;
             isRotationSet = true;
         }
-        public TrackData(List<Vector2> newPoints, Rotation rot, string newName, int obstacle, int powerups)
-        {
-            name = newName;
-            points = newPoints;
 
-            rotation = rot;
-            isRotationSet = true;
-
-            obstacleCount = obstacle;
-            powerCount = powerups;
-        }
 
         #endregion
 
@@ -525,9 +492,9 @@ namespace IsaacFagg.Track
             }
         }
 
-        private float GetSize()
+        private Vector2 GetSize()
         {
-            MinMax2d size = new MinMax2D();
+            MinMax2D size = new MinMax2D();
 
             size.AddValue(point1);
             size.AddValue(point2);

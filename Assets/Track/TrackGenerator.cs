@@ -63,6 +63,8 @@ namespace IsaacFagg.Track
 			//Paths
 			Path path = GenerateBevierPath(data);
 
+			//path.PrintPoints();
+
 			tPC.path = path;
 			gPC.path = path;
 			mPC.path = path;
@@ -143,7 +145,7 @@ namespace IsaacFagg.Track
 				checkpointLocations.Reverse();
 			}
 
-			for (int i = 0; i < checkpointLocations.Count; i++)
+			for (int i = 0; i < checkpointLocations.Count - 1; i++)
 			{
 				CreateCheckpoint(i, checkpointParent.transform);
 			}

@@ -387,5 +387,14 @@ namespace IsaacFagg.Paths
 		{
 			return (i + points.Count) % points.Count;
 		}
+
+		public void PrintPoints()
+		{
+			foreach (Vector2 point in points)
+			{
+				Debug.Log(point.ToString());
+			}
+		}
+
 	}
 }
