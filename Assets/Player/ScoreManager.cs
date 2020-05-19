@@ -74,9 +74,10 @@ namespace IsaacFagg.Player
     public enum RequestType
     {
         Length,
+        Straights,
+        Corners,
+        Speed,
         Difficulty,
-        Obstacles,
-        Powerups
     }
 
     public enum RequestChange
