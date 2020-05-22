@@ -6,7 +6,7 @@ namespace IsaacFagg.Player
 {
     public class RequestManager : MonoBehaviour
     {
-        public List<TrackRequest> possibleRequests = new List<TrackRequest> { new TrackRequest(RequestType.Length), new TrackRequest(RequestType.Difficulty), new TrackRequest(RequestType.Obstacles), new TrackRequest(RequestType.Powerups) };
+        public List<TrackRequest> possibleRequests = new List<TrackRequest> { new TrackRequest(RequestType.Length), new TrackRequest(RequestType.Straights), new TrackRequest(RequestType.Corners), new TrackRequest(RequestType.Speed), new TrackRequest(RequestType.Difficulty) };
 
         public ToggleRequest request1;
         public ToggleRequest request2;

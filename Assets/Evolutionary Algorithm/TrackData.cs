@@ -403,7 +403,7 @@ namespace IsaacFagg.Track
 
             pc.path = new Path(points);
             pc.segmentColor = background;
-            pc.displayControlPoints = false;
+            //pc.displayControlPoints = false;
 
             if (TrackCheck.IntersectCheck(this))
             {

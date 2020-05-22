@@ -149,7 +149,7 @@ namespace IsaacFagg.Paths
 					Handles.DrawLine(points[2], points[3]);
 				}
 				Color segmentColor = (i == selectedSegmentIndex && Event.current.shift) ? creator.selectedSegmentColor : creator.segmentColor;
-				Handles.DrawBezier(points[0], points[3], points[1], points[2], segmentColor, null, 2);
+				Handles.DrawBezier(points[0], points[3], points[1], points[2], segmentColor, null, creator.pathWidth);
 			}
 
 			for (int i = 0; i < path.NumPoints; i++)

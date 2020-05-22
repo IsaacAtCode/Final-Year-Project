@@ -51,33 +51,51 @@ namespace IsaacFagg.Genetics
             track2.points = RandomTrackGenerator.GenerateRandomTrack().points;
             track2.type = TrackType.Random;
 
+            TrackData track3 = gameObject.AddComponent<TrackData>();
+            track3.name = "Track 3";
+            track3.points = RandomTrackGenerator.GenerateRandomTrack().points;
+            track3.type = TrackType.Random;
+
+            TrackData track4 = gameObject.AddComponent<TrackData>();
+            track4.name = "Track 4";
+            track4.points = RandomTrackGenerator.GenerateRandomTrack().points;
+            track4.type = TrackType.Random;
+
+            TrackData track5 = gameObject.AddComponent<TrackData>();
+            track5.name = "Track 5";
+            track5.points = RandomTrackGenerator.GenerateRandomTrack().points;
+            track5.type = TrackType.Random;
+
+
+
+
             //TrackData[] tracks = GetComponents<TrackData>();
 
-            if (evoType == EvolutionType.Combine)
-            {
-                TrackData babytrack = gameObject.AddComponent<TrackData>();
-                babytrack.name = "Baby Track";
-                babytrack.points = CombineTrackData(track1, track2);
-            }
-            else if (evoType == EvolutionType.Mutate)
-            {
-                TrackData mutatedTrack1 = gameObject.AddComponent<TrackData>();
-                mutatedTrack1.name = "Mutated Track 1";
-                mutatedTrack1.points = MutateTrackData(track1);
-                mutatedTrack1.type = TrackType.Algorithm;
+            //if (evoType == EvolutionType.Combine)
+            //{
+            //    TrackData babytrack = gameObject.AddComponent<TrackData>();
+            //    babytrack.name = "Baby Track";
+            //    babytrack.points = CombineTrackData(track1, track2);
+            //}
+            //else if (evoType == EvolutionType.Mutate)
+            //{
+            //    TrackData mutatedTrack1 = gameObject.AddComponent<TrackData>();
+            //    mutatedTrack1.name = "Mutated Track 1";
+            //    mutatedTrack1.points = MutateTrackData(track1);
+            //    mutatedTrack1.type = TrackType.Algorithm;
 
-                TrackData mutatedTrack2 = gameObject.AddComponent<TrackData>();
-                mutatedTrack2.name = "Mutated Track 2";
-                mutatedTrack2.points = MutateTrackData(track2);
-                mutatedTrack2.type = TrackType.Algorithm;
-            }
-            else if (evoType == EvolutionType.Segments)
-            {
-                TrackData segmentedTrack = gameObject.AddComponent<TrackData>();
-                segmentedTrack.name = "Segment Track";
-                segmentedTrack.points = CombineSegments(track1, track2);
-                segmentedTrack.type = TrackType.Algorithm;
-            }
+            //    TrackData mutatedTrack2 = gameObject.AddComponent<TrackData>();
+            //    mutatedTrack2.name = "Mutated Track 2";
+            //    mutatedTrack2.points = MutateTrackData(track2);
+            //    mutatedTrack2.type = TrackType.Algorithm;
+            //}
+            //else if (evoType == EvolutionType.Segments)
+            //{
+            //    TrackData segmentedTrack = gameObject.AddComponent<TrackData>();
+            //    segmentedTrack.name = "Segment Track";
+            //    segmentedTrack.points = CombineSegments(track1, track2);
+            //    segmentedTrack.type = TrackType.Algorithm;
+            //}
 
 
 
