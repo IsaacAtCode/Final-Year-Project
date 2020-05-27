@@ -22,7 +22,8 @@ namespace IsaacFagg.UI.Main
 
             PopulateDropdown();
 
-            SetDropdown((int)playerInfo.gender);
+            //SetDropdown((int)playerInfo.gender);
+            SetDropdown(0);
 
             ClosePassword();
         }
